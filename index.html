@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dial Santa — A new way to experience the magic of Christmas</title>
+<meta name="description" content="Live two-way video calls with Santa. He knows their name, their wish list, and exactly how good they've been. One-time minute packs, no subscription. By Natura AI LLC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ─── Dial Santa design tokens (matches the iOS app's Theme.swift) ─────── */
+:root {
+  --ink: #1C1B1A; --ink-2: #57534B; --ink-3: #6F6B64; --ink-4: #8A867F; --ink-5: #A5A19A;
+  --red: #C42B35; --red-hi: #D23A3F; --red-lo: #B7262F; --red-deep: #96202A;
+  --green: #1F7A4A; --green-live: #2E9D63; --green-glow: #5FCE8F; --green-tint: #F0F7F2;
+  --bg: #FDFCFA; --bg-warm: #F7F4EE;
+  --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ─── Nav ──────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; transition: background .35s, box-shadow .35s;
+}
+nav.scrolled { background: rgba(253,252,250,.82); backdrop-filter: blur(18px) saturate(1.6); box-shadow: 0 1px 0 rgba(28,27,26,.07); }
+nav.scrolled .brand, nav.scrolled .navlinks a { color: var(--ink); }
+.brand { display: flex; align-items: center; gap: 9px; font-size: 19px; font-weight: 800; letter-spacing: -.3px; color: #fff; transition: color .35s; }
+.brand-dot { width: 12px; height: 12px; border-radius: 99px; background: var(--red); box-shadow: 0 0 0 3px rgba(196,43,53,.25); }
+.navlinks { display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 500; }
+.navlinks a { color: rgba(255,255,255,.85); transition: color .35s; }
+.navlinks a:hover { color: var(--red-hi); }
+.pill-cta {
+  padding: 10px 18px; border-radius: 999px; color: #fff !important; font-weight: 700;
+  background: linear-gradient(180deg, var(--red-hi), var(--red-lo));
+  box-shadow: 0 6px 16px rgba(183,38,47,.28);
+  transition: transform .15s, box-shadow .15s;
+}
+.pill-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(183,38,47,.36); }
+@media (max-width: 720px) { .navlinks a:not(.pill-cta) { display: none; } }
+
+/* ─── Hero ─────────────────────────────────────────────────────────────── */
+header {
+  position: relative; min-height: 100svh; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; color: #fff; padding: 96px 24px 72px;
+  background: radial-gradient(130% 90% at 50% 12%, #1E4A35 0%, #122E21 55%, #0A1C13 100%);
+}
+/* The film: a little one racing downstairs on Christmas morning to
+   FaceTime Santa. Drop the clip at assets/hero.mp4 — until then the
+   animated scene below stands in. */
+#heroVideo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0; transition: opacity 1.2s ease;
+}
+#heroVideo.playing { opacity: 1; }
+.hero-scrim { position: absolute; inset: 0; background:
+  linear-gradient(180deg, rgba(10,28,19,.55) 0%, rgba(10,28,19,.15) 40%, rgba(10,28,19,.72) 100%); }
+/* Fallback scene: warm light spilling from "downstairs" */
+.glow {
+  position: absolute; left: 50%; bottom: -28vh; width: 130vw; height: 80vh;
+  transform: translateX(-50%);
+  background: radial-gradient(55% 60% at 50% 100%, rgba(255,176,84,.34) 0%, rgba(255,140,66,.13) 45%, transparent 75%);
+  animation: flicker 6.5s ease-in-out infinite;
+}
+@keyframes flicker { 0%,100% { opacity: .85; } 38% { opacity: 1; } 62% { opacity: .74; } }
+#snowfall { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+.hero-inner { position: relative; z-index: 2; max-width: 880px; display: flex; flex-direction: column; align-items: center; gap: 26px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 999px; font-size: 12.5px; font-weight: 700; letter-spacing: 1.6px;
+  color: #CFE9DA; background: rgba(16,30,22,.45); border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(14px);
+}
+.eyebrow .dot { width: 7px; height: 7px; border-radius: 99px; background: var(--green-glow); box-shadow: 0 0 12px var(--green-glow); }
+h1 {
+  font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 7.2vw, 84px);
+  line-height: 1.04; letter-spacing: -.5px; text-wrap: balance;
+}
+h1 em { font-style: italic; color: #F3B0A6; }
+.hero-sub { font-size: clamp(16px, 2vw, 19.5px); line-height: 1.6; color: rgba(255,255,255,.82); max-width: 560px; text-wrap: pretty; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 6px; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 16px 28px; border-radius: 999px; font-size: 16px; font-weight: 700; color: #fff;
+  background: linear-gradient(180deg, var(--red-hi), var(--red-lo));
+  box-shadow: 0 12px 28px rgba(183,38,47,.38);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(183,38,47,.46); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 16px 28px; border-radius: 999px; font-size: 16px; font-weight: 600; color: #fff;
+  border: 1.5px solid rgba(255,255,255,.32); background: rgba(255,255,255,.06);
+  backdrop-filter: blur(10px); transition: background .2s, border-color .2s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,.13); border-color: rgba(255,255,255,.5); }
+.trust { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.55); margin-top: 10px; }
+.scroll-cue { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; opacity: .55; animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,8px); } }
+
+/* ─── Shared section bits ──────────────────────────────────────────────── */
+section { padding: 92px 28px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; color: var(--green); margin-bottom: 14px; }
+h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4.6vw, 46px); letter-spacing: -.3px; line-height: 1.12; }
+.section-sub { font-size: 16.5px; line-height: 1.6; color: var(--ink-3); max-width: 560px; margin-top: 14px; text-wrap: pretty; }
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ─── The call (phone mock + bullets) ─────────────────────────────────── */
+.call-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+@media (max-width: 880px) { .call-grid { grid-template-columns: 1fr; } }
+.phone {
+  position: relative; width: 290px; height: 600px; margin: 0 auto;
+  border-radius: 46px; border: 9px solid #17140F; overflow: hidden;
+  background: radial-gradient(130% 90% at 50% 15%, #1E4A35 0%, #122E21 52%, #0A1C13 100%);
+  box-shadow: 0 44px 90px rgba(20,17,12,.38);
+}
+.phone .island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 86px; height: 26px; border-radius: 99px; background: #17140F; z-index: 3; }
+.phone .live-pill {
+  position: absolute; top: 52px; left: 14px; z-index: 2;
+  display: flex; align-items: center; gap: 6px; padding: 7px 11px; border-radius: 999px;
+  background: rgba(16,30,22,.55); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px);
+  font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.88);
+}
+.phone .live-pill i { width: 6px; height: 6px; border-radius: 99px; background: var(--green-glow); }
+.phone .meter {
+  position: absolute; top: 52px; right: 14px; z-index: 2;
+  padding: 7px 11px; border-radius: 12px; background: rgba(16,30,22,.55);
+  border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px);
+  font-size: 10.5px; font-weight: 700; color: #fff;
+}
+.phone .meter b { color: var(--green-glow); }
+.phone .santa {
+  position: absolute; top: 46%; left: 50%; transform: translate(-50%,-50%);
+  width: 150px; height: 150px; border-radius: 999px;
+  background: radial-gradient(circle at 35% 28%, #F6C9B8, #D98A74);
+  border: 3px solid rgba(255,255,255,.35); box-shadow: 0 0 80px 20px rgba(216,102,84,.32);
+}
+/* vector santa face (no emoji dependency) */
+.santa i { position: absolute; border-radius: 99px; }
+.santa .beard { left: 4%; right: 4%; top: 44%; bottom: -8%; background: #fff; border-radius: 50% 50% 46% 46%; }
+.santa .eye { width: 8px; height: 11px; background: #3A2B26; top: 36%; }
+.santa .eye.l { left: 33%; } .santa .eye.r { right: 33%; }
+.santa .cheek { width: 18px; height: 18px; background: rgba(242,160,140,.62); top: 46%; }
+.santa .cheek.l { left: 18%; } .santa .cheek.r { right: 18%; }
+.santa .nose { width: 20px; height: 18px; background: #E89A7E; left: 50%; top: 46%; transform: translateX(-50%); }
+.santa .hat { left: -2%; right: -2%; top: -6%; height: 34%; background: linear-gradient(180deg, #D9403F, #A8232C); border-radius: 50% 50% 0 0; }
+.santa .brim { left: -4%; right: -4%; top: 22%; height: 15%; background: #fff; border-radius: 99px; }
+.santa .pom { width: 20px; height: 20px; background: #fff; right: 8%; top: -4%; }
+.phone .caption {
+  position: absolute; left: 14px; right: 14px; bottom: 88px; z-index: 2;
+  padding: 10px 12px; border-radius: 14px; background: rgba(16,30,22,.6);
+  border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(10px); text-align: left;
+}
+.phone .caption b { display: block; font-size: 8px; font-weight: 800; letter-spacing: 1px; color: var(--green-glow); margin-bottom: 4px; }
+.phone .caption span { font-size: 11.5px; line-height: 1.45; color: rgba(255,255,255,.95); }
+.phone .controls {
+  position: absolute; left: 18px; right: 18px; bottom: 20px; z-index: 2;
+  display: flex; justify-content: space-evenly; align-items: center; padding: 9px;
+  border-radius: 24px; background: rgba(16,30,22,.5); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(12px);
+}
+.phone .controls i { width: 38px; height: 38px; border-radius: 999px; background: rgba(255,255,255,.14); display: grid; place-items: center; }
+.phone .controls i.end { background: linear-gradient(180deg, #E04A48, #C22C33); }
+.phone .controls svg { width: 16px; height: 16px; }
+.feature-list { display: flex; flex-direction: column; gap: 26px; }
+.feature { display: flex; gap: 16px; align-items: flex-start; }
+.feature .ic {
+  flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--green-tint); color: var(--green);
+}
+.feature .ic.red { background: #FBEEEC; color: var(--red); }
+.feature h3 { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+.feature p { font-size: 14.5px; line-height: 1.6; color: var(--ink-3); margin-top: 5px; text-wrap: pretty; }
+
+/* ─── Steps ────────────────────────────────────────────────────────────── */
+.steps { background: var(--bg); text-align: center; }
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 48px; text-align: left; }
+@media (max-width: 880px) { .steps-grid { grid-template-columns: 1fr; } }
+.step-card { border-radius: 24px; background: #fff; border: 1px solid rgba(28,27,26,.08); box-shadow: 0 8px 24px rgba(28,27,26,.05); padding: 30px; }
+.step-num { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 17px; font-weight: 800; }
+.step-card:nth-child(odd) .step-num { background: #FBEEEC; color: var(--red); }
+.step-card:nth-child(even) .step-num { background: var(--green-tint); color: var(--green); }
+.step-card h3 { font-size: 18px; font-weight: 700; margin-top: 16px; }
+.step-card p { font-size: 14.5px; line-height: 1.6; color: var(--ink-3); margin-top: 8px; text-wrap: pretty; }
+
+/* ─── Families (social proof marquee) ─────────────────────────────────── */
+.families {
+  position: relative; overflow: hidden; padding: 92px 0; text-align: center; color: #fff;
+  background: radial-gradient(120% 100% at 50% 0%, #1E4A35 0%, #122E21 58%, #0A1C13 100%);
+}
+.families .kicker { color: var(--green-glow); }
+.families h2 { max-width: 760px; margin: 0 auto; }
+.families .section-sub { color: rgba(255,255,255,.66); margin: 14px auto 0; }
+.marquee-window { margin-top: 56px; }
+.marquee { display: flex; gap: 24px; width: max-content; padding: 0 12px; animation: marquee 55s linear infinite; }
+.marquee:hover { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(calc(-50% - 12px)); } }
+.mgroup { display: flex; gap: 24px; }
+.rcard { width: 224px; flex: none; text-align: left; }
+.rphone {
+  position: relative; width: 224px; aspect-ratio: 9 / 18.5; border-radius: 34px;
+  border: 7px solid #17140F; overflow: hidden;
+  background: radial-gradient(130% 90% at 50% 15%, #1E4A35 0%, #122E21 52%, #0A1C13 100%);
+  box-shadow: 0 24px 54px rgba(0,0,0,.45);
+}
+.rphone .island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 58px; height: 17px; border-radius: 99px; background: #17140F; z-index: 3; }
+.rphone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s; }
+.rphone video.playing { opacity: 1; }
+/* placeholder "call" scene until a real reaction clip is dropped in */
+.rphone .ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.rphone .ph .mini-live { position: absolute; top: 34px; left: 10px; display: flex; align-items: center; gap: 5px; padding: 5px 9px; border-radius: 999px; background: rgba(16,30,22,.55); border: 1px solid rgba(255,255,255,.14); font-size: 8.5px; font-weight: 600; color: rgba(255,255,255,.85); }
+.rphone .ph .mini-live i { width: 5px; height: 5px; border-radius: 99px; background: var(--green-glow); }
+.rphone .ph .msanta { position: relative; width: 86px; height: 86px; border-radius: 999px; background: radial-gradient(circle at 35% 28%, #F6C9B8, #D98A74); border: 2px solid rgba(255,255,255,.35); box-shadow: 0 0 44px 10px rgba(216,102,84,.3); }
+.rphone .ph .msanta i { position: absolute; border-radius: 99px; }
+.rphone .ph .msanta .beard { left: 5%; right: 5%; top: 45%; bottom: -6%; background: #fff; border-radius: 50% 50% 46% 46%; }
+.rphone .ph .msanta .hat { left: -2%; right: -2%; top: -5%; height: 33%; background: linear-gradient(180deg, #D9403F, #A8232C); border-radius: 50% 50% 0 0; }
+.rphone .ph .msanta .brim { left: -4%; right: -4%; top: 21%; height: 14%; background: #fff; border-radius: 99px; }
+.rphone .ph .msanta .eye { width: 5px; height: 7px; background: #3A2B26; top: 36%; }
+.rphone .ph .msanta .eye.l { left: 33%; } .rphone .ph .msanta .eye.r { right: 33%; }
+.rphone .ph .msanta .nose { width: 12px; height: 11px; background: #E89A7E; left: 50%; top: 45%; transform: translateX(-50%); }
+.rphone .ph .fam { position: absolute; bottom: 12px; left: 12px; right: 12px; padding: 7px 10px; border-radius: 11px; background: rgba(16,30,22,.6); border: 1px solid rgba(255,255,255,.13); font-size: 9.5px; font-weight: 600; color: rgba(255,255,255,.85); text-align: left; }
+.rquote { margin-top: 16px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.88); text-wrap: pretty; }
+.rwho { margin-top: 8px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.48); }
+.families .foot-note { margin-top: 44px; font-size: 12.5px; color: rgba(255,255,255,.42); }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { animation: none; }
+  .marquee-window { overflow-x: auto; }
+}
+
+/* ─── Pricing ──────────────────────────────────────────────────────────── */
+.pricing { background: linear-gradient(180deg, var(--bg-warm), #F2EEE6); border-radius: 40px; margin: 0 24px; }
+.pricing .wrap { text-align: center; }
+.price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 52px; align-items: stretch; text-align: left; }
+@media (max-width: 880px) { .price-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; } }
+.price-card { position: relative; display: flex; flex-direction: column; border-radius: 24px; background: #fff; border: 1px solid rgba(28,27,26,.08); padding: 30px; }
+.price-card.popular { border: 2px solid var(--green); box-shadow: 0 18px 44px rgba(31,122,74,.16); }
+.badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--green); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .8px;
+  padding: 5px 14px; border-radius: 999px; white-space: nowrap;
+}
+.price-tier { font-size: 13px; font-weight: 700; letter-spacing: .8px; color: var(--ink-4); }
+.price-card.popular .price-tier { color: var(--green); }
+.price-min { font-size: 44px; font-weight: 800; letter-spacing: -1.2px; margin-top: 10px; }
+.price-per { font-size: 15px; color: var(--ink-3); margin-top: 2px; }
+.price-perks { display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: var(--ink-2); margin: 18px 0 24px; }
+.price-btn { margin-top: auto; text-align: center; padding: 14px; border-radius: 999px; font-size: 15px; font-weight: 700; border: 1.5px solid rgba(28,27,26,.15); transition: transform .15s; }
+.price-btn:hover { transform: translateY(-1px); }
+.price-btn.solid { background: linear-gradient(180deg, var(--red-hi), var(--red-lo)); color: #fff; border: none; box-shadow: 0 8px 20px rgba(183,38,47,.3); }
+.stripe-note { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 28px; font-size: 13px; color: var(--ink-4); }
+
+/* ─── Parents ──────────────────────────────────────────────────────────── */
+.parents .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+@media (max-width: 880px) { .parents .wrap { grid-template-columns: 1fr; } }
+.parent-points { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+.parent-points .feature p { margin-top: 3px; }
+
+/* ─── Footer ───────────────────────────────────────────────────────────── */
+footer { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; justify-content: space-between; padding: 34px 28px 44px; font-size: 13px; color: var(--ink-4); border-top: 1px solid rgba(28,27,26,.07); margin-top: 40px; }
+footer .links { display: flex; flex-wrap: wrap; gap: 22px; }
+footer a:hover { color: var(--red); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { transition: none; opacity: 1; transform: none; }
+  .glow, .scroll-cue { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="snowfall" aria-hidden="true"></canvas>
+
+<nav id="nav">
+  <a class="brand" href="#"><span class="brand-dot"></span>Dial Santa</a>
+  <div class="navlinks">
+    <a href="#how">How it works</a>
+    <a href="#minutes">Minutes</a>
+    <a href="#parents">For parents</a>
+    <a class="pill-cta" href="#minutes">Get the app</a>
+  </div>
+</nav>
+
+<header>
+  <!-- Hero film: little one racing downstairs on Christmas morning to
+       FaceTime Santa. Drop the final cut at assets/hero.mp4 (see
+       assets/README.md for specs). Until the file exists, the animated
+       night-scene fallback below carries the hero. -->
+  <video id="heroVideo" playsinline autoplay muted loop preload="metadata" poster="assets/hero-poster.jpg">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
+  <div class="glow"></div>
+  <div class="hero-scrim"></div>
+
+  <div class="hero-inner">
+    <span class="eyebrow reveal in"><span class="dot"></span>LIVE VIDEO CALLS WITH SANTA · AGES 3+</span>
+    <h1 class="reveal in">A new way to experience<br>the <em>magic</em> of Christmas.</h1>
+    <p class="hero-sub reveal in">This year Santa picks up. Real two-way video calls — he knows their name,
+       their wish list, and exactly how good they've been.</p>
+    <div class="cta-row reveal in">
+      <a class="btn-primary" href="#minutes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.86-3.08.44-1.09-.44-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.44C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.94-.19 1.84-.86 3.23-.76 1.32.11 2.32.63 2.97 1.57-2.72 1.63-2.28 5.21.51 6.32-.6 1.58-1.38 3.14-2.79 5.04ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/></svg>
+        Download for iPhone
+      </a>
+      <button class="btn-ghost" id="playFilm" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+        Watch the film
+      </button>
+    </div>
+    <div class="trust reveal in">
+      <span>Parent-controlled</span><span>No subscription</span><span>Minutes never expire</span><span>Stripe secure checkout</span>
+    </div>
+  </div>
+
+  <svg class="scroll-cue" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 9l7 7 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</header>
+
+<section id="call">
+  <div class="wrap call-grid">
+    <div class="reveal">
+      <div class="kicker">THE CALL</div>
+      <h2>He answers. He knows them.<br>He listens.</h2>
+      <p class="section-sub">Not a recording, not a script — a live conversation with a Santa who laughs at
+         their jokes, asks about the blue bike, and reminds them to leave out cookies.</p>
+      <div class="feature-list" style="margin-top: 34px;">
+        <div class="feature">
+          <div class="ic red"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35c-.4 0-.8-.14-1.11-.42C6.36 16.9 3 13.86 3 10.34 3 7.4 5.3 5.1 8.24 5.1c1.45 0 2.82.62 3.76 1.63a5.14 5.14 0 0 1 3.76-1.63C18.7 5.1 21 7.4 21 10.34c0 3.52-3.36 6.56-7.89 10.6-.31.27-.71.41-1.11.41Z"/></svg></div>
+          <div><h3>Greets them by name</h3><p>Set the name once. Santa opens with it, every call — "Ho ho ho! Emma! Is that really you?"</p></div>
+        </div>
+        <div class="feature">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H13l-4.4 3.52A1 1 0 0 1 7 18.74V16H6.5A2.5 2.5 0 0 1 4 13.5v-7Z" stroke="currentColor" stroke-width="2"/></svg></div>
+          <div><h3>Knows the wish list</h3><p>Add wishes and good deeds in the parent dashboard — Santa brings them up like he's known all year.</p></div>
+        </div>
+        <div class="feature">
+          <div class="ic red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.8v5.2c0 4.6-3 7.7-7 9.2-4-1.5-7-4.6-7-9.2V5.8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+          <div><h3>Guardrails built in</h3><p>Santa never asks for personal information, never promises specific gifts, and gently steers every topic back to wonder.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="phone" aria-label="Dial Santa call screen preview">
+        <div class="island"></div>
+        <div class="live-pill"><i></i>North Pole · live</div>
+        <div class="meter"><b>4:32</b> left</div>
+        <div class="santa">
+          <i class="hat"></i><i class="pom"></i><i class="brim"></i>
+          <i class="eye l"></i><i class="eye r"></i>
+          <i class="cheek l"></i><i class="cheek r"></i><i class="nose"></i>
+          <i class="beard"></i>
+        </div>
+        <div class="caption">
+          <b>LIVE CAPTIONS · SANTA</b>
+          <span>"Ho ho ho! Have you been extra kind this year?"</span>
+        </div>
+        <div class="controls">
+          <i><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></i>
+          <i><svg viewBox="0 0 24 24" fill="none"><path d="M4 9.5v5h3.5L13 19V5L7.5 9.5H4Z" fill="#fff"/><path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></i>
+          <i class="end"><svg viewBox="0 0 24 24"><path d="M3.6 14.2c4.7-4.1 12.1-4.1 16.8 0 .6.5.7 1.4.2 2l-1.5 2c-.4.6-1.2.7-1.9.4l-2.5-1.5c-.5-.3-.7-.8-.7-1.4l.1-1.5c-2-.6-4.1-.6-6.1 0l.1 1.5c0 .6-.2 1.1-.7 1.4l-2.5 1.5c-.6.4-1.5.2-1.9-.4l-1.5-2c-.5-.6-.4-1.5.2-2Z" fill="#fff"/></svg></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps" id="how">
+  <div class="wrap">
+    <div class="kicker reveal">HOW IT WORKS</div>
+    <h2 class="reveal">Three steps to ho-ho-ho</h2>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">1</div>
+        <h3>Pick a character</h3>
+        <p>Santa's live today. Mrs. Claus, Comet the reindeer, and more North Pole friends unlock through the season.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">2</div>
+        <h3>Buy minutes once</h3>
+        <p>From $4.99, one time — never a subscription. Minutes wait in your account until you use them, this Christmas or the next.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">3</div>
+        <h3>Start the call</h3>
+        <p>Santa answers face-to-face, greets your kid by name, and holds a real conversation — no script, no recordings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="families" id="families">
+  <div class="kicker reveal">WHAT A CALL FEELS LIKE</div>
+  <h2 class="reveal">The moment they hear<br>their own name.</h2>
+  <p class="section-sub reveal">Every call is live and unscripted. Here’s what happens on one.</p>
+
+  <!-- Reaction films: drop clips at assets/reactions/reaction-1.mp4 … -6.mp4
+       (9:16 vertical, see assets/README.md). Until then each phone shows a
+       live-call placeholder scene.
+       NOTE: the quotes below are PLACEHOLDER copy to art-direct the layout —
+       replace with real, permissioned quotes before launch. -->
+  <div class="marquee-window">
+    <div class="marquee" id="marquee">
+      <div class="mgroup">
+        <div class="rcard">
+          <div class="rphone"><div class="island"></div>
+            <div class="ph"><span class="mini-live"><i></i>North Pole · live</span>
+              <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
+              <div class="fam">Emma — “Ho ho ho, Emma!”</div>
+            </div>
+            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-1.mp4" type="video/mp4"></video>
+          </div>
+          <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Santa greets them by name</b>He opens with your child’s name, every single call.</div>
+        </div>
+        <div class="rcard">
+          <div class="rphone"><div class="island"></div>
+            <div class="ph"><span class="mini-live"><i></i>North Pole · live</span>
+              <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
+              <div class="fam">The blue bike</div>
+            </div>
+            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-2.mp4" type="video/mp4"></video>
+          </div>
+          <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">He knows the wish list</b>Add wishes in the parent dashboard; Santa brings them up himself.</div>
+        </div>
+        <div class="rcard">
+          <div class="rphone"><div class="island"></div>
+            <div class="ph"><span class="mini-live"><i></i>North Pole · live</span>
+              <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
+              <div class="fam">Live, unscripted</div>
+            </div>
+            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-3.mp4" type="video/mp4"></video>
+          </div>
+          <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">A real conversation</b>Not a recording. He listens, answers, and asks questions back.</div>
+        </div>
+        <div class="rcard">
+          <div class="rphone"><div class="island"></div>
+            <div class="ph"><span class="mini-live"><i></i>North Pole · live</span>
+              <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
+              <div class="fam">Captions on</div>
+            </div>
+            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-4.mp4" type="video/mp4"></video>
+          </div>
+          <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Live captions</b>Grown-ups can read along with everything Santa says.</div>
+        </div>
+        <div class="rcard">
+          <div class="rphone"><div class="island"></div>
+            <div class="ph"><span class="mini-live"><i></i>North Pole · live</span>
+              <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
+              <div class="fam">4:32 left</div>
+            </div>
+            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-5.mp4" type="video/mp4"></video>
+          </div>
+          <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Six minutes, gently ended</b>Calls wind down warmly instead of cutting off.</div>
+        </div>
+        <div class="rcard">
+          <div class="rphone"><div class="island"></div>
+            <div class="ph"><span class="mini-live"><i></i>North Pole · live</span>
+              <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
+              <div class="fam">Private by design</div>
+            </div>
+            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-6.mp4" type="video/mp4"></video>
+          </div>
+          <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Nothing recorded</b>Your child’s voice is processed live and never stored by us.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot-note reveal">Illustrations of the in-app call experience.</div>
+</section>
+
+<section class="pricing" id="minutes">
+  <div class="wrap">
+    <div class="kicker reveal">MINUTES, NOT SUBSCRIPTIONS</div>
+    <h2 class="reveal">Buy once. Never expires.</h2>
+    <p class="section-sub reveal" style="margin: 14px auto 0;">Minutes work with every character and sync to your email
+       — buy on the web or in the app.</p>
+    <div class="price-grid">
+      <div class="price-card reveal">
+        <div class="price-tier">STARTER</div>
+        <div class="price-min">5 min</div>
+        <div class="price-per">$4.99 · $1.00 / min</div>
+        <div class="price-perks"><span>✓ Never expires</span><span>✓ Works with every character</span></div>
+        <a class="price-btn" href="https://buy.stripe.com/eVqaEY6ra9OlfnLex2gw000">Buy 5 minutes</a>
+      </div>
+      <div class="price-card popular reveal">
+        <div class="badge">MOST POPULAR</div>
+        <div class="price-tier">FAMILY FAVORITE</div>
+        <div class="price-min">12 min</div>
+        <div class="price-per">$9.99 · $0.83 / min · save 17%</div>
+        <div class="price-perks"><span>✓ Never expires</span><span>✓ Works with every character</span><span>✓ Enough for 2–3 calls</span></div>
+        <a class="price-btn solid" href="https://buy.stripe.com/bJe9AU5n62lT3F30Gcgw001">Buy 12 minutes</a>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-tier">ALL SEASON</div>
+        <div class="price-min">30 min</div>
+        <div class="price-per">$19.99 · $0.67 / min · best value</div>
+        <div class="price-perks"><span>✓ Never expires</span><span>✓ Works with every character</span></div>
+        <a class="price-btn" href="https://buy.stripe.com/cNi7sM16Q3pX8ZncoUgw002">Buy 30 minutes</a>
+      </div>
+    </div>
+    <div class="stripe-note reveal">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>
+      Checkout by Stripe · One-time payment · Natura AI LLC
+    </div>
+  </div>
+</section>
+
+<section class="parents" id="parents">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">FOR PARENTS</div>
+      <h2>You set the stage.<br>Santa plays the part.</h2>
+      <p class="section-sub">Everything about the call is in your hands — before, during, and after.</p>
+    </div>
+    <div class="parent-points reveal">
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M5 20c.8-3.4 3.6-5.4 7-5.4s6.2 2 7 5.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><h3>Parent dashboard behind a grown-ups gate</h3><p>Profiles, wish lists, call history, and settings sit behind a hold-and-answer parental gate.</p></div>
+      </div>
+      <div class="feature">
+        <div class="ic red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.8v5.2c0 4.6-3 7.7-7 9.2-4-1.5-7-4.6-7-9.2V5.8L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div><h3>Private by design</h3><p>Your kid's voice is processed in real time to make the conversation work — never stored by Dial Santa, never used to train anything, never shared.</p></div>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><h3>Hard limits on every call</h3><p>Each call caps at six minutes with a gentle wind-down. Leftover minutes never disappear — they stay in your balance for the next call, and you're only charged for connected time.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Natura AI LLC · Dial Santa</span>
+  <div class="links">
+    <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Parents' guide</a><a href="mailto:hi@dialsanta.app">hi@dialsanta.app</a>
+  </div>
+</footer>
+
+<script>
+// Nav backdrop after scroll
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+// Hero film: fade in only if the file actually exists & plays.
+const video = document.getElementById('heroVideo');
+const playBtn = document.getElementById('playFilm');
+video.addEventListener('playing', () => { video.classList.add('playing'); playBtn.hidden = false; }, { once: true });
+video.addEventListener('error', () => { video.remove(); }, { once: true });
+playBtn?.addEventListener('click', () => {
+  // Replay with sound, from the top.
+  video.muted = false; video.currentTime = 0; video.play();
+});
+
+// Snow — falls over the entire page (fixed overlay, respects reduced
+// motion). Flakes render white over the dark sections and shift to a faint
+// slate tone over the light ones so text stays perfectly legible.
+const canvas = document.getElementById('snowfall');
+if (canvas && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const ctx = canvas.getContext('2d');
+  let w, h, flakes, darkZones;
+  const seed = (n) => { const x = Math.sin(n * 999) * 10000; return x - Math.floor(x); };
+  const build = () => {
+    w = canvas.width = innerWidth * devicePixelRatio;
+    h = canvas.height = innerHeight * devicePixelRatio;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    flakes = Array.from({ length: 84 }, (_, i) => ({
+      x: seed(i) * w, y: seed(i + 50) * h,
+      r: (1 + seed(i + 100) * 2.4) * devicePixelRatio,
+      s: (16 + seed(i + 150) * 30) * devicePixelRatio / 60,
+      drift: seed(i + 200) * 2 * Math.PI, a: .35 + seed(i + 250) * .4,
+    }));
+    darkZones = ['header', '.families'].map((sel) => {
+      const el = document.querySelector(sel);
+      return el ? { top: el.offsetTop, bottom: el.offsetTop + el.offsetHeight } : null;
+    }).filter(Boolean);
+  };
+  build(); addEventListener('resize', build);
+  (function tick(t) {
+    ctx.clearRect(0, 0, w, h);
+    for (const f of flakes) {
+      f.y += f.s; f.x += Math.sin(t / 1600 + f.drift) * .35 * devicePixelRatio;
+      if (f.y > h + 8) { f.y = -8; }
+      if (f.x > w + 8) { f.x = -8; } else if (f.x < -8) { f.x = w + 8; }
+      const docY = scrollY + f.y / devicePixelRatio;
+      const overDark = darkZones.some((z) => docY >= z.top && docY <= z.bottom);
+      ctx.globalAlpha = overDark ? f.a : f.a * .38;
+      ctx.fillStyle = overDark ? '#fff' : '#7E8FA0';
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 7); ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  })(0);
+}
+
+// Families marquee: duplicate the group for a seamless loop, fade each
+// reaction video in only once it actually plays (placeholder scene otherwise)
+const marquee = document.getElementById('marquee');
+if (marquee) {
+  const clone = marquee.firstElementChild.cloneNode(true);
+  clone.setAttribute('aria-hidden', 'true');
+  marquee.appendChild(clone);
+  marquee.querySelectorAll('video').forEach((v) => {
+    v.addEventListener('playing', () => v.classList.add('playing'), { once: true });
+    v.addEventListener('error', () => v.remove(), { once: true });
+  });
+}
+
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}, { threshold: .18 });
+document.querySelectorAll('.reveal:not(.in)').forEach((el) => io.observe(el));
+</script>
+</body>
+</html>
