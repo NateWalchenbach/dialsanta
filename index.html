@@ -417,7 +417,7 @@ footer a:hover { color: var(--red); }
               <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
               <div class="fam">Emma — “Ho ho ho, Emma!”</div>
             </div>
-            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-1.mp4" type="video/mp4"></video>
+            <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-1.mp4" type="video/mp4"></video>
           </div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Santa greets them by name</b>He opens with your child’s name, every single call.</div>
         </div>
@@ -427,7 +427,7 @@ footer a:hover { color: var(--red); }
               <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
               <div class="fam">The blue bike</div>
             </div>
-            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-2.mp4" type="video/mp4"></video>
+            <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-2.mp4" type="video/mp4"></video>
           </div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">He knows the wish list</b>Add wishes in the parent dashboard; Santa brings them up himself.</div>
         </div>
@@ -437,7 +437,7 @@ footer a:hover { color: var(--red); }
               <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
               <div class="fam">Live, unscripted</div>
             </div>
-            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-3.mp4" type="video/mp4"></video>
+            <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-3.mp4" type="video/mp4"></video>
           </div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">A real conversation</b>Not a recording. He listens, answers, and asks questions back.</div>
         </div>
@@ -447,7 +447,7 @@ footer a:hover { color: var(--red); }
               <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
               <div class="fam">Captions on</div>
             </div>
-            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-4.mp4" type="video/mp4"></video>
+            <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-4.mp4" type="video/mp4"></video>
           </div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Live captions</b>Grown-ups can read along with everything Santa says.</div>
         </div>
@@ -457,7 +457,7 @@ footer a:hover { color: var(--red); }
               <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
               <div class="fam">4:32 left</div>
             </div>
-            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-5.mp4" type="video/mp4"></video>
+            <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-5.mp4" type="video/mp4"></video>
           </div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Six minutes, gently ended</b>Calls wind down warmly instead of cutting off.</div>
         </div>
@@ -467,7 +467,7 @@ footer a:hover { color: var(--red); }
               <div class="msanta"><i class="hat"></i><i class="brim"></i><i class="eye l"></i><i class="eye r"></i><i class="nose"></i><i class="beard"></i></div>
               <div class="fam">Private by design</div>
             </div>
-            <video muted loop playsinline autoplay preload="metadata"><source src="assets/reactions/reaction-6.mp4" type="video/mp4"></video>
+            <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-6.mp4" type="video/mp4"></video>
           </div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Nothing recorded</b>Your child’s voice is processed live and never stored by us.</div>
         </div>
@@ -601,22 +601,47 @@ if (canvas && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   })(0);
 }
 
-// Families marquee: duplicate the group for a seamless loop, fade each
-// reaction video in only once it actually plays (placeholder scene otherwise)
+// Families marquee: duplicate the group for a seamless loop, then start each
+// silent reaction film at a different point so the callers never move or
+// change captions in sync. Fade a film in only after playback really begins;
+// keep the placeholder if loading or autoplay fails.
 const marquee = document.getElementById('marquee');
 if (marquee) {
   const clone = marquee.firstElementChild.cloneNode(true);
   clone.setAttribute('aria-hidden', 'true');
   marquee.appendChild(clone);
-  marquee.querySelectorAll('video').forEach((v) => {
+
+  const reactionOffsets = [0.4, 1.7, 3.0, 4.3, 5.6, 6.9];
+  marquee.querySelectorAll('video').forEach((v, index) => {
     const revealVideo = () => {
       v.classList.add('playing');
       v.closest('.rphone')?.classList.add('has-video');
     };
+    const startStaggered = () => {
+      if (!Number.isFinite(v.duration) || v.duration <= 0) return;
+      const slot = index % reactionOffsets.length;
+      const group = Math.floor(index / reactionOffsets.length);
+      const cloneShift = group * 0.65;
+      const targetTime = (reactionOffsets[slot] + cloneShift) % v.duration;
+      let started = false;
+      const playFromTarget = () => {
+        if (started) return;
+        started = true;
+        v.play().catch(() => {});
+      };
+      if (Math.abs(v.currentTime - targetTime) < 0.05) playFromTarget();
+      else {
+        v.addEventListener('seeked', playFromTarget, { once: true });
+        v.currentTime = targetTime;
+      }
+    };
+
+    v.autoplay = false;
+    v.pause();
     v.addEventListener('playing', revealVideo, { once: true });
     v.addEventListener('error', () => v.remove(), { once: true });
-    if (v.readyState >= 2 && !v.paused) revealVideo();
-    else v.play().catch(() => {});
+    if (v.readyState >= 1) startStaggered();
+    else v.addEventListener('loadedmetadata', startStaggered, { once: true });
   });
 }
 
