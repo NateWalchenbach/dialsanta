@@ -201,14 +201,14 @@ h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4.6vw, 
 .families .kicker { color: var(--green-glow); }
 .families h2 { max-width: 760px; margin: 0 auto; }
 .families .section-sub { color: rgba(255,255,255,.66); margin: 14px auto 0; }
-.marquee-window { margin-top: 56px; }
-.marquee { display: flex; gap: 24px; width: max-content; padding: 0 12px; animation: marquee 55s linear infinite; }
+.marquee-window { margin-top: 46px; overflow: hidden; padding: 30px 0 34px; }
+.marquee { display: flex; gap: 72px; width: max-content; padding: 0 48px; animation: marquee 78s linear infinite; }
 .marquee:hover { animation-play-state: paused; }
-@keyframes marquee { to { transform: translateX(calc(-50% - 12px)); } }
-.mgroup { display: flex; gap: 24px; }
-.rcard { width: 224px; flex: none; text-align: left; }
+@keyframes marquee { to { transform: translateX(calc(-50% - 36px)); } }
+.mgroup { display: flex; gap: 72px; }
+.rcard { position: relative; width: 286px; flex: none; text-align: left; }
 .rphone {
-  position: relative; width: 224px; aspect-ratio: 9 / 18.5; border-radius: 34px;
+  position: relative; width: 224px; margin: 0 auto; aspect-ratio: 9 / 18.5; border-radius: 34px;
   border: 7px solid #17140F; overflow: hidden;
   background: radial-gradient(130% 90% at 50% 15%, #1E4A35 0%, #122E21 52%, #0A1C13 100%);
   box-shadow: 0 24px 54px rgba(0,0,0,.45);
@@ -230,12 +230,37 @@ h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4.6vw, 
 .rphone .ph .msanta .eye.l { left: 33%; } .rphone .ph .msanta .eye.r { right: 33%; }
 .rphone .ph .msanta .nose { width: 12px; height: 11px; background: #E89A7E; left: 50%; top: 45%; transform: translateX(-50%); }
 .rphone .ph .fam { position: absolute; bottom: 12px; left: 12px; right: 12px; padding: 7px 10px; border-radius: 11px; background: rgba(16,30,22,.6); border: 1px solid rgba(255,255,255,.13); font-size: 9.5px; font-weight: 600; color: rgba(255,255,255,.85); text-align: left; }
-.rquote { margin-top: 16px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.88); text-wrap: pretty; }
+.rquote { width: 224px; margin: 18px auto 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.88); text-wrap: pretty; }
 .rwho { margin-top: 8px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.48); }
+.feature-callout {
+  position: absolute; z-index: 6; width: 154px; padding: 11px 12px; border-radius: 15px;
+  background: rgba(255,255,255,.94); color: #25221E; border: 1px solid rgba(255,255,255,.7);
+  box-shadow: 0 14px 36px rgba(0,0,0,.28); backdrop-filter: blur(16px) saturate(1.2);
+  font-size: 11px; line-height: 1.35; font-weight: 650; letter-spacing: -.05px;
+  animation: callout-float 4.6s ease-in-out infinite;
+}
+.feature-callout strong { display: block; margin-bottom: 2px; color: var(--green); font-size: 9px; letter-spacing: .8px; text-transform: uppercase; }
+.feature-callout::after { content: ""; position: absolute; width: 26px; height: 1px; background: rgba(255,255,255,.7); top: 50%; }
+.callout-right { right: -12px; }
+.callout-right::after { right: 100%; }
+.callout-left { left: -12px; }
+.callout-left::after { left: 100%; }
+.rcard:nth-child(2n) .feature-callout { animation-delay: -1.1s; }
+.rcard:nth-child(3n) .feature-callout { animation-delay: -2.3s; }
+@keyframes callout-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@media (max-width: 720px) {
+  .marquee { gap: 42px; padding: 0 22px; animation-duration: 68s; }
+  .mgroup { gap: 42px; }
+  .rcard { width: 254px; }
+  .feature-callout { width: 136px; padding: 9px 10px; }
+  .callout-right { right: -5px; }
+  .callout-left { left: -5px; }
+}
 .families .foot-note { margin-top: 44px; font-size: 12.5px; color: rgba(255,255,255,.42); }
 @media (prefers-reduced-motion: reduce) {
   .marquee { animation: none; }
   .marquee-window { overflow-x: auto; }
+  .feature-callout { animation: none; }
 }
 
 /* ─── Pricing ──────────────────────────────────────────────────────────── */
@@ -419,6 +444,7 @@ footer a:hover { color: var(--red); }
             </div>
             <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-1.mp4" type="video/mp4"></video>
           </div>
+          <div aria-hidden="true" class="feature-callout callout-right" style="top:92px"><strong>Feels personal</strong>Santa greets them by name</div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Santa greets them by name</b>He opens with your child’s name, every single call.</div>
         </div>
         <div class="rcard">
@@ -429,6 +455,7 @@ footer a:hover { color: var(--red); }
             </div>
             <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-2.mp4" type="video/mp4"></video>
           </div>
+          <div aria-hidden="true" class="feature-callout callout-left" style="top:188px"><strong>Parent-powered</strong>He remembers the wish list</div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">He knows the wish list</b>Add wishes in the parent dashboard; Santa brings them up himself.</div>
         </div>
         <div class="rcard">
@@ -439,6 +466,7 @@ footer a:hover { color: var(--red); }
             </div>
             <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-3.mp4" type="video/mp4"></video>
           </div>
+          <div aria-hidden="true" class="feature-callout callout-right" style="top:274px"><strong>Actually live</strong>He listens and talks back</div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">A real conversation</b>Not a recording. He listens, answers, and asks questions back.</div>
         </div>
         <div class="rcard">
@@ -449,6 +477,7 @@ footer a:hover { color: var(--red); }
             </div>
             <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-4.mp4" type="video/mp4"></video>
           </div>
+          <div aria-hidden="true" class="feature-callout callout-left" style="top:118px"><strong>Easy to follow</strong>Live captions, built in</div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Live captions</b>Grown-ups can read along with everything Santa says.</div>
         </div>
         <div class="rcard">
@@ -459,6 +488,7 @@ footer a:hover { color: var(--red); }
             </div>
             <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-5.mp4" type="video/mp4"></video>
           </div>
+          <div aria-hidden="true" class="feature-callout callout-right" style="top:202px"><strong>No surprises</strong>Warm six-minute wind-down</div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Six minutes, gently ended</b>Calls wind down warmly instead of cutting off.</div>
         </div>
         <div class="rcard">
@@ -469,6 +499,7 @@ footer a:hover { color: var(--red); }
             </div>
             <video muted loop playsinline preload="metadata"><source src="assets/reactions/reaction-6.mp4" type="video/mp4"></video>
           </div>
+          <div aria-hidden="true" class="feature-callout callout-left" style="top:288px"><strong>Private by design</strong>Nothing is recorded by us</div>
           <div class="rquote"><b style="display:block;font-size:15px;font-weight:700;margin-bottom:5px">Nothing recorded</b>Your child’s voice is processed live and never stored by us.</div>
         </div>
       </div>
@@ -611,7 +642,7 @@ if (marquee) {
   clone.setAttribute('aria-hidden', 'true');
   marquee.appendChild(clone);
 
-  const reactionOffsets = [0.4, 1.7, 3.0, 4.3, 5.6, 6.9];
+  const reactionOffsets = [0.3, 2.1, 3.9, 5.8, 7.7, 9.6];
   const phaseEpoch = performance.now() / 1000;
   const reactionVideos = [...marquee.querySelectorAll('video')];
   const phaseSyncers = [];
@@ -623,7 +654,7 @@ if (marquee) {
   reactionVideos.forEach((v, index) => {
     const slot = index % reactionOffsets.length;
     const group = Math.floor(index / reactionOffsets.length);
-    const phaseOffset = reactionOffsets[slot] + group * 0.65;
+    const phaseOffset = reactionOffsets[slot] + group * 0.85;
     let seekPending = false;
     let shouldPlay = false;
     let seekGeneration = 0;
@@ -705,7 +736,7 @@ if (marquee) {
       const index = reactionVideos.indexOf(video);
       phaseSyncers[index]?.(entry.isIntersecting);
     }
-  }, { rootMargin: '240px 480px' });
+  }, { rootMargin: '240px 520px' });
   marquee.querySelectorAll('.rphone').forEach((phone) => phaseObserver.observe(phone));
 }
 
