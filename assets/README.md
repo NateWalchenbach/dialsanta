@@ -37,22 +37,18 @@ at small sizes. Stock alternative: search Artgrid/Pexels for
 "child running stairs christmas morning" + a separate cut-in of the call
 screen (we can screen-record the real app for that shot — it looks great).
 
-# Reaction films — the families carousel
+# Reaction films — the call-experience carousel
 
 Six slots: `reactions/reaction-1.mp4` … `reactions/reaction-6.mp4`.
 
-- **9:16 vertical** (1080×1920 or phone-shot), 8–20 s loop, plays **muted** —
-  faces and reactions must carry it without sound.
-- Best material: phone-shot video of the kid's face during the call, or a
-  screen recording of the actual call with the kid-cam PiP visible.
-- Keep each under ~4 MB
-  (`ffmpeg -i in.mp4 -vf scale=720:-2 -crf 27 -preset slow -movflags +faststart out.mp4`).
-- Missing files are fine — each phone shows its live-call placeholder scene
-  until the clip exists.
-
-⚠️ Before launch: the six quotes in `index.html` are PLACEHOLDER copy for
-layout art-direction. Replace them with real quotes from real parents, with
-written permission for both the clip and the words (the site already credits
-"shared with each family's permission" — make it true). Same goes for the
-"Join thousands of families" line: ship it when the numbers back it up, or
-soften to "Join the families…" until then.
+- **Phone-screen vertical** (the current assets are 720×1564), exactly 8 s,
+  H.264/yuv420p, MP4 fast-start, and **no audio stream**.
+- The deployed set uses fictional AI-generated children composited into the
+  DialSanta call UI. Each caller name and caption is rendered deterministically.
+- Public disclosure must remain visible next to the collection:
+  “AI-generated examples of the in-app call experience. No real children are
+  shown.” Do not present synthetic identities as customer testimonials.
+- Keep each under ~4 MB. Missing files are safe: each phone shows its live-call
+  placeholder scene until the clip exists.
+- Real-family replacements are allowed only with written guardian permission
+  covering the child’s face, the clip, and any attributed words.
