@@ -214,6 +214,7 @@ h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4.6vw, 
   box-shadow: 0 24px 54px rgba(0,0,0,.45);
 }
 .rphone .island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 58px; height: 17px; border-radius: 99px; background: #17140F; z-index: 3; }
+.rphone.has-video .island { opacity: 0; }
 .rphone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s; }
 .rphone video.playing { opacity: 1; }
 /* placeholder "call" scene until a real reaction clip is dropped in */
@@ -473,7 +474,7 @@ footer a:hover { color: var(--red); }
       </div>
     </div>
   </div>
-  <div class="foot-note reveal">Illustrations of the in-app call experience.</div>
+  <div class="foot-note reveal">AI-generated examples of the in-app call experience. No real children are shown.</div>
 </section>
 
 <section class="pricing" id="minutes">
@@ -608,8 +609,14 @@ if (marquee) {
   clone.setAttribute('aria-hidden', 'true');
   marquee.appendChild(clone);
   marquee.querySelectorAll('video').forEach((v) => {
-    v.addEventListener('playing', () => v.classList.add('playing'), { once: true });
+    const revealVideo = () => {
+      v.classList.add('playing');
+      v.closest('.rphone')?.classList.add('has-video');
+    };
+    v.addEventListener('playing', revealVideo, { once: true });
     v.addEventListener('error', () => v.remove(), { once: true });
+    if (v.readyState >= 2 && !v.paused) revealVideo();
+    else v.play().catch(() => {});
   });
 }
 
