@@ -612,37 +612,101 @@ if (marquee) {
   marquee.appendChild(clone);
 
   const reactionOffsets = [0.4, 1.7, 3.0, 4.3, 5.6, 6.9];
-  marquee.querySelectorAll('video').forEach((v, index) => {
+  const phaseEpoch = performance.now() / 1000;
+  const reactionVideos = [...marquee.querySelectorAll('video')];
+  const phaseSyncers = [];
+  const isNearViewport = (video) => {
+    const rect = video.getBoundingClientRect();
+    return rect.right > -480 && rect.left < innerWidth + 480 &&
+      rect.bottom > -240 && rect.top < innerHeight + 240;
+  };
+  reactionVideos.forEach((v, index) => {
+    const slot = index % reactionOffsets.length;
+    const group = Math.floor(index / reactionOffsets.length);
+    const phaseOffset = reactionOffsets[slot] + group * 0.65;
+    let seekPending = false;
+    let shouldPlay = false;
+    let seekGeneration = 0;
+
     const revealVideo = () => {
       v.classList.add('playing');
       v.closest('.rphone')?.classList.add('has-video');
     };
-    const startStaggered = () => {
+    const expectedTime = () =>
+      (phaseOffset + performance.now() / 1000 - phaseEpoch) % v.duration;
+    const phaseDistance = (a, b) => {
+      const direct = Math.abs(a - b);
+      return Math.min(direct, v.duration - direct);
+    };
+    const correctPhase = (maxDrift = 0.35) => {
       if (!Number.isFinite(v.duration) || v.duration <= 0) return;
-      const slot = index % reactionOffsets.length;
-      const group = Math.floor(index / reactionOffsets.length);
-      const cloneShift = group * 0.65;
-      const targetTime = (reactionOffsets[slot] + cloneShift) % v.duration;
-      let started = false;
-      const playFromTarget = () => {
-        if (started) return;
-        started = true;
-        v.play().catch(() => {});
-      };
-      if (Math.abs(v.currentTime - targetTime) < 0.05) playFromTarget();
-      else {
-        v.addEventListener('seeked', playFromTarget, { once: true });
-        v.currentTime = targetTime;
+      const target = expectedTime();
+      if (phaseDistance(v.currentTime, target) > maxDrift) {
+        v.currentTime = target;
       }
     };
+    const playAtExpectedPhase = () => {
+      if (!Number.isFinite(v.duration) || v.duration <= 0) return;
+      const target = expectedTime();
+      const resume = () => {
+        seekPending = false;
+        if (!shouldPlay) return;
+        v.play().catch(() => {});
+      };
+      if (phaseDistance(v.currentTime, target) > 0.08) {
+        if (v.paused && !seekPending) {
+          seekPending = true;
+          const generation = ++seekGeneration;
+          v.addEventListener('seeked', () => {
+            if (generation !== seekGeneration) return;
+            resume();
+          }, { once: true });
+        }
+        v.currentTime = target;
+        if (!v.paused) v.play().catch(() => {});
+      } else {
+        resume();
+      }
+    };
+    const setPlaybackActive = (active) => {
+      shouldPlay = active;
+      if (active) {
+        playAtExpectedPhase();
+      } else {
+        seekGeneration += 1;
+        seekPending = false;
+        v.pause();
+      }
+    };
+    phaseSyncers[index] = setPlaybackActive;
 
     v.autoplay = false;
     v.pause();
-    v.addEventListener('playing', revealVideo, { once: true });
+    v.addEventListener('playing', () => {
+      revealVideo();
+      // Some browsers reset an off-screen video's first seek when decoding
+      // begins. Recheck after playback starts so the marquee cannot collapse
+      // back into synchronized motion.
+      setTimeout(() => { if (shouldPlay) correctPhase(0.25); }, 120);
+    }, { once: true });
+    v.addEventListener('timeupdate', () => {
+      if (!v.paused) correctPhase(0.6);
+    });
     v.addEventListener('error', () => v.remove(), { once: true });
-    if (v.readyState >= 1) startStaggered();
-    else v.addEventListener('loadedmetadata', startStaggered, { once: true });
+    const startIfNear = () => { if (isNearViewport(v)) setPlaybackActive(true); };
+    if (v.readyState >= 1) startIfNear();
+    else v.addEventListener('loadedmetadata', startIfNear, { once: true });
   });
+
+  const phaseObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const video = entry.target.querySelector('video');
+      if (!video) continue;
+      const index = reactionVideos.indexOf(video);
+      phaseSyncers[index]?.(entry.isIntersecting);
+    }
+  }, { rootMargin: '240px 480px' });
+  marquee.querySelectorAll('.rphone').forEach((phone) => phaseObserver.observe(phone));
 }
 
 // Reveal on scroll
