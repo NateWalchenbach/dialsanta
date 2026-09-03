@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thank you — Dial Santa</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#8F1B23">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap">
+<style>
+  :root {
+    --red-lite:#E04A4F; --red:#C42B35; --red-deep:#8F1B23;
+    --green:#34C759; --green-deep:#1F7A4A; --gold:#FFE7B3;
+    --serif:"DM Serif Display", Georgia, "Times New Roman", serif;
+    --sans:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { min-height:100%; }
+  body {
+    font-family:var(--sans); color:#fff; text-align:center;
+    background:radial-gradient(120% 90% at 50% 0%, var(--red-lite) 0%, var(--red) 40%, var(--red-deep) 100%);
+    background-attachment:fixed;
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 24px calc(32px + env(safe-area-inset-bottom)); overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* snow */
+  .snow { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+  .flake { position:absolute; top:-12px; border-radius:50%; background:#fff; opacity:.7;
+           animation:fall linear infinite; }
+  @keyframes fall { to { transform:translateY(105dvh) translateX(var(--drift,14px)); } }
+
+  .card { position:relative; z-index:1; width:100%; max-width:440px; }
+
+  /* checkmark */
+  .badge { width:132px; height:132px; margin:0 auto 30px; position:relative; }
+  .badge .ring { position:absolute; inset:0; border-radius:50%; background:var(--green);
+                 box-shadow:0 18px 50px rgba(52,199,89,.45), 0 0 0 12px rgba(52,199,89,.16);
+                 animation:pop .55s cubic-bezier(.2,1.5,.4,1) both; }
+  .badge svg { position:absolute; inset:0; width:100%; height:100%; }
+  .badge path { fill:none; stroke:#fff; stroke-width:9; stroke-linecap:round; stroke-linejoin:round;
+                stroke-dasharray:60; stroke-dashoffset:60;
+                animation:draw .45s .4s cubic-bezier(.6,0,.4,1) forwards; }
+  @keyframes pop { 0% { transform:scale(.4); opacity:0 } 100% { transform:scale(1); opacity:1 } }
+  @keyframes draw { to { stroke-dashoffset:0 } }
+
+  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(38px,11vw,52px); line-height:1.04;
+       letter-spacing:-1px; text-shadow:0 6px 26px rgba(0,0,0,.22);
+       animation:rise .6s .2s both; }
+  h1 em { font-style:italic; color:var(--gold); }
+  .sub { margin-top:18px; font-size:17.5px; line-height:1.55; color:rgba(255,255,255,.93);
+         animation:rise .6s .32s both; }
+  @keyframes rise { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:none } }
+
+  .pill { display:inline-flex; align-items:center; gap:10px; margin-top:26px;
+          background:rgba(255,255,255,.15); border:1.5px solid rgba(255,255,255,.34);
+          backdrop-filter:blur(8px); padding:13px 22px; border-radius:999px;
+          font-size:16.5px; font-weight:700; letter-spacing:.3px;
+          animation:rise .6s .42s both; }
+  .pill .dot { width:9px; height:9px; border-radius:50%; background:var(--green);
+               box-shadow:0 0 0 4px rgba(52,199,89,.3); }
+
+  .cta { display:block; margin-top:34px; padding:19px 24px; border-radius:999px; border:0;
+         width:100%; font-family:var(--sans); font-size:18px; font-weight:800; letter-spacing:.2px;
+         color:#7A1620; background:linear-gradient(180deg,#FFF3D6,#FFD873);
+         box-shadow:0 14px 34px rgba(0,0,0,.28); cursor:pointer; text-decoration:none;
+         animation:rise .6s .5s both; transition:transform .12s ease, box-shadow .12s ease; }
+  .cta:active { transform:translateY(2px) scale(.99); box-shadow:0 8px 20px rgba(0,0,0,.26); }
+  .hint { margin-top:16px; font-size:13.5px; line-height:1.5; color:rgba(255,255,255,.72);
+          animation:rise .6s .58s both; }
+  .hint a { color:#fff; }
+  .foot { margin-top:34px; font-size:12.5px; color:rgba(255,255,255,.6); animation:rise .6s .66s both; }
+  .foot a { color:rgba(255,255,255,.78); text-decoration:none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .badge .ring, .badge path, h1, .sub, .pill, .cta, .hint, .foot { animation:none !important; }
+    .badge path { stroke-dashoffset:0; }
+    .flake { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="snow" id="snow" aria-hidden="true"></div>
+
+<main class="card">
+  <div class="badge" role="img" aria-label="Purchase complete">
+    <div class="ring"></div>
+    <svg viewBox="0 0 100 100"><path d="M28 52 L43 67 L72 36"/></svg>
+  </div>
+
+  <h1>Ho ho ho!<br><em>Your minutes<br>are ready.</em></h1>
+  <p class="sub">Payment complete. <strong id="added">Your minutes</strong> have been added to your Dial Santa account — they never expire.</p>
+
+  <div class="pill"><span class="dot"></span> <span id="status">Opening Dial Santa…</span></div>
+
+  <a class="cta" id="back" href="dialsanta://purchased">Return to Dial Santa</a>
+  <p class="hint" id="hint">If the app doesn't open on its own, tap the button above. Your minutes are already saved to your account.</p>
+
+  <p class="foot">Receipt emailed by Stripe · <a href="/support.html">Need help?</a></p>
+</main>
+
+<script>
+(function () {
+  // ---- snow
+  var snow = document.getElementById('snow');
+  if (snow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 34; i++) {
+      var f = document.createElement('div');
+      f.className = 'flake';
+      var size = 3 + Math.random() * 6;
+      f.style.width = size + 'px';
+      f.style.height = size + 'px';
+      f.style.left = (Math.random() * 100) + '%';
+      f.style.opacity = 0.35 + Math.random() * 0.5;
+      f.style.setProperty('--drift', (Math.random() * 70 - 35) + 'px');
+      f.style.animationDuration = (7 + Math.random() * 9) + 's';
+      f.style.animationDelay = (-Math.random() * 14) + 's';
+      frag.appendChild(f);
+    }
+    snow.appendChild(frag);
+  }
+
+  // ---- personalize from the pack in the URL
+  var params = new URLSearchParams(location.search);
+  var packMinutes = { pack_5: 5, pack_12: 12, pack_30: 30 };
+  var mins = packMinutes[params.get('pack')];
+  if (mins) {
+    document.getElementById('added').textContent = mins + ' minutes';
+    document.title = mins + ' minutes added — Dial Santa';
+  }
+
+  // ---- hop back into the app
+  var scheme = 'dialsanta://purchased' + (mins ? ('?minutes=' + mins) : '');
+  var btn = document.getElementById('back');
+  btn.setAttribute('href', scheme);
+
+  var statusEl = document.getElementById('status');
+  var returned = false;
+  function markManual() {
+    if (returned) return;
+    statusEl.textContent = 'Tap to return to the app';
+  }
+  // If the app takes over, the page gets hidden — don't nag in that case.
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { returned = true; statusEl.textContent = 'Welcome back!'; }
+  });
+
+  // Auto-attempt the deep link shortly after the celebration lands.
+  setTimeout(function () { try { location.href = scheme; } catch (e) {} }, 1400);
+  setTimeout(markManual, 3200);
+})();
+</script>
+</body>
+</html>
