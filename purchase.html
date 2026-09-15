@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Your minutes, your account — Dial Santa</title>
+<link rel="icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="hero.css">
+<link rel="stylesheet" href="purchase.css">
+<script src="purchase.js" defer></script>
+</head>
+<body>
+<header class="purchase-header"><a class="brand" href="/"><img src="assets/apple-touch-icon.png" width="30" height="30" alt="">Dial Santa</a><a href="support.html">Need help?</a></header>
+<main class="purchase-card" aria-labelledby="purchase-title">
+  <p class="purchase-kicker">A LITTLE CHRISTMAS MAGIC, SAVED FOR YOU</p>
+  <h1 id="purchase-title">Your minutes.<br><em>Your account.</em></h1>
+  <p id="purchase-intro">Verify your email first, so your minutes are waiting when you sign into Dial Santa.</p>
+  <p class="purchase-status" id="purchase-status" role="status" aria-live="polite">Checking availability…</p>
+  <div id="purchase-content" hidden>
+    <div id="pack-summary" class="pack-summary" hidden></div>
+    <form id="email-form" hidden>
+      <label for="email">The email you’ll use in Dial Santa</label>
+      <input id="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com">
+      <p class="field-hint">Already have the app? Use the email you signed in with.</p>
+      <button type="submit" class="purchase-primary">Email me a code</button>
+    </form>
+    <form id="code-form" hidden>
+      <label for="code">Your six-digit email code</label>
+      <input id="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required placeholder="000000">
+      <p id="code-sent-to" class="field-hint"></p>
+      <button type="submit" class="purchase-primary">Verify my email</button>
+      <div class="purchase-secondary"><button type="button" id="change-email">Use a different email</button><button type="button" id="resend-code">Send a new code</button></div>
+    </form>
+    <section id="verified-account" hidden>
+      <p class="account-label">VERIFIED ACCOUNT</p>
+      <p class="account-email" id="account-email"></p>
+      <p id="account-instruction">Your minutes will belong to this email. Use it to sign into Dial Santa on your iPhone.</p>
+      <button id="checkout" type="button" class="purchase-primary" hidden>Continue to secure checkout</button>
+      <button id="check-again" type="button" class="purchase-primary" hidden>Check payment again</button>
+      <button id="sign-out" type="button" class="purchase-text">Use a different email</button>
+    </section>
+  </div>
+  <p id="purchase-error" class="purchase-error" role="alert" hidden></p>
+  <a class="purchase-back" href="/#minutes">Back to Dial Santa</a>
+  <noscript><p>Enable JavaScript to verify your email and securely match a purchase to your account.</p></noscript>
+</main>
+<footer class="purchase-footer"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="support.html">Support</a></footer>
+</body>
+</html>

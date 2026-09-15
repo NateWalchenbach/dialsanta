@@ -1,0 +1,31 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: #F7F4EE; color: #352620; font: 15px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.purchase-header { max-width: 1100px; margin: auto; padding: 24px; display: flex; justify-content: space-between; align-items: center; }
+.purchase-header a { color: #8F1B23; text-decoration: none; }
+.purchase-header .brand { display: flex; align-items: center; font-family: 'DM Serif Display', Georgia, serif; }
+.purchase-header > a:last-child { font-size: 12px; }
+.purchase-card { width: calc(100% - 36px); max-width: 490px; margin: 32px auto; padding: 36px; border: 1px solid #E5D9CE; border-radius: 24px; background: #FFFDFA; box-shadow: 0 22px 65px -45px #623323; }
+.purchase-kicker { color: #776252; font-size: 9px; font-weight: 650; letter-spacing: 1.4px; }
+h1 { font: 400 46px/1.05 'DM Serif Display', Georgia, serif; color: #8F1B23; margin: 20px 0; }
+h1 em { font-weight: 400; }
+#purchase-intro { color: #6D5C50; }
+.purchase-status { color: #655347; font-size: 13px; }
+.pack-summary { padding: 16px 20px; margin: 20px 0; border-radius: 12px; background: #F3ECE4; font-weight: 650; }
+label { display: block; font-weight: 650; margin: 24px 0 8px; font-size: 13px; }
+input { width: 100%; padding: 14px; border: 1px solid #C6B9AC; border-radius: 10px; background: #FFF; color: #352620; font-size: 16px; }
+#code { letter-spacing: 8px; font-size: 24px; }
+.field-hint { color: #78685C; font-size: 12px; margin: 8px 0 22px; }
+.purchase-primary { width: 100%; padding: 15px 20px; margin-top: 12px; border: 0; border-radius: 99px; background: #8F1B23; color: #FFF; font-size: 14px; font-weight: 650; }
+.purchase-primary:hover { background: #6D131A; }
+button:disabled { cursor: not-allowed; opacity: .6; }
+.purchase-secondary { display: flex; justify-content: space-between; gap: 12px; margin-top: 15px; }
+.purchase-secondary button, .purchase-text { border: 0; padding: 10px 0; background: transparent; color: #8F1B23; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.account-label { font-size: 10px; letter-spacing: 1.2px; color: #776252; margin-top: 24px; }
+.account-email { font-weight: 700; overflow-wrap: anywhere; font-size: 18px; color: #1F643D; }
+#account-instruction { font-size: 14px; color: #66564A; }
+.purchase-error { padding: 13px; border-radius: 10px; color: #8F1B23; background: #FAE9E7; font-size: 13px; }
+.purchase-back { display: inline-block; color: #66564A; margin-top: 24px; font-size: 12px; text-underline-offset: 4px; }
+.purchase-footer { display: flex; justify-content: center; gap: 24px; padding: 10px 20px 36px; font-size: 12px; }
+.purchase-footer a { color: #776252; }
+@media(max-width: 480px) { .purchase-card { padding: 26px; margin-top: 16px; } h1 { font-size: 40px; } }
