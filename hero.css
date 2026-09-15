@@ -17,6 +17,8 @@ nav.scrolled { background: rgba(247,244,238,.94); }
 .navlinks a { color: #4B403B; }
 .navlinks a:hover { color: var(--wine); }
 .navlinks .pill-cta { background: var(--wine); box-shadow: none; font-size: 12px; padding: 11px 19px; }
+.nav-download { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 118px; min-height: 46px; padding: 8px 20px; border: 1px solid #D3D0CA; border-radius: 999px; background: #E7E4DF; color: #66635F; font-size: 12px; font-weight: 650; cursor: not-allowed; opacity: 1; -webkit-text-fill-color: currentColor; }
+.nav-download-note { font-size: 10px; font-weight: 500; line-height: 1.2; }
 .cinema-hero { position: relative; padding: 130px 28px 0; background: var(--cream); color: var(--ink); overflow: clip; }
 .cinema-hero::after { content: ''; position: absolute; inset: 57% 0 0; background: #EBE4DA; z-index: 0; }
 .hero-shell { position: relative; z-index: 1; max-width: 1280px; margin: auto; }
@@ -90,6 +92,7 @@ video::cue { font-family: system-ui, sans-serif; color: #fff; background: rgba(2
   .brand { font-size: 23px; gap: 8px; }
   .brand img { width: 27px; height: 27px; }
   .navlinks .pill-cta { font-size: 11px; padding: 10px 14px; }
+  .nav-download { min-width: 108px; padding: 7px 16px; font-size: 11px; }
   .cinema-hero { padding: 101px 18px 0; }
   .hero-heading { display: block; padding: 0 3px 25px; }
   .hero-eyebrow { font-size: 8px; letter-spacing: 1.6px; gap: 9px; margin-bottom: 15px; }
