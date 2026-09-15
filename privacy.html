@@ -44,7 +44,7 @@ a { color:var(--red); }
   <div class="date">Effective September 1, 2026</div>
 
   <div class="tldr">
-    <b>The short version:</b> we collect a parent's email address and the small details you choose to share so Santa can personalize the call (a first name, a wish list). Calls happen live — <b>we don't record or store your child's voice or video</b>. We don't run ads, we don't use tracking or analytics SDKs, and we never sell data. Email us any time to see or delete everything we have.
+    <b>The short version:</b> we collect a parent's email address and the small details you choose to share so Santa can personalize the call (a first name, a wish list). Calls happen live — <b>we don't record or store your child's voice or video</b>. We don't run ads, we don't use tracking or analytics SDKs, and we never sell data. Manage sign-out and request permanent account deletion in the app under Parents → Account. You can also contact support about your data.
   </div>
 
   <h2>Who we are</h2>
@@ -61,8 +61,8 @@ a { color:var(--red); }
   <h2>What happens during a call</h2>
   <p>Calls are live conversations with an AI character. While a call is running, your child's voice is processed <strong>in real time</strong> by our AI service providers so Santa can hear and respond. This processing is what a parent consents to during setup. The camera is used only for a small self-view on the phone's own screen — <strong>that video never leaves the device</strong> and is never transmitted or stored.</p>
   <ul>
-    <li><strong>We do not record calls.</strong> No audio, video, or transcripts of your child's conversation are stored by Dial Santa after the call ends.</li>
-    <li>The child's first name and the details a parent entered are passed to the AI character at the start of each call so the conversation feels personal, and are used only for that call.</li>
+    <li><strong>Dial Santa does not make call recordings.</strong> Our call provider, LiveAvatar, can retain conversation transcripts and session records. Personalized call contexts are also stored by that provider. Account deletion queues removal of those contexts and conversation events, and checks that the provider transcript is empty.</li>
+    <li>The child's first name and the details a parent entered are passed to the AI character at the start of each call so the conversation feels personal, to personalize the conversation.</li>
     <li>Santa is designed never to ask a child for personal information, and never to promise specific gifts.</li>
   </ul>
 
@@ -81,13 +81,15 @@ a { color:var(--red); }
 
   <h2>Your choices &amp; rights</h2>
   <ul>
-    <li><strong>See or delete your data:</strong> email us and we'll show you everything tied to your account or erase it entirely — including your child's name and any call records. We answer within a few days.</li>
-    <li><strong>Withdraw consent:</strong> simply stop using the app, or ask us to delete the account.</li>
-    <li>Unused minutes on a deleted account can be refunded — just ask.</li>
+    <li><strong>Delete your account:</strong> open Parents → Account → Delete account, verify your email and confirm. We remove your account email, minute balance and call records from our active database and clear the child profile and history on that device. Other signed-in devices are signed out and clear their local account data when they next contact our server. Call-provider cleanup runs automatically in the background and retries temporary failures. Contact support for deletion status.</li>
+    <li><strong>Sign out:</strong> open Parents → Account → Sign out. Purchased minutes remain with your email, while the child profile and local history are removed from that device.</li>
+    <li><strong>See your data:</strong> contact support to request access.</li>
+    <li><strong>Withdraw consent:</strong> delete your account using the controls above, or contact support.</li>
+    <li>Account deletion removes unused minutes and does not automatically issue a refund. Contact support for help with a refund.</li>
   </ul>
 
   <h2>Security &amp; retention</h2>
-  <p>All traffic is encrypted in transit (HTTPS/TLS). Sign-in codes are stored only as one-way hashes and expire in 10 minutes. We keep account and purchase records while your account exists and as required for tax and accounting; call-metering records are kept only as long as needed for billing accuracy.</p>
+  <p>All traffic is encrypted in transit (HTTPS/TLS). Sign-in codes are stored only as one-way hashes and expire in 10 minutes. We keep account and purchase records while your account exists and as required for tax and accounting; call-metering records are kept only as long as needed for billing accuracy. After account deletion, we retain keyed account digests and payment references to prevent old credentials or duplicate payment notifications from restoring an erased account. Payment processors may retain transaction records. Temporary provider-erasure jobs retain the references needed to complete downstream deletion; they are removed after completion.</p>
 
   <h2>Changes</h2>
   <p>If we change this policy in a way that matters, we'll update the date above and note it on this page before the change takes effect.</p>
