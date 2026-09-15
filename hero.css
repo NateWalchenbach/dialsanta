@@ -121,3 +121,5 @@ video::cue { font-family: system-ui, sans-serif; color: #fff; background: rgba(2
   .watch-film, .film-poster, .film-screen video, .hero-details-link svg { transition: none; }
   .watch-film:hover { transform: none; }
 }
+
+.price-btn:disabled { background: #E7E4DF; color: #66635F; border: 1px solid #D3D0CA; cursor: not-allowed; box-shadow: none; transform: none; opacity: 1; -webkit-text-fill-color: currentColor; }

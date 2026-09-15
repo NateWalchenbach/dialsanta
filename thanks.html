@@ -94,10 +94,10 @@
   <h1>Ho ho ho!<br><em>Your minutes<br>are ready.</em></h1>
   <p class="sub">Payment complete. <strong id="added">Your minutes</strong> have been added to your Dial Santa account — they never expire.</p>
 
-  <div class="pill"><span class="dot"></span> <span id="status">Opening Dial Santa…</span></div>
+  <div class="pill"><span class="dot"></span> <span id="status">Payment received</span></div>
 
-  <a class="cta" id="back" href="dialsanta://purchased">Return to Dial Santa</a>
-  <p class="hint" id="hint">If the app doesn't open on its own, tap the button above. Your minutes are already saved to your account.</p>
+  <a class="cta" id="back" href="/">Back to the website</a>
+  <p class="hint" id="hint">For questions about a payment, contact support using the link below.</p>
 
   <p class="foot">Receipt emailed by Stripe · <a href="/support.html">Need help?</a></p>
 </main>
@@ -133,25 +133,6 @@
     document.title = mins + ' minutes added — Dial Santa';
   }
 
-  // ---- hop back into the app
-  var scheme = 'dialsanta://purchased' + (mins ? ('?minutes=' + mins) : '');
-  var btn = document.getElementById('back');
-  btn.setAttribute('href', scheme);
-
-  var statusEl = document.getElementById('status');
-  var returned = false;
-  function markManual() {
-    if (returned) return;
-    statusEl.textContent = 'Tap to return to the app';
-  }
-  // If the app takes over, the page gets hidden — don't nag in that case.
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) { returned = true; statusEl.textContent = 'Welcome back!'; }
-  });
-
-  // Auto-attempt the deep link shortly after the celebration lands.
-  setTimeout(function () { try { location.href = scheme; } catch (e) {} }, 1400);
-  setTimeout(markManual, 3200);
 })();
 </script>
 </body>
