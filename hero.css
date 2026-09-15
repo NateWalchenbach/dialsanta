@@ -1,0 +1,121 @@
+/* Santa's Calling — the film is the centerpiece, with controls outside its picture. */
+@font-face { font-family: 'DM Serif Display'; src: url('assets/fonts/dm-serif-display-400.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'DM Serif Display'; src: url('assets/fonts/DMSerifDisplay-Italic.ttf') format('truetype'); font-style: italic; font-weight: 400; font-display: swap; }
+:root { --wine: #8F1B23; --gold: #FFE7B3; --cream: #F7F4EE; }
+html { scroll-padding-top: 88px; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid #B76B28; outline-offset: 5px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: fixed; top: 12px; left: 16px; z-index: 200; transform: translateY(-150%); background: var(--cream); padding: 14px 20px; border-radius: 8px; }
+.skip-link:focus { transform: none; }
+nav { padding: 18px max(28px, calc((100vw - 1280px) / 2)); background: rgba(247,244,238,.96); border-bottom: 1px solid rgba(79,37,28,.08); }
+nav.scrolled { background: rgba(247,244,238,.94); }
+.brand { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--wine); gap: 10px; }
+.brand img { width: 30px; height: 30px; border-radius: 8px; }
+.navlinks { gap: 28px; font-size: 13px; }
+.navlinks a { color: #4B403B; }
+.navlinks a:hover { color: var(--wine); }
+.navlinks .pill-cta { background: var(--wine); box-shadow: none; font-size: 12px; padding: 11px 19px; }
+.cinema-hero { position: relative; padding: 130px 28px 0; background: var(--cream); color: var(--ink); overflow: clip; }
+.cinema-hero::after { content: ''; position: absolute; inset: 57% 0 0; background: #EBE4DA; z-index: 0; }
+.hero-shell { position: relative; z-index: 1; max-width: 1280px; margin: auto; }
+.hero-heading { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; padding: 0 4px 36px; }
+.hero-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 650; letter-spacing: 2px; color: #786156; text-transform: uppercase; margin-bottom: 14px; }
+.hero-eyebrow::before { content: ''; width: 26px; height: 1px; background: #AD7662; }
+.cinema-hero h1 { font: 400 clamp(54px, 6vw, 88px)/.98 var(--serif); letter-spacing: -2.8px; color: var(--wine); }
+.cinema-hero h1 em { font-weight: 400; color: var(--wine); }
+.hero-intro { max-width: 390px; justify-self: end; padding-bottom: 3px; }
+.hero-intro p { font-size: 15px; color: #66584F; line-height: 1.65; text-wrap: pretty; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 23px; margin-top: 20px; }
+.watch-film { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--wine); color: var(--cream); border: 1px solid var(--wine); border-radius: 100px; min-height: 46px; padding: 12px 20px; font-size: 12px; font-weight: 650; transition: background .2s, transform .2s; }
+.watch-film:hover { background: #6D131A; transform: translateY(-2px); }
+.watch-film svg { width: 14px; height: 14px; }
+.hero-details-link { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; padding: 12px 0; border-bottom: 1px solid #CFC0B5; }
+.hero-details-link svg { width: 14px; height: 14px; transition: transform .2s; }
+.hero-details-link:hover svg { transform: translateX(3px); }
+.film { position: relative; margin: 0; border-radius: 18px; background: #180E0D; box-shadow: 0 24px 70px -35px rgba(59,24,17,.65); overflow: hidden; isolation: isolate; scroll-margin-top: 86px; }
+.film-screen { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #180E0D; }
+.film-screen video, .film-poster, .film-poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.film-screen video { opacity: 0; transition: opacity .6s; }
+.film-poster { transition: opacity .6s; }
+.film.is-ready video { opacity: 1; }
+.film.is-ready .film-poster { opacity: 0; pointer-events: none; }
+.film-error { position: absolute; inset: auto 16px 16px; padding: 15px; background: rgba(24,14,13,.94); color: var(--cream); font-size: 13px; text-align: center; border-radius: 10px; }
+.film-error a { text-decoration: underline; text-underline-offset: 3px; }
+.film-controls { position: relative; display: flex; gap: 13px; align-items: center; min-height: 66px; padding: 10px 22px; background: #231513; color: #EEDFD1; }
+.film-control { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; border-radius: 99px; border: 0; background: transparent; color: inherit; transition: background .2s; }
+.film-control:hover { background: rgba(255,231,179,.09); }
+.film-control svg { width: 18px; height: 18px; }
+.film-cc { font-size: 10px; letter-spacing: -.4px; }
+.film-cc[aria-pressed="true"] { color: var(--gold); background: rgba(255,231,179,.13); }
+.film-control .icon-pause, .film-control .icon-volume { display: none; }
+.film.is-playing .icon-pause, .film.is-audible .icon-volume { display: block; }
+.film.is-playing .icon-play, .film.is-audible .icon-muted { display: none; }
+.film-sound { font-size: 11px; font-weight: 500; padding: 0 12px; }
+.film-title { font: 400 16px var(--serif); white-space: nowrap; margin-left: 2px; }
+.film-time { white-space: nowrap; font-size: 10px; font-variant-numeric: tabular-nums; color: #C3ACA0; }
+.film-seek { --progress: 0%; flex: 1; min-width: 40px; height: 24px; margin: 0 9px; background: transparent; appearance: none; cursor: pointer; }
+.film-seek::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(to right, var(--gold) var(--progress), #63504A var(--progress)); }
+.film-seek::-webkit-slider-thumb { appearance: none; width: 10px; height: 10px; margin-top: -4px; border: 0; border-radius: 50%; background: var(--gold); }
+.film-seek::-moz-range-track { height: 2px; background: #63504A; }
+.film-seek::-moz-range-progress { height: 2px; background: var(--gold); }
+.film-seek::-moz-range-thumb { width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--gold); }
+.film-seek:disabled { cursor: default; opacity: .4; }
+.film-caption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 24px; padding: 18px 4px; color: #6D6056; font-size: 11px; line-height: 1.5; }
+.film-caption .film-credit { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #57463D; }
+.hero-footer { display: flex; justify-content: space-between; gap: 30px; align-items: center; padding: 25px 4px 32px; border-top: 1px solid rgba(85,54,39,.14); }
+.hero-footer p { font: 400 clamp(20px, 2.4vw, 29px)/1.3 var(--serif); color: #674337; }
+.hero-footer p em { color: var(--wine); }
+.hero-facts { display: flex; flex-wrap: wrap; align-items: center; justify-content: end; gap: 10px 20px; font-size: 11px; color: #716155; }
+.hero-facts span { display: flex; align-items: center; gap: 7px; }
+.hero-facts svg { width: 13px; height: 13px; color: var(--wine); }
+.film:fullscreen { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; border-radius: 0; background: #100A09; }
+.film:fullscreen .film-screen { flex: 1; min-height: 0; aspect-ratio: auto; }
+.film:fullscreen .film-controls { flex: none; }
+.film:fullscreen video, .film:fullscreen .film-poster img { object-fit: contain; }
+video::cue { font-family: system-ui, sans-serif; color: #fff; background: rgba(20,12,10,.88); }
+@media (max-width: 960px) {
+  .cinema-hero { padding-top: 118px; }
+  .hero-heading { gap: 24px; }
+  .hero-intro { max-width: 320px; }
+  .hero-intro p { font-size: 13px; }
+  .hero-actions { gap: 15px; margin-top: 14px; }
+  .hero-footer { align-items: start; }
+  .hero-facts { max-width: 220px; }
+  .film-title { display: none; }
+}
+@media (max-width: 600px) {
+  nav { padding: 14px 20px; }
+  .brand { font-size: 23px; gap: 8px; }
+  .brand img { width: 27px; height: 27px; }
+  .navlinks .pill-cta { font-size: 11px; padding: 10px 14px; }
+  .cinema-hero { padding: 101px 18px 0; }
+  .hero-heading { display: block; padding: 0 3px 25px; }
+  .hero-eyebrow { font-size: 8px; letter-spacing: 1.6px; gap: 9px; margin-bottom: 15px; }
+  .hero-eyebrow::before { width: 18px; }
+  .cinema-hero h1 { font-size: clamp(46px, 12.2vw, 68px); line-height: 1.02; letter-spacing: -1.7px; }
+  .hero-intro { margin-top: 16px; max-width: 350px; }
+  .hero-intro p { font-size: 13px; line-height: 1.6; }
+  .hero-actions { margin-top: 17px; gap: 22px; }
+  .watch-film { font-size: 11px; min-height: 44px; padding: 11px 17px; }
+  .hero-details-link { font-size: 11px; }
+  .film { border-radius: 14px; }
+  .film-screen { aspect-ratio: 9/16; }
+  .film-controls { gap: 0; min-height: 58px; padding: 7px 8px; flex-wrap: wrap; }
+  .film-seek { order: -1; flex: 1 0 calc(100% - 20px); margin: -4px 10px -5px; }
+  .film-time { margin-left: 5px; }
+  .film-sound { margin-left: auto; padding: 0 10px; font-size: 10px; }
+  .film-restart { display: none; }
+  .film-caption { font-size: 11px; gap: 6px; padding: 15px 2px 20px; }
+  .film-caption .film-credit { width: 100%; font-size: 9px; }
+  .hero-footer { display: block; padding: 23px 2px 30px; }
+  .hero-footer p { font-size: 24px; max-width: 290px; }
+  .hero-facts { justify-content: start; max-width: none; margin-top: 19px; gap: 10px 16px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+  .watch-film, .film-poster, .film-screen video, .hero-details-link svg { transition: none; }
+  .watch-film:hover { transform: none; }
+  .marquee { animation: none; }
+}
