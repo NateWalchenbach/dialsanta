@@ -117,5 +117,4 @@ video::cue { font-family: system-ui, sans-serif; color: #fff; background: rgba(2
   *, *::before, *::after { scroll-behavior: auto !important; }
   .watch-film, .film-poster, .film-screen video, .hero-details-link svg { transition: none; }
   .watch-film:hover { transform: none; }
-  .marquee { animation: none; }
 }
