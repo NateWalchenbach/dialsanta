@@ -98,23 +98,14 @@ h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4.6vw, 
   font-size: 10.5px; font-weight: 700; color: #fff;
 }
 .phone .meter b { color: var(--green-glow); }
-.phone .santa {
-  position: absolute; top: 46%; left: 50%; transform: translate(-50%,-50%);
-  width: 150px; height: 150px; border-radius: 999px;
-  background: radial-gradient(circle at 35% 28%, #F6C9B8, #D98A74);
-  border: 3px solid rgba(255,255,255,.35); box-shadow: 0 0 80px 20px rgba(216,102,84,.32);
+.phone .santa-video-frame {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 70% center;
 }
-/* vector santa face (no emoji dependency) */
-.santa i { position: absolute; border-radius: 99px; }
-.santa .beard { left: 4%; right: 4%; top: 44%; bottom: -8%; background: #fff; border-radius: 50% 50% 46% 46%; }
-.santa .eye { width: 8px; height: 11px; background: #3A2B26; top: 36%; }
-.santa .eye.l { left: 33%; } .santa .eye.r { right: 33%; }
-.santa .cheek { width: 18px; height: 18px; background: rgba(242,160,140,.62); top: 46%; }
-.santa .cheek.l { left: 18%; } .santa .cheek.r { right: 18%; }
-.santa .nose { width: 20px; height: 18px; background: #E89A7E; left: 50%; top: 46%; transform: translateX(-50%); }
-.santa .hat { left: -2%; right: -2%; top: -6%; height: 34%; background: linear-gradient(180deg, #D9403F, #A8232C); border-radius: 50% 50% 0 0; }
-.santa .brim { left: -4%; right: -4%; top: 22%; height: 15%; background: #fff; border-radius: 99px; }
-.santa .pom { width: 20px; height: 20px; background: #fff; right: 8%; top: -4%; }
+.phone::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.24), transparent 26%, transparent 55%, rgba(0,0,0,.5));
+}
 .phone .caption {
   position: absolute; left: 14px; right: 14px; bottom: 88px; z-index: 2;
   padding: 10px 12px; border-radius: 14px; background: rgba(16,30,22,.6);
@@ -279,7 +270,7 @@ footer a:hover { color: var(--red); }
     <div class="reveal">
       <div class="kicker">THE CALL</div>
       <h2>He answers. He knows them.<br>He listens.</h2>
-      <p class="section-sub">Not a recording, not a script — a live conversation with a Santa who laughs at
+      <p class="section-sub">Not a recording, not a script — a live video conversation with a Santa who laughs at
          their jokes, asks about the blue bike, and reminds them to leave out cookies.</p>
       <div class="feature-list" style="margin-top: 34px;">
         <div class="feature">
@@ -298,16 +289,13 @@ footer a:hover { color: var(--red); }
     </div>
 
     <div class="reveal">
-      <div class="phone" aria-label="Dial Santa call screen preview">
+      <div class="phone" aria-label="Dial Santa video call screen preview">
         <div class="island"></div>
-        <div class="live-pill"><i></i>North Pole · live</div>
+        <div class="live-pill"><i></i>Live video call</div>
         <div class="meter"><b>4:32</b> left</div>
-        <div class="santa">
-          <i class="hat"></i><i class="pom"></i><i class="brim"></i>
-          <i class="eye l"></i><i class="eye r"></i>
-          <i class="cheek l"></i><i class="cheek r"></i><i class="nose"></i>
-          <i class="beard"></i>
-        </div>
+        <img class="santa-video-frame" src="assets/call/santa-video-call.jpg"
+             alt="The app’s Santa in his red suit, seated in an ornate red chair during a video call"
+             width="720" height="406" loading="lazy" decoding="async">
         <div class="caption">
           <b>LIVE CAPTIONS · SANTA</b>
           <span>"Ho ho ho! Have you been extra kind this year?"</span>
