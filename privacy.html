@@ -41,10 +41,10 @@ a { color:var(--red); }
 
   <div class="kicker">PRIVACY POLICY</div>
   <h1>Your family's privacy, plainly.</h1>
-  <div class="date">Effective September 1, 2026</div>
+  <div class="date">Effective September 17, 2026</div>
 
   <div class="tldr">
-    <b>The short version:</b> we collect a parent's email address and the small details you choose to share so Santa can personalize the call (a first name, a wish list). Calls happen live — <b>we don't record or store your child's voice or video</b>. We don't run ads, we don't use tracking or analytics SDKs, and we never sell data. Manage sign-out and request permanent account deletion in the app under Parents → Account. You can also contact support about your data.
+    <b>The short version:</b> we collect a parent's email address and the small details you choose to share so Santa can personalize the call (a first name, a wish list). Calls happen live — <b>we don't record or store your child's voice or video</b>; our call provider can keep text transcripts, which deleting your account removes. We do not show third-party ads or sell data. When a parent signs up in the app, Dial Santa tells Meta once that the app was installed and opened, so we can see which of our ads work; this never includes child profiles, voice, calls, email, or purchases. Turn that off, sign out, or permanently delete your account in the app under Parents.
   </div>
 
   <h2>Who we are</h2>
@@ -62,7 +62,7 @@ a { color:var(--red); }
   <p>Calls are live conversations with an AI character. While a call is running, your child's voice is processed <strong>in real time</strong> by our AI service providers so Santa can hear and respond. This processing is what a parent consents to during setup. The camera is used only for a small self-view on the phone's own screen — <strong>that video never leaves the device</strong> and is never transmitted or stored.</p>
   <ul>
     <li><strong>Dial Santa does not make call recordings.</strong> Our call provider, LiveAvatar, can retain conversation transcripts and session records. Personalized call contexts are also stored by that provider. Account deletion queues removal of those contexts and conversation events, and checks that the provider transcript is empty.</li>
-    <li>The child's first name and the details a parent entered are passed to the AI character at the start of each call so the conversation feels personal, to personalize the conversation.</li>
+    <li>The child's first name and the details a parent entered are passed to the AI character at the start of each call so the conversation feels personal.</li>
     <li>Santa is designed never to ask a child for personal information, and never to promise specific gifts.</li>
   </ul>
 
@@ -73,11 +73,12 @@ a { color:var(--red); }
     <li><strong>LiveKit</strong> — carries the encrypted real-time audio/video stream.</li>
     <li><strong>Stripe</strong> — processes payments and receipts.</li>
     <li><strong>Railway</strong> — hosts our servers and database (located in the United States).</li>
+    <li><strong>Meta</strong> — measures which Dial Santa ads led to app installs. Once, after a parent signs up and verifies their email, Meta's SDK in the app sends an install and app-open event with basic device information (such as device model, iOS version, language, time zone, and an app-specific anonymous ID). The SDK doesn't start again when the app is opened later. Meta receives this device's advertising identifier only if you allow tracking when iOS asks. Automatic event logging, automatic advanced matching, and Meta crash reports are turned off, and Meta's Limited Data Use setting is on. We do not send child profiles, names, ages, voice, call content, email addresses, account details, or purchases to Meta. Information Meta has already received is handled under Meta's own policies.</li>
   </ul>
-  <p>These providers act under their own privacy and security commitments and receive only what's needed for their job. We do not share your information with anyone else, and <strong>we never sell it</strong>.</p>
+  <p>These providers act under their own privacy and security commitments and receive only what's needed for their job. <strong>We never sell personal information.</strong></p>
 
   <h2>Children's privacy</h2>
-  <p>Dial Santa is built for parents to run. Accounts, purchases, and setup are done by an adult; a parental gate protects anything involving money or leaving the app. We collect from children only what a parent enters on their behalf (like a first name), plus the real-time voice processing described above — with the parent's consent, given during setup. We follow the principles of COPPA: minimal collection, parental consent, no ads, no profiles, and parental control over deletion.</p>
+  <p>Dial Santa is built for parents to run. Accounts, purchases, and setup are done by an adult; a parental gate protects anything involving money, privacy controls, or leaving the app. We collect from children only what a parent enters on their behalf (like a first name), plus the real-time voice processing described above — with the parent's consent, given during setup. Dial Santa does not show third-party ads. Advertising measurement is accepted by the parent at sign-up, happens once after the parent's email is verified, can be turned off under Parents, and never receives child profile or call data. We follow the principles of COPPA: minimal collection, parental consent, no behavioral advertising to children, and parental control over deletion.</p>
 
   <h2>Your choices &amp; rights</h2>
   <ul>
@@ -85,14 +86,16 @@ a { color:var(--red); }
     <li><strong>Sign out:</strong> open Parents → Account → Sign out. Purchased minutes remain with your email, while the child profile and local history are removed from that device.</li>
     <li><strong>See your data:</strong> contact support to request access.</li>
     <li><strong>Withdraw consent:</strong> delete your account using the controls above, or contact support.</li>
+    <li><strong>Advertising measurement:</strong> open Parents → Privacy &amp; safety → Turn off ad measurement. Dial Santa then shares nothing more with Meta from that device, even if you sign in again, and you stay signed in. You can also decline Apple's tracking prompt, or turn off Settings → Privacy &amp; Security → Tracking, to withhold the advertising identifier. Some U.S. state privacy laws may treat sharing device information for ad measurement as "sharing" personal information; the Parents control is how you opt out on your device, and you can also email us.</li>
     <li>Account deletion removes unused minutes and does not automatically issue a refund. Contact support for help with a refund.</li>
   </ul>
 
   <h2>Security &amp; retention</h2>
-  <p>All traffic is encrypted in transit (HTTPS/TLS). Sign-in codes are stored only as one-way hashes and expire in 10 minutes. We keep account and purchase records while your account exists and as required for tax and accounting; call-metering records are kept only as long as needed for billing accuracy. After account deletion, we retain keyed account digests and payment references to prevent old credentials or duplicate payment notifications from restoring an erased account. Payment processors may retain transaction records. Temporary provider-erasure jobs retain the references needed to complete downstream deletion; they are removed after completion.</p>
+  <p>All traffic is encrypted in transit (HTTPS/TLS). Sign-in codes are stored only as one-way hashes and expire in 10 minutes. We keep account and purchase records while your account exists and as required for tax and accounting; call-metering records are kept only as long as needed for billing accuracy. After account deletion, we retain keyed account digests and payment references to prevent old credentials or duplicate payment notifications from restoring an erased account. Payment processors may retain transaction records. Temporary provider-erasure jobs retain the references needed to complete downstream deletion; they are removed after completion. Call transcripts and personalized call contexts kept by our call provider are removed when you delete your account.</p>
 
   <h2>Changes</h2>
   <p>If we change this policy in a way that matters, we'll update the date above and note it on this page before the change takes effect.</p>
+  <p><strong>September 17, 2026:</strong> added one-time install measurement with Meta at sign-up and the Parents control to turn it off, and clarified that our call provider can keep call transcripts until you delete your account.</p>
 
   <h2>Contact</h2>
   <p>Questions, data requests, anything at all: <a href="mailto:nate.walchenbach@gmail.com">nate.walchenbach@gmail.com</a></p>
