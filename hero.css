@@ -123,3 +123,25 @@ video::cue { font-family: system-ui, sans-serif; color: #fff; background: rgba(2
 }
 
 .price-btn:disabled { background: #E7E4DF; color: #66635F; border: 1px solid #D3D0CA; cursor: not-allowed; box-shadow: none; transform: none; opacity: 1; -webkit-text-fill-color: currentColor; }
+
+/* Launch signup stays above the film on every screen size. */
+.hero-intro { max-width: 430px; }
+.waitlist-form { position: relative; margin-top: 20px; scroll-margin-top: 100px; }
+.waitlist-form > label { display: block; margin-bottom: 9px; font-size: 13px; font-weight: 650; color: var(--wine); }
+.waitlist-fields { display: flex; gap: 8px; }
+.waitlist-fields input { width: 100%; min-width: 0; min-height: 46px; border: 1px solid #BEAEA1; border-radius: 10px; background: #FFFDFA; color: var(--ink); padding: 11px 13px; font-size: 16px; }
+.waitlist-fields input::placeholder { color: #756A61; }
+.waitlist-fields button { flex: none; white-space: nowrap; }
+.waitlist-fields button:disabled { opacity: .7; cursor: wait; transform: none; }
+.hero-intro .waitlist-consent { font-size: 11px; line-height: 1.5; margin-top: 9px; }
+.waitlist-consent a { text-decoration: underline; text-underline-offset: 2px; }
+.hero-intro .waitlist-status { font-size: 13px; font-weight: 600; line-height: 1.5; color: var(--green); }
+.waitlist-status:not(:empty) { margin-top: 10px; }
+.hero-intro .waitlist-status.is-error { color: var(--wine); }
+.waitlist-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (min-width: 601px) { .hero-heading { align-items: center; } }
+@media (max-width: 360px) {
+  nav { padding-left: 14px; padding-right: 14px; }
+  .brand { font-size: 21px; }
+  .waitlist-fields { flex-direction: column; }
+}
