@@ -181,10 +181,10 @@ footer a:hover { color: var(--red); }
   .glow, .scroll-cue { animation: none; }
 }
 </style>
-<link rel="stylesheet" href="hero.css?v=waitlist-20260918">
+<link rel="stylesheet" href="hero.css?v=waitlist-popup-20260919">
 <script src="hero.js" defer></script>
 <script src="purchase-entry.js" defer></script>
-<script src="waitlist.js?v=20260918" defer></script>
+<script src="waitlist.js?v=popup-20260919" defer></script>
 </head>
 <body>
 
@@ -206,7 +206,6 @@ footer a:hover { color: var(--red); }
     <a href="#how">How it works</a>
     <a href="#minutes">Minutes</a>
     <a href="#parents">For parents</a>
-    <a class="pill-cta" href="#waitlist">Join the waitlist</a>
   </div>
 </nav>
 
@@ -219,17 +218,6 @@ footer a:hover { color: var(--red); }
       </div>
       <div class="hero-intro">
         <p>A new way to experience the magic of Christmas.<br>Coming this fall to iPhone.</p>
-        <form class="waitlist-form" id="waitlist" method="post" action="https://api-production-b742.up.railway.app/web/waitlist" aria-label="Join the Dial Santa waitlist">
-          <label for="waitlist-email">Be first to know when Santa’s ready.</label>
-          <div class="waitlist-fields">
-            <input id="waitlist-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Your email address" required aria-describedby="waitlist-consent waitlist-status">
-            <button class="watch-film" type="submit">Join the waitlist</button>
-          </div>
-          <div class="waitlist-trap" hidden aria-hidden="true"><label for="waitlist-website">Leave this empty</label><input id="waitlist-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-          <p class="waitlist-consent" id="waitlist-consent">For grown-ups. By joining, you agree to one email when Dial Santa launches. <a href="privacy.html#waitlist-privacy">Privacy</a></p>
-          <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite" tabindex="-1"></p>
-          <noscript><p>Please enable JavaScript to join the waitlist.</p></noscript>
-        </form>
         <div class="hero-actions">
           <button class="watch-film" id="playFilm" type="button" hidden><svg aria-hidden="true"><use href="#film-icon-play"/></svg>Watch with sound <span aria-hidden="true">· 26s</span></button>
           <a class="hero-details-link" href="#how">Discover the magic <svg aria-hidden="true"><use href="#film-icon-arrow"/></svg></a>
@@ -273,6 +261,24 @@ footer a:hover { color: var(--red); }
     </div>
   </div>
 </header>
+
+<dialog class="waitlist-dialog" id="waitlist-dialog" aria-labelledby="waitlist-title" aria-describedby="waitlist-description">
+  <button class="waitlist-close" id="waitlist-close" type="button" aria-label="Close waitlist signup">×</button>
+  <p class="waitlist-eyebrow">A little Christmas magic, coming soon</p>
+  <h2 id="waitlist-title" tabindex="-1" autofocus>Be first to know<br>when Santa’s ready.</h2>
+  <p class="waitlist-description" id="waitlist-description">Join the waitlist. We’ll email you when Dial Santa arrives on iPhone.</p>
+  <form class="waitlist-form" id="waitlist" method="post" action="https://api-production-b742.up.railway.app/web/waitlist" aria-label="Join the Dial Santa waitlist">
+    <label for="waitlist-email">Your email address</label>
+    <div class="waitlist-fields">
+      <input id="waitlist-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Your email address" required aria-describedby="waitlist-consent waitlist-status">
+      <button class="watch-film" type="submit">Join the waitlist</button>
+    </div>
+    <div class="waitlist-trap" hidden aria-hidden="true"><label for="waitlist-website">Leave this empty</label><input id="waitlist-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+    <p class="waitlist-consent" id="waitlist-consent">For grown-ups. By joining, you agree to one email when Dial Santa launches. <a href="privacy.html#waitlist-privacy">Privacy</a></p>
+    <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite" tabindex="-1"></p>
+  </form>
+  <button class="waitlist-later" id="waitlist-later" type="button">Not now</button>
+</dialog>
 
 <section id="call">
   <div class="wrap call-grid">
