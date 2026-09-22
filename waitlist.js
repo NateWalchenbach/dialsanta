@@ -21,8 +21,10 @@
     clearTimeout(timer);
   }
 
-  function openWhenReady() {
-    if (shown || !qualified || document.hidden || document.fullscreenElement || document.getElementById('heroVideo')?.webkitDisplayingFullscreen) return;
+  function openWhenReady(manual = false) {
+    if (dialog.open || (!manual && (shown || !qualified)) || document.hidden || document.fullscreenElement || document.getElementById('heroVideo')?.webkitDisplayingFullscreen) return;
+    if (!manual && document.querySelector('dialog[open]')) return;
+    document.getElementById('heroVideo')?.pause();
     previousFocus = document.activeElement;
     dialog.showModal();
     shown = true;
@@ -34,7 +36,7 @@
 
   function checkScroll() {
     const film = document.getElementById('santas-calling');
-    const navBottom = document.getElementById('nav')?.getBoundingClientRect().bottom ?? 0;
+    const navBottom = Math.max(0, document.getElementById('nav')?.getBoundingClientRect().bottom ?? 0);
     // Below the viewport on arrival is not the same as having scrolled past it.
     if (film && window.scrollY > 0 && film.getBoundingClientRect().bottom <= navBottom) qualified = true;
     openWhenReady();
@@ -50,13 +52,21 @@
     if (document.hidden) pauseTimer();
     else { openWhenReady(); resumeTimer(); }
   });
-  document.addEventListener('fullscreenchange', openWhenReady);
-  document.getElementById('heroVideo')?.addEventListener('webkitendfullscreen', openWhenReady);
+  document.addEventListener('fullscreenchange', () => openWhenReady());
+  document.getElementById('heroVideo')?.addEventListener('webkitendfullscreen', () => openWhenReady());
   if (!shown) {
     window.addEventListener('scroll', checkScroll, { passive: true });
     checkScroll();
     resumeTimer();
   }
+
+  document.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-join]');
+    if (!trigger) return;
+    event.preventDefault();
+    document.getElementById('character-dialog')?.close();
+    openWhenReady(true);
+  });
 
   const close = () => dialog.close();
   document.getElementById('waitlist-close').addEventListener('click', close);
