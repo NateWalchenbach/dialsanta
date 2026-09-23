@@ -1,4 +1,5 @@
 (() => {
+  const t = window.SiteI18n.t;
   const dialog = document.getElementById('character-dialog');
   const content = document.getElementById('character-content');
   const video = document.getElementById('heroVideo');
@@ -8,12 +9,12 @@
   const phone = video?.closest('.main-phone');
   let previousFocus;
   const cast = {
-    santa: ['Santa', 'He knows their name. He hears their wishes. He answers them, right there on the call.'],
-    mrsclaus: ['Mrs. Claus', 'A warm hello from the North Pole kitchen.'],
-    comet: ['Comet', 'Meet a friendly face from Santa’s reindeer crew.'],
-    pip: ['Pip', 'A little elf with plenty of Christmas spirit.'],
-    crumble: ['Crumble', 'Meet the sweetest friend in the North Pole.'],
-    flurry: ['Flurry', 'A little snow. A little silliness. A lot of Christmas magic.'],
+    santa: [t('Santa'), t('He knows their name. He hears their wishes. He answers them, right there on the call.')],
+    mrsclaus: [t('Mrs. Claus'), t('A warm hello from the North Pole kitchen.')],
+    comet: [t('Comet'), t('Meet a friendly face from Santa’s reindeer crew.')],
+    pip: [t('Pip'), t('A little elf with plenty of Christmas spirit.')],
+    crumble: [t('Crumble'), t('Meet the sweetest friend in the North Pole.')],
+    flurry: [t('Flurry'), t('A little snow. A little silliness. A lot of Christmas magic.')],
   };
   function showVideoError() {
     media.classList.remove('playing');
@@ -45,7 +46,7 @@
       const [name, description] = cast[id];
       video?.pause();
       previousFocus = button;
-      content.innerHTML = `<img class="detail-image" src="assets/north-pole/${id}-portrait.webp" alt="${name}"><h2 id="character-title">${name}</h2><p>${description}</p><p class="detail-note">The North Pole cast is growing. More friends join through the season.</p><button class="detail-action" type="button" data-join>Get launch updates</button>`;
+      content.innerHTML = `<img class="detail-image" src="/assets/north-pole/${id}-portrait.webp" alt="${name}"><h2 id="character-title">${name}</h2><p>${description}</p><p class="detail-note">${t("The North Pole cast is growing. More friends join through the season.")}</p><button class="detail-action" type="button" data-join>${t("Get launch updates")}</button>`;
       dialog.showModal();
     });
   });
@@ -72,8 +73,8 @@
     const on = enabled && !reduced.matches;
     snow.classList.toggle('paused', !on || document.hidden);
     toggle.setAttribute('aria-pressed', String(on));
-    toggle.setAttribute('aria-label', on ? 'Pause falling snow' : 'Start falling snow');
-    toggle.querySelector('.snow-state').textContent = on ? 'Snow on' : 'Snow off';
+    toggle.setAttribute('aria-label', on ? t('Pause falling snow') : t('Start falling snow'));
+    toggle.querySelector('.snow-state').textContent = on ? t('Snow on') : t('Snow off');
     toggle.disabled = reduced.matches;
   }
   toggle.addEventListener('click', () => { enabled = !enabled; updateSnow(); });

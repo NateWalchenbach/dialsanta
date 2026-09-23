@@ -1,0 +1,62 @@
+.language-picker { display:inline-flex; align-items:center; gap:8px; flex-shrink:0; font:600 13px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:inherit; }
+.language-picker select { font:inherit; color:inherit; background:transparent; border:1px solid currentColor; border-radius:10px; min-height:44px; max-width:155px; padding:8px 28px 8px 10px; cursor:pointer; }
+.language-picker option { color:#222; background:#fff; }
+.language-picker select:focus-visible { outline:3px solid #c69544; outline-offset:3px; }
+.language-picker .language-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.language-noscript { font-size:13px; line-height:2; display:flex; flex-wrap:wrap; gap:4px 12px; }
+.top { flex-wrap:wrap; }
+.nav { gap:18px; }
+.nav-links { gap:20px; }
+.language-hero-link { display:inline-flex; align-items:center; gap:10px; color:inherit; margin:18px 0 4px; font-weight:600; font-size:15px; text-underline-offset:4px; }
+.language-section { max-width:1100px; margin:0 auto; padding:72px 30px; text-align:center; scroll-margin-top:120px; }
+.language-section h2 { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(32px,4vw,48px); font-weight:400; line-height:1.15; margin:14px auto 18px; }
+.language-section p { max-width:680px; margin:0 auto; line-height:1.65; }
+.language-list { list-style:none; padding:0; margin:28px auto 22px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+.language-list li { border:1px solid #c8ad80; padding:10px 18px; border-radius:24px; font-size:16px; background:#fff9ec; color:#522e25; }
+.language-section small { display:block; max-width:650px; margin:auto; line-height:1.7; opacity:.8; }
+.hero .copy { min-width:0; }
+.hero h1 { overflow-wrap:normal; }
+.standing-friend span { white-space:normal; line-height:1.2; }
+html[lang=ru] .hero h1, html[lang=de] .hero h1 { font-size:clamp(42px,4.6vw,70px); }
+.feature-ribbon { flex-wrap:wrap; gap:16px 36px; }
+.price-card button { white-space:normal; }
+.page-language { width:100%; display:flex; justify-content:flex-end; margin-bottom:28px; position:relative; z-index:1; }
+@media(max-width:1100px) { .nav-links { display:none; } }
+@media(max-width:600px) {
+  .nav { flex-wrap:wrap; height:auto; min-height:74px; padding-top:12px; padding-bottom:12px; gap:8px 12px; }
+  .nav .brand { margin-right:auto; }
+  .nav .language-picker { order:2; }
+  .nav .nav-cta { order:3; flex-basis:100%; text-align:center; justify-content:center; min-height:40px; padding:8px 12px; }
+  .language-picker select { max-width:140px; }
+  .language-section { padding:52px 22px; }
+  .language-list li { padding:9px 14px; }
+  .top .language-picker { margin-left:auto; }
+  .hero .primary { white-space:normal; }
+  .hero h1 { font-size:clamp(38px,10vw,52px); }
+  html[lang=ru] .hero h1, html[lang=de] .hero h1 { font-size:clamp(36px,9.5vw,50px); }
+}
+.c2 .nav { gap:18px; }
+.c2 .hero .copy { min-width:0; }
+.c2 .standing-friend span { white-space:normal; line-height:1.2; }
+.c2 .call-title { padding:0 12px; }
+.c2 .feature-ribbon { flex-wrap:wrap; gap:16px 36px; }
+@media(max-width:1100px) { .c2 .nav-links { display:none; } }
+@media(max-width:600px) {
+  .c2 .nav { height:auto; min-height:74px; padding:12px 18px; gap:8px 12px; flex-wrap:wrap; }
+  .c2 .nav .brand { margin-right:auto; }
+  .c2 .nav .nav-cta { order:3; flex-basis:100%; min-height:40px; justify-content:center; padding:8px 12px; }
+  .c2 .nav .language-picker { order:2; }
+  .c2 .nav-links { display:none; }
+  .c2 .hero .primary { white-space:normal; }
+  .c2 .call-title { font-size:clamp(14px,4vw,20px); top:40px; }
+  .c2 .call-title small { font-size:9px; padding:0; }
+  html[lang=de] .c2 .hero h1 { font-size:clamp(34px,8.5vw,48px); }
+  html[lang=ru] .c2 .hero h1 { font-size:clamp(36px,9.5vw,50px); }
+}
+h1, h2 { hyphens:auto; overflow-wrap:anywhere; }
+.wrap, .purchase-card { overflow-wrap:anywhere; }
+
+/* Generated text spans must remain visible on the narrowest iPhone layout. */
+.c2 .nav-cta span { display:inline; }
+.c2 .nav-cta span:first-child { margin-left:0; }
+.c2 .media-bottom > span, .c2 .media-bottom > i { display:block; }

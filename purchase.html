@@ -1,51 +1,52 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<meta name="referrer" content="no-referrer">
+<meta charset="utf-8"/><script src="/language.js?v=20260923"></script><script src="/i18n/en.js?v=20260923"></script>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="noindex" name="robots"/>
+<meta content="no-referrer" name="referrer"/>
 <title>Your minutes, your account — Dial Santa</title>
-<link rel="icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="hero.css">
-<link rel="stylesheet" href="purchase.css">
-<script src="purchase.js" defer></script>
-</head>
-<body>
-<header class="purchase-header"><a class="brand" href="/"><img src="assets/apple-touch-icon.png" width="30" height="30" alt="">Dial Santa</a><a href="support.html">Need help?</a></header>
-<main class="purchase-card" aria-labelledby="purchase-title">
-  <p class="purchase-kicker">A LITTLE CHRISTMAS MAGIC, SAVED FOR YOU</p>
-  <h1 id="purchase-title">Your minutes.<br><em>Your account.</em></h1>
-  <p id="purchase-intro">Verify your email first, so your minutes are waiting when you sign into Dial Santa.</p>
-  <p class="purchase-status" id="purchase-status" role="status" aria-live="polite">Checking availability…</p>
-  <div id="purchase-content" hidden>
-    <div id="pack-summary" class="pack-summary" hidden></div>
-    <form id="email-form" hidden>
-      <label for="email">The email you’ll use in Dial Santa</label>
-      <input id="email" type="email" autocomplete="email" maxlength="254" required placeholder="you@example.com">
-      <p class="field-hint">Already have the app? Use the email you signed in with.</p>
-      <button type="submit" class="purchase-primary">Email me a code</button>
-    </form>
-    <form id="code-form" hidden>
-      <label for="code">Your six-digit email code</label>
-      <input id="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required placeholder="000000">
-      <p id="code-sent-to" class="field-hint"></p>
-      <button type="submit" class="purchase-primary">Verify my email</button>
-      <div class="purchase-secondary"><button type="button" id="change-email">Use a different email</button><button type="button" id="resend-code">Send a new code</button></div>
-    </form>
-    <section id="verified-account" hidden>
-      <p class="account-label">VERIFIED ACCOUNT</p>
-      <p class="account-email" id="account-email"></p>
-      <p id="account-instruction">Your minutes will belong to this email. Use it to sign into Dial Santa on your iPhone.</p>
-      <button id="checkout" type="button" class="purchase-primary" hidden>Continue to secure checkout</button>
-      <button id="check-again" type="button" class="purchase-primary" hidden>Check payment again</button>
-      <button id="sign-out" type="button" class="purchase-text">Use a different email</button>
-    </section>
-  </div>
-  <p id="purchase-error" class="purchase-error" role="alert" hidden></p>
-  <a class="purchase-back" href="/#minutes">Back to Dial Santa</a>
-  <noscript><p>Enable JavaScript to verify your email and securely match a purchase to your account.</p></noscript>
+<link href="/assets/apple-touch-icon.png" rel="icon"/>
+<link href="/hero.css" rel="stylesheet"/>
+<link href="/purchase.css" rel="stylesheet"/>
+<script defer="" src="/purchase.js?v=20260923-languages"></script>
+<link href="https://dialsanta.app/purchase.html" rel="canonical"/><link href="https://dialsanta.app/purchase.html" hreflang="en" rel="alternate"/><link href="https://dialsanta.app/es/purchase.html" hreflang="es" rel="alternate"/><link href="https://dialsanta.app/fr/purchase.html" hreflang="fr" rel="alternate"/><link href="https://dialsanta.app/de/purchase.html" hreflang="de" rel="alternate"/><link href="https://dialsanta.app/it/purchase.html" hreflang="it" rel="alternate"/><link href="https://dialsanta.app/pt/purchase.html" hreflang="pt" rel="alternate"/><link href="https://dialsanta.app/ru/purchase.html" hreflang="ru" rel="alternate"/><link href="https://dialsanta.app/purchase.html" hreflang="x-default" rel="alternate"/><meta content="en_US" property="og:locale"/><link href="/localization.css?v=20260923" rel="stylesheet"/></head>
+<body><div class="page-language"><label class="language-picker"><span class="language-label">Language</span><select aria-label="Language" data-language-select=""><option lang="en" selected="" value="en">English</option><option lang="es" value="es">Español</option><option lang="fr" value="fr">Français</option><option lang="de" value="de">Deutsch</option><option lang="it" value="it">Italiano</option><option lang="pt" value="pt">Português</option><option lang="ru" value="ru">Русский</option></select></label></div>
+<header class="purchase-header"><a class="brand" href="/"><img alt="" height="30" src="/assets/apple-touch-icon.png" width="30"/>Dial Santa</a><a href="/support.html">Need help?</a></header>
+<main aria-labelledby="purchase-title" class="purchase-card">
+<p class="purchase-kicker">A LITTLE CHRISTMAS MAGIC, SAVED FOR YOU</p>
+<h1 id="purchase-title">Your minutes.<br/><em>Your account.</em></h1>
+<p id="purchase-intro">Verify your email first, so your minutes are waiting when you sign into Dial Santa.</p>
+<p aria-live="polite" class="purchase-status" id="purchase-status" role="status">Checking availability…</p>
+<div hidden="" id="purchase-content">
+<div class="pack-summary" hidden="" id="pack-summary"></div>
+<form hidden="" id="email-form">
+<label for="email">The email you’ll use in Dial Santa</label>
+<input autocomplete="email" id="email" maxlength="254" placeholder="you@example.com" required="" type="email"/>
+<p class="field-hint">Already have the app? Use the email you signed in with.</p>
+<button class="purchase-primary" type="submit">Email me a code</button>
+</form>
+<form hidden="" id="code-form">
+<label for="code">Your six-digit email code</label>
+<input autocomplete="one-time-code" id="code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required="" type="text"/>
+<p class="field-hint" id="code-sent-to"></p>
+<button class="purchase-primary" type="submit">Verify my email</button>
+<div class="purchase-secondary"><button id="change-email" type="button">Use a different email</button><button id="resend-code" type="button">Send a new code</button></div>
+</form>
+<section hidden="" id="verified-account">
+<p class="account-label">VERIFIED ACCOUNT</p>
+<p class="account-email" id="account-email"></p>
+<p id="account-instruction">Your minutes will belong to this email. Use it to sign into Dial Santa on your iPhone.</p>
+<button class="purchase-primary" hidden="" id="checkout" type="button">Continue to secure checkout</button>
+<button class="purchase-primary" hidden="" id="check-again" type="button">Check payment again</button>
+<button class="purchase-text" id="sign-out" type="button">Use a different email</button>
+</section>
+</div>
+<p class="purchase-error" hidden="" id="purchase-error" role="alert"></p>
+<a class="purchase-back" href="/#minutes">Back to Dial Santa</a>
+<noscript><p>Enable JavaScript to verify your email and securely match a purchase to your account.</p></noscript>
 </main>
-<footer class="purchase-footer"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="support.html">Support</a></footer>
+<footer class="purchase-footer"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/support.html">Support</a><noscript><div class="language-noscript"><a href="/purchase.html" hreflang="en" lang="en">English</a><a href="/es/purchase.html" hreflang="es" lang="es">Español</a><a href="/fr/purchase.html" hreflang="fr" lang="fr">Français</a><a href="/de/purchase.html" hreflang="de" lang="de">Deutsch</a><a href="/it/purchase.html" hreflang="it" lang="it">Italiano</a><a href="/pt/purchase.html" hreflang="pt" lang="pt">Português</a><a href="/ru/purchase.html" hreflang="ru" lang="ru">Русский</a></div></noscript></footer>
 </body>
 </html>

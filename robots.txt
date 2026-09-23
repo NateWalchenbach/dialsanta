@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /localization/
+Sitemap: https://dialsanta.app/sitemap.xml

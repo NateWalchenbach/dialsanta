@@ -1,4 +1,5 @@
 (() => {
+  const t = window.SiteI18n.t;
   const form = document.getElementById('waitlist');
   const dialog = document.getElementById('waitlist-dialog');
   if (!form || !dialog || typeof dialog.showModal !== 'function') return;
@@ -85,7 +86,7 @@
     if (pending || !form.reportValidity()) return;
     pending = true;
     button.disabled = true;
-    button.textContent = 'Joining…';
+    button.textContent = t('Joining…');
     status.classList.remove('is-error');
     status.textContent = '';
     const controller = new AbortController();
@@ -99,22 +100,22 @@
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data.ok !== true) {
-        throw new Error(response.status === 429 ? 'Too many attempts. Please try again in an hour.' : response.status === 400 ? 'Please enter a valid email address.' : 'We couldn’t save your email. Please try again.');
+        throw new Error(response.status === 429 ? t('Too many attempts. Please try again in an hour.') : response.status === 400 ? t('Please enter a valid email address.') : t('We couldn’t save your email. Please try again.'));
       }
       form.reset();
       remember('localStorage', 'dialsanta.waitlist.joined');
       form.classList.add('is-complete');
-      document.getElementById('waitlist-later').textContent = 'Done';
-      status.textContent = 'You’re on the list! We’ll email you when Dial Santa launches.';
+      document.getElementById('waitlist-later').textContent = t('Done');
+      status.textContent = t('You’re on the list! We’ll email you when Dial Santa launches.');
       status.focus({ preventScroll: true });
     } catch (error) {
       status.classList.add('is-error');
-      status.textContent = error instanceof TypeError || error.name === 'AbortError' ? 'We couldn’t connect. Please check your connection and try again.' : error.message;
+      status.textContent = error instanceof TypeError || error.name === 'AbortError' ? t('We couldn’t connect. Please check your connection and try again.') : error.message;
     } finally {
       clearTimeout(timeout);
       pending = false;
       button.disabled = false;
-      button.textContent = 'Join the waitlist';
+      button.textContent = t('Join the waitlist');
     }
   });
 })();
