@@ -183,7 +183,7 @@
   "m3d5a402f84": "Poche aziende elaborano dati per nostro conto, esclusivamente per far funzionare il prodotto:",
   "m3a2ce6bb45": "<strong>HeyGen (LiveAvatar), ElevenLabs e LemonSlice</strong> generano video e voci dei personaggi in diretta ed elaborano l’audio delle conversazioni e i dati di personalizzazione forniti dai genitori. Babbo Natale e Mamma Natale usano LiveAvatar; Comet usa LemonSlice ed ElevenLabs.",
   "m3c041fb233": "<strong>LiveKit e Daily</strong> trasportano i flussi audio e video crittografati in tempo reale. Le chiamate con Comet usano Daily.",
-  "mfed83b1eb9": "<strong>Apple e Stripe</strong> elaborano acquisti e ricevute tramite i rispettivi servizi di pagamento.",
+  "mfed83b1eb9": "<strong>Apple, Stripe e RevenueCat</strong> — Apple e Stripe elaborano acquisti e ricevute tramite i rispettivi servizi di pagamento. RevenueCat riceve un identificativo di account opaco e informazioni sulle transazioni Apple per verificare e registrare gli acquisti in-app. Non inviamo a RevenueCat profili dei bambini, registrazioni vocali o contenuti delle chiamate. Quando elimini il tuo account, richiediamo l’eliminazione del relativo record cliente in RevenueCat.",
   "m102f1748d9": "<strong>Railway</strong> ospita server e database negli Stati Uniti.",
   "m7eafcfedba": "<strong>Meta</strong> misura quali annunci Dial Santa portano a installazioni. Una sola volta, dopo l’iscrizione del genitore e la verifica dell’email, il suo SDK invia eventi di installazione e apertura con dati essenziali del dispositivo, come modello, versione di iOS, lingua, fuso orario e un ID anonimo specifico dell’app. L’SDK non si riavvia alle aperture successive. Meta riceve l’identificatore pubblicitario solo se consenti il tracciamento quando iOS lo chiede. La registrazione automatica degli eventi, la corrispondenza avanzata automatica e i rapporti di arresto anomalo di Meta sono disattivati; l’uso limitato dei dati di Meta è attivo. Non inviamo profili dei bambini, nomi, età, voce, contenuti delle chiamate, email, dati dell’account o acquisti a Meta. I dati già ricevuti da Meta sono gestiti secondo le sue politiche.",
   "m7aacc42d86": "Questi fornitori operano secondo i propri impegni di privacy e sicurezza e ricevono solo il necessario. <strong>Non vendiamo mai informazioni personali.</strong>",
@@ -206,7 +206,7 @@
   "m2b5c3d2672": "Contatti",
   "m7c51f449dc": "Domande, richieste sui dati e altre informazioni: <a href=\"mailto:nate.walchenbach@gmail.com\">nate.walchenbach@gmail.com</a>",
   "m696f740b5c": "INFORMATIVA SULLA PRIVACY",
-  "m7a17be672f": "In vigore dal 23 settembre 2026",
+  "m7a17be672f": "In vigore dal 30 settembre 2026",
   "mb15965b78f": "In breve:",
   "mc6188c6532": "raccogliamo l’email del genitore e i dettagli che sceglie di condividere, come nome e desideri, per personalizzare la chiamata. Le chiamate sono in diretta e",
   "mb21a39018c": "non vengono registrate automaticamente",
@@ -326,5 +326,6 @@
   "mfcaa5740d6": "Conosce il loro nome.",
   "m8754aa1e6f": "Scopri Babbo Natale in un modo tutto nuovo.",
   "ma4055aec22": "[Un lieve tintinnio. Campanelli di slitta.]",
-  "mbb8baf023c": "L’APP PER IPHONE"
+  "mbb8baf023c": "L’APP PER IPHONE",
+  "payments.revenuecat.update": "<strong>30 settembre 2026:</strong> aggiunte la verifica e la registrazione degli acquisti in-app Apple tramite RevenueCat e l’eliminazione dei record dei clienti."
 }

@@ -183,7 +183,7 @@
   "m3d5a402f84": "Quelques entreprises traitent des données pour notre compte, uniquement pour faire fonctionner le produit :",
   "m3a2ce6bb45": "<strong>HeyGen (LiveAvatar), ElevenLabs et LemonSlice</strong> : génèrent la vidéo et les voix des personnages en direct et traitent le son des conversations et les informations de personnalisation fournies par les parents. Le Père Noël et la Mère Noël utilisent LiveAvatar ; Comet utilise LemonSlice et ElevenLabs.",
   "m3c041fb233": "<strong>LiveKit et Daily</strong> : transportent les flux audio et vidéo chiffrés en temps réel. Les appels avec Comet utilisent Daily.",
-  "mfed83b1eb9": "<strong>Apple et Stripe</strong> : traitent les achats et les reçus via leurs services de paiement respectifs.",
+  "mfed83b1eb9": "<strong>Apple, Stripe et RevenueCat</strong> — Apple et Stripe traitent les achats et les reçus via leurs services de paiement respectifs. RevenueCat reçoit un identifiant de compte opaque et des informations sur les transactions Apple pour vérifier et suivre les achats intégrés. Nous ne transmettons à RevenueCat ni profils d’enfants, ni enregistrements vocaux, ni contenu des appels. Lorsque vous supprimez votre compte, nous demandons la suppression de sa fiche client RevenueCat.",
   "m102f1748d9": "<strong>Railway</strong> : héberge nos serveurs et notre base de données aux États-Unis.",
   "m7eafcfedba": "<strong>Meta</strong> : mesure quelles publicités Dial Santa ont entraîné une installation. Une seule fois, après l’inscription du parent et la vérification de son e-mail, le SDK Meta envoie des événements d’installation et d’ouverture avec des données de base de l’appareil, comme le modèle, la version d’iOS, la langue, le fuseau horaire et un identifiant anonyme propre à l’app. Le SDK ne redémarre pas lors des ouvertures suivantes. Meta reçoit l’identifiant publicitaire uniquement si vous autorisez le suivi lorsque iOS le demande. L’enregistrement automatique d’événements, la correspondance avancée automatique et les rapports de plantage Meta sont désactivés ; son option d’utilisation limitée des données est activée. Nous n’envoyons ni profils d’enfants, noms, âges, voix, contenu des appels, e-mails, détails du compte, ni achats à Meta. Les informations déjà reçues par Meta sont régies par ses propres politiques.",
   "m7aacc42d86": "Ces prestataires suivent leurs propres engagements de confidentialité et de sécurité et ne reçoivent que le nécessaire. <strong>Nous ne vendons jamais d’informations personnelles.</strong>",
@@ -206,7 +206,7 @@
   "m2b5c3d2672": "Contact",
   "m7c51f449dc": "Questions ou demandes concernant vos données : <a href=\"mailto:nate.walchenbach@gmail.com\">nate.walchenbach@gmail.com</a>",
   "m696f740b5c": "POLITIQUE DE CONFIDENTIALITÉ",
-  "m7a17be672f": "En vigueur depuis le 23 septembre 2026",
+  "m7a17be672f": "En vigueur le 30 septembre 2026",
   "mb15965b78f": "En quelques mots :",
   "mc6188c6532": "nous recueillons l’e-mail d’un parent et les détails qu’il choisit de partager pour personnaliser l’appel, comme un prénom ou une liste de souhaits. Les appels ont lieu en direct et",
   "mb21a39018c": "ne sont pas enregistrés automatiquement",
@@ -326,5 +326,6 @@
   "mfcaa5740d6": "Il connaît leur prénom.",
   "m8754aa1e6f": "Découvrez le Père Noël d’une toute nouvelle façon.",
   "ma4055aec22": "[Un doux tintement. Des grelots de traîneau.]",
-  "mbb8baf023c": "L’APP POUR IPHONE"
+  "mbb8baf023c": "L’APP POUR IPHONE",
+  "payments.revenuecat.update": "<strong>30 septembre 2026 :</strong> ajout de la vérification et du suivi des achats intégrés Apple par RevenueCat, ainsi que de la suppression des fiches clients."
 }

@@ -183,7 +183,7 @@
   "m3d5a402f84": "Un pequeño número de empresas procesa datos en nuestro nombre, exclusivamente para hacer funcionar el producto:",
   "m3a2ce6bb45": "<strong>HeyGen (LiveAvatar), ElevenLabs y LemonSlice</strong>: generan el vídeo y las voces de los personajes y procesan el audio de la conversación y la información de personalización facilitada por los padres. Papá Noel y la señora Claus usan LiveAvatar; Comet usa LemonSlice y ElevenLabs.",
   "m3c041fb233": "<strong>LiveKit y Daily</strong>: transportan los flujos de audio y vídeo cifrados en tiempo real. Las llamadas con Comet usan Daily.",
-  "mfed83b1eb9": "<strong>Apple y Stripe</strong>: procesan compras y recibos mediante sus respectivos servicios de pago.",
+  "mfed83b1eb9": "<strong>Apple, Stripe y RevenueCat</strong> — Apple y Stripe procesan compras y recibos a través de sus respectivos servicios de pago. RevenueCat recibe un identificador de cuenta opaco e información de transacciones de Apple para verificar y registrar las compras dentro de la app. No enviamos a RevenueCat perfiles infantiles, grabaciones de voz ni contenido de las llamadas. Cuando eliminas tu cuenta, solicitamos la eliminación de su registro de cliente en RevenueCat.",
   "m102f1748d9": "<strong>Railway</strong>: aloja nuestros servidores y la base de datos en Estados Unidos.",
   "m7eafcfedba": "<strong>Meta</strong>: mide qué anuncios de Dial Santa generaron instalaciones. Una sola vez, después de que un adulto se registre y verifique su correo, el SDK de Meta envía eventos de instalación y apertura con información básica del dispositivo, como modelo, versión de iOS, idioma, zona horaria e identificador anónimo propio de la app. El SDK no vuelve a iniciarse en aperturas posteriores. Meta recibe el identificador publicitario solo si autorizas el seguimiento cuando iOS lo solicita. El registro automático de eventos, la coincidencia avanzada automática y los informes de fallos de Meta están desactivados; su opción de uso limitado de datos está activada. No enviamos perfiles infantiles, nombres, edades, voz, contenido de llamadas, correos, datos de cuenta ni compras a Meta. Los datos que Meta ya haya recibido se rigen por sus propias políticas.",
   "m7aacc42d86": "Estos proveedores actúan bajo sus propios compromisos de privacidad y seguridad y reciben solo lo necesario. <strong>Nunca vendemos información personal.</strong>",
@@ -206,7 +206,7 @@
   "m2b5c3d2672": "Contacto",
   "m7c51f449dc": "Preguntas, solicitudes de datos o cualquier consulta: <a href=\"mailto:nate.walchenbach@gmail.com\">nate.walchenbach@gmail.com</a>",
   "m696f740b5c": "POLÍTICA DE PRIVACIDAD",
-  "m7a17be672f": "En vigor desde el 23 de septiembre de 2026",
+  "m7a17be672f": "En vigor desde el 30 de septiembre de 2026",
   "mb15965b78f": "En pocas palabras:",
   "mc6188c6532": "recopilamos el correo del adulto y los detalles que decida compartir para que Papá Noel personalice la llamada, como un nombre o una lista de deseos. Las llamadas son en directo y",
   "mb21a39018c": "no se graban automáticamente",
@@ -326,5 +326,6 @@
   "mfcaa5740d6": "Sabe su nombre.",
   "m8754aa1e6f": "Descubre a Papá Noel de una forma totalmente nueva.",
   "ma4055aec22": "[Un suave tintineo. Cascabeles de trineo.]",
-  "mbb8baf023c": "LA APP PARA IPHONE"
+  "mbb8baf023c": "LA APP PARA IPHONE",
+  "payments.revenuecat.update": "<strong>30 de septiembre de 2026:</strong> se añadió la verificación y el registro de compras dentro de la app de Apple mediante RevenueCat y la eliminación de registros de clientes."
 }

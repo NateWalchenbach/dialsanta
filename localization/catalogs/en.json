@@ -183,7 +183,7 @@
   "m3d5a402f84": "A small number of companies process data on our behalf, strictly to run the product:",
   "m3a2ce6bb45": "<strong>HeyGen (LiveAvatar), ElevenLabs and LemonSlice</strong> — generate the characters’ live video and voices and process conversation audio and parent-provided personalization. Santa and Mrs. Claus use LiveAvatar; Comet uses LemonSlice and ElevenLabs.",
   "m3c041fb233": "<strong>LiveKit and Daily</strong> — carry the encrypted real-time audio/video streams. Comet calls use Daily.",
-  "mfed83b1eb9": "<strong>Apple and Stripe</strong> — process purchases and receipts through their respective payment services.",
+  "mfed83b1eb9": "<strong>Apple, Stripe and RevenueCat</strong> — Apple and Stripe process purchases and receipts through their respective payment services. RevenueCat receives an opaque account identifier and Apple transaction information to verify and report in-app purchases. We do not send RevenueCat child profiles, voice recordings or call content. When you delete your account, we request deletion of its RevenueCat customer record.",
   "m102f1748d9": "<strong>Railway</strong> — hosts our servers and database (located in the United States).",
   "m7eafcfedba": "<strong>Meta</strong> — measures which Dial Santa ads led to app installs. Once, after a parent signs up and verifies their email, Meta's SDK in the app sends an install and app-open event with basic device information (such as device model, iOS version, language, time zone, and an app-specific anonymous ID). The SDK doesn't start again when the app is opened later. Meta receives this device's advertising identifier only if you allow tracking when iOS asks. Automatic event logging, automatic advanced matching, and Meta crash reports are turned off, and Meta's Limited Data Use setting is on. We do not send child profiles, names, ages, voice, call content, email addresses, account details, or purchases to Meta. Information Meta has already received is handled under Meta's own policies.",
   "m7aacc42d86": "These providers act under their own privacy and security commitments and receive only what's needed for their job. <strong>We never sell personal information.</strong>",
@@ -206,7 +206,7 @@
   "m2b5c3d2672": "Contact",
   "m7c51f449dc": "Questions, data requests, anything at all: <a href=\"mailto:nate.walchenbach@gmail.com\">nate.walchenbach@gmail.com</a>",
   "m696f740b5c": "PRIVACY POLICY",
-  "m7a17be672f": "Effective September 23, 2026",
+  "m7a17be672f": "Effective September 30, 2026",
   "mb15965b78f": "The short version:",
   "mc6188c6532": "we collect a parent's email address and the small details you choose to share so Santa can personalize the call (a first name, a wish list). Calls happen live —",
   "mb21a39018c": "calls are not recorded automatically",
@@ -326,5 +326,6 @@
   "mfcaa5740d6": "He knows their name.",
   "m8754aa1e6f": "Experience Santa in a whole new way.",
   "ma4055aec22": "[A soft chime. Sleigh bells.]",
-  "mbb8baf023c": "THE IPHONE APP"
+  "mbb8baf023c": "THE IPHONE APP",
+  "payments.revenuecat.update": "<strong>September 30, 2026:</strong> added RevenueCat verification and reporting of Apple in-app purchases and customer-record deletion."
 }

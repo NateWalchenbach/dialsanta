@@ -183,7 +183,7 @@
   "m3d5a402f84": "Wenige Unternehmen verarbeiten Daten in unserem Auftrag, ausschließlich zum Betrieb des Produkts:",
   "m3a2ce6bb45": "<strong>HeyGen (LiveAvatar), ElevenLabs und LemonSlice</strong> erzeugen das Live-Video und die Stimmen der Figuren und verarbeiten Gesprächsaudio sowie die von Eltern eingegebenen Angaben zur Personalisierung. Der Weihnachtsmann und Mrs. Claus nutzen LiveAvatar; Comet nutzt LemonSlice und ElevenLabs.",
   "m3c041fb233": "<strong>LiveKit und Daily</strong> übertragen die verschlüsselten Audio- und Videostreams in Echtzeit. Anrufe mit Comet nutzen Daily.",
-  "mfed83b1eb9": "<strong>Apple und Stripe</strong> verarbeiten Käufe und Belege über ihre jeweiligen Zahlungsdienste.",
+  "mfed83b1eb9": "<strong>Apple, Stripe und RevenueCat</strong> — Apple und Stripe verarbeiten Käufe und Belege über ihre jeweiligen Zahlungsdienste. RevenueCat erhält eine nicht direkt identifizierende Kontokennung und Apple-Transaktionsdaten, um In-App-Käufe zu prüfen und zu erfassen. Wir senden RevenueCat keine Kinderprofile, Sprachaufnahmen oder Gesprächsinhalte. Wenn du dein Konto löschst, beantragen wir die Löschung des zugehörigen RevenueCat-Kundendatensatzes.",
   "m102f1748d9": "<strong>Railway</strong> hostet unsere Server und die Datenbank in den USA.",
   "m7eafcfedba": "<strong>Meta</strong> misst, welche Dial-Santa-Anzeigen zu Installationen geführt haben. Einmalig nach der Anmeldung eines Elternteils und Bestätigung seiner E-Mail sendet das Meta-SDK ein Installations- und App-Öffnungsereignis mit grundlegenden Geräteangaben, etwa Modell, iOS-Version, Sprache, Zeitzone und einer App-spezifischen anonymen ID. Bei späteren App-Starts startet das SDK nicht erneut. Meta erhält die Werbekennung nur, wenn du Tracking in der iOS-Abfrage erlaubst. Automatische Ereignisprotokollierung, automatischer erweiterter Abgleich und Meta-Absturzberichte sind ausgeschaltet; Metas eingeschränkte Datennutzung ist eingeschaltet. Wir senden keine Kinderprofile, Namen, Altersangaben, Stimmen, Anrufinhalte, E-Mail-Adressen, Kontodetails oder Käufe an Meta. Bereits bei Meta eingegangene Informationen unterliegen Metas eigenen Richtlinien.",
   "m7aacc42d86": "Diese Anbieter handeln nach ihren eigenen Datenschutz- und Sicherheitszusagen und erhalten nur die erforderlichen Daten. <strong>Wir verkaufen niemals personenbezogene Daten.</strong>",
@@ -206,7 +206,7 @@
   "m2b5c3d2672": "Kontakt",
   "m7c51f449dc": "Fragen, Datenanfragen und alles Weitere: <a href=\"mailto:nate.walchenbach@gmail.com\">nate.walchenbach@gmail.com</a>",
   "m696f740b5c": "DATENSCHUTZERKLÄRUNG",
-  "m7a17be672f": "Gültig ab 23. September 2026",
+  "m7a17be672f": "Gültig ab 30. September 2026",
   "mb15965b78f": "Kurz erklärt:",
   "mc6188c6532": "Wir erheben die E-Mail-Adresse eines Elternteils und freiwillige Angaben wie Vorname und Wünsche, damit der Weihnachtsmann das Gespräch personalisieren kann. Anrufe finden live statt und",
   "mb21a39018c": "werden nicht automatisch aufgezeichnet",
@@ -326,5 +326,6 @@
   "mfcaa5740d6": "Er kennt ihren Namen.",
   "m8754aa1e6f": "Erlebe den Weihnachtsmann auf eine ganz neue Art.",
   "ma4055aec22": "[Ein leiser Klang. Schlittenglöckchen.]",
-  "mbb8baf023c": "DIE IPHONE-APP"
+  "mbb8baf023c": "DIE IPHONE-APP",
+  "payments.revenuecat.update": "<strong>30. September 2026:</strong> RevenueCat-Prüfung und Erfassung von Apple-In-App-Käufen sowie die Löschung von Kundendatensätzen ergänzt."
 }
