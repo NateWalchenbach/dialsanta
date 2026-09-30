@@ -16,13 +16,20 @@ they have not had independent native-speaker or legal review.
 Install `beautifulsoup4` in your Python environment, then run from the repository root:
 
 ```sh
-python3 localization/build.py
+python3 web/localization/build.py
 ```
 
 The build checks catalog completeness, HTML attributes, and placeholders; generates
 49 pages, seven runtime dictionaries, captions, canonical/hreflang links, and a sitemap.
 Checkout and confirmation pages remain noindex. Do not enable purchases or change
 the app's launch status as part of a language edit.
+
+The September 30 launch homepage also has a source assembler at
+`docs/website-redesign-2026-09-30/build-home.py` in the parent CallSanta workspace.
+It regenerates the homepage template and its English `launch_*` messages. Keep its
+copy in sync when editing that template, then run the localization build above.
+The launch preview uses separate 20-second captions in `assets/launch/`; the original
+trailer and its caption tracks are preserved in `assets/trailer/`.
 
 ## Language selection
 

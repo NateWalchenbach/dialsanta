@@ -31,7 +31,11 @@ def local_url(value, lang):
     path = route(lang, page) if page in PAGES else '/' + path
     return urlunsplit(('', '', path, parts.query, parts.fragment))
 
+selected_locale = sys.argv[sys.argv.index('--locale') + 1] if '--locale' in sys.argv else None
+if selected_locale and selected_locale not in NAMES: raise SystemExit('Unsupported locale')
+
 for lang, native_name in NAMES.items():
+    if selected_locale and lang != selected_locale: continue
     catalog_path = ROOT/f'catalogs/{lang}.json'
     if '--partial' in sys.argv and not catalog_path.exists(): continue
     catalog = json.loads(catalog_path.read_text())
@@ -83,7 +87,7 @@ for lang, native_name in NAMES.items():
         bootstrap = soup.new_tag('script', src='/language.js?v=20260923')
         charset = soup.head.find('meta', charset=True)
         charset.insert_after(bootstrap)
-        bootstrap.insert_after(soup.new_tag('script',src=f'/i18n/{lang}.js?v=20260923'))
+        bootstrap.insert_after(soup.new_tag('script',src=f'/i18n/{lang}.js?v=20260930-hero2'))
         soup.head.append(soup.new_tag('link', rel='stylesheet', href='/localization.css?v=20260923'))
         picker = soup.new_tag('label', attrs={'class':'language-picker'})
         label = soup.new_tag('span',attrs={'class':'language-label'});label.string=messages['Language'];picker.append(label)
@@ -107,7 +111,7 @@ for lang, native_name in NAMES.items():
         if video:
             for track in video.select('track'):track.decompose()
             for code,name in NAMES.items():
-                track=soup.new_tag('track',kind='captions',label=name,src=f'/assets/trailer/captions-{code}.vtt',srclang=code)
+                track=soup.new_tag('track',kind='captions',label=name,src=f"{video.get('data-caption-root', '/assets/trailer')}/captions-{code}.vtt",srclang=code)
                 if code == lang and lang != 'en':track['default']=''
                 video.append(track)
         destination=SITE/(('' if lang=='en' else lang+'/')+page+'.html')
