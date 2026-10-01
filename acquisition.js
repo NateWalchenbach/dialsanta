@@ -5,6 +5,10 @@
   const key = 'dialsanta.website.analytics';
   const languages = ['en','es','fr','de','it','pt','ru'];
   const pages = ['home','parents','support','privacy','terms','facetime-santa','how-to-call-santa','questions-to-ask-santa','press'];
+  // Fixed public campaign labels only; never store arbitrary query values or visitor IDs.
+  const campaigns = new Set(['ig','yt'].flatMap(channel => ['profile','adultugc','livecall','santaskit','experiment'].map(format => `ds-${channel}-${format}`)));
+  const requestedCampaign = new URLSearchParams(location.search).get('ds');
+  const campaign = campaigns.has(requestedCampaign) ? requestedCampaign : 'website';
   const placements = ['navigation','hero','footer','sticky','pack-5','pack-12','pack-30','character-santa','character-mrsclaus','character-comet','character-pip','character-crumble','character-flurry','guide-top','guide-bottom','guide-step','parents','other'];
   const lang = languages.includes(document.documentElement.lang) ? document.documentElement.lang : 'en';
   const route = location.pathname.replace(/^\/(es|fr|de|it|pt|ru)\//, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
@@ -17,6 +21,8 @@
   let viewed = false;
   const clicked = new Set();
   const source = (() => {
+    if (campaign.startsWith('ds-ig-')) return 'instagram';
+    if (campaign.startsWith('ds-yt-')) return 'youtube';
     try {
       const host = new URL(document.referrer).hostname;
       if (host === location.hostname) return 'internal';
@@ -30,7 +36,7 @@
   function capture(event, placement) {
     if (!live || !page || !allowed || blocked() || !crypto.randomUUID) return;
     pageId ||= crypto.randomUUID(); // Memory only: discarded on navigation. Never an app/user ID.
-    const properties = {page, language:lang, source, campaign:'website', $process_person_profile:false, $geoip_disable:true, $ip:null};
+    const properties = {page, language:lang, source, campaign, $process_person_profile:false, $geoip_disable:true, $ip:null};
     if (placement) properties.placement = placements.includes(placement) ? placement : 'other';
     const payload = {api_key:token, distinct_id:pageId, event, properties};
     fetch('https://us.i.posthog.com/i/v0/e/', {method:'POST', mode:'cors', credentials:'omit', referrerPolicy:'no-referrer', keepalive:true, headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload)}).catch(() => {});
@@ -51,14 +57,32 @@
   document.querySelectorAll('[data-analytics-allow]').forEach(button => button.addEventListener('click', () => choose('allow')));
   document.querySelectorAll('[data-analytics-deny]').forEach(button => button.addEventListener('click', () => choose('deny')));
   window.addEventListener('storage', event => { if (event.key === key) { allowed = event.newValue === 'allow'; renderChoice(); view(); } });
+  function attribute(link) {
+    if (!live || !page || campaign === 'website') return;
+    try {
+      const url = new URL(link.href, location.href);
+      if (url.hostname === 'apps.apple.com' && /\/id6808069158$/.test(url.pathname)) {
+        url.searchParams.set('pt', '128424654'); url.searchParams.set('ct', campaign); url.searchParams.set('mt', '8');
+        link.href = url.href;
+      } else if (url.origin === location.origin && !url.hash) {
+        const next = url.pathname.replace(/^\/(es|fr|de|it|pt|ru)\//, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
+        if (next === '' || next === 'index' || pages.includes(next)) {
+          url.searchParams.set('ds', campaign); link.href = url.href;
+        }
+      }
+    } catch { /* Ignore non-URL links. */ }
+  }
+  document.querySelectorAll('a[href]').forEach(attribute);
   document.addEventListener('click', event => {
     const link = event.target.closest?.('a[href]');
-    if (!link || !allowed || blocked()) return;
-    const url = new URL(link.href);
+    if (!link) return;
+    attribute(link); // Capture phase also handles dynamically created download buttons.
+    if (!allowed || blocked()) return;
+    let url; try { url = new URL(link.href); } catch { return; }
     if (url.hostname !== 'apps.apple.com' || !url.pathname.includes('id6808069158')) return;
     const placement = placements.includes(link.dataset.download) ? link.dataset.download : 'other';
     if (clicked.has(placement)) return;
     clicked.add(placement); capture('app_store_click', placement);
-  });
+  }, true);
   renderChoice(); view();
 })();

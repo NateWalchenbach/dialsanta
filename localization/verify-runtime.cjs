@@ -10,13 +10,14 @@ function environment(options={}) {
     nodes[selector]={dataset:{on:'On',off:'Off'},addEventListener:(event,fn)=>{handlers[selector]=fn},setAttribute:()=>{}};
   }
   const values=new Map(options.allowed? [['dialsanta.website.analytics','allow']] : []);
-  const ctx={URL,Set,console,crypto:{randomUUID:()=> 'synthetic-page-test'},navigator:{...options.navigator},window:{addEventListener:()=>{}},
-    location:{hostname:options.host||'dialsanta.app',protocol:'https:',pathname:options.page||'/facetime-santa/'},
-    document:{documentElement:{lang:'en'},referrer:'https://www.google.com/search?q=private-test-value',querySelectorAll:s=>[nodes[s]],addEventListener:(event,fn)=>handlers[event]=fn},
+  const anchors=[{href:'https://apps.apple.com/app/apple-store/id6808069158?pt=128424654&ct=website&mt=8',dataset:{download:'guide-top'}},{href:'https://dialsanta.app/parents.html'},{href:'https://dialsanta.app/purchase.html'}];
+  const ctx={URL,URLSearchParams,Set,console,crypto:{randomUUID:()=> 'synthetic-page-test'},navigator:{...options.navigator},window:{addEventListener:()=>{}},
+    location:{hostname:options.host||'dialsanta.app',protocol:'https:',pathname:options.page||'/facetime-santa/',search:options.search||'',href:'https://dialsanta.app/facetime-santa/'+(options.search||''),origin:'https://dialsanta.app'},
+    document:{documentElement:{lang:'en'},referrer:'https://www.google.com/search?q=private-test-value',querySelectorAll:s=>s==='a[href]' ? anchors : [nodes[s]],addEventListener:(event,fn)=>handlers[event]=fn},
     localStorage:{getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v)},fetch:(url,request)=>{sent.push({url,request,body:JSON.parse(request.body)});return Promise.resolve({ok:true})}};
   vm.runInNewContext(code,ctx);
   const click=()=>handlers.click({target:{closest:()=>({href:'https://apps.apple.com/app/apple-store/id6808069158?pt=128424654&ct=website&mt=8',dataset:{download:'guide-top'}})}});
-  return {sent,handlers,nodes,click};
+  return {sent,handlers,nodes,click,anchors};
 }
 let e=environment();assert.equal(e.sent.length,0);e.click();assert.equal(e.sent.length,0);
 e.handlers['[data-analytics-allow]']();assert.equal(e.sent.length,1);e.click();e.click();assert.equal(e.sent.length,2);
@@ -29,6 +30,17 @@ e.handlers['[data-analytics-deny]']();e.click();assert.equal(e.sent.length,2);
 for (const navigator of [{globalPrivacyControl:true},{doNotTrack:'1'}]) { e=environment({allowed:true,navigator});e.handlers['[data-analytics-allow]']();e.click();assert.equal(e.sent.length,0); }
 for (const opts of [{host:'127.0.0.1'},{page:'/purchase.html'},{page:'/thanks.html'},{page:'/unknown-private-page'}]) {e=environment({...opts,allowed:true});e.click();assert.equal(e.sent.length,0);}
 e=environment({allowed:true});assert.equal(e.sent.length,1);
+for (const campaign of ['ds-ig-profile','ds-yt-adultugc','ds-ig-livecall','ds-yt-santaskit']) {
+ e=environment({allowed:true,search:'?ds='+campaign+'&email=private-test-value'});
+ assert.equal(e.sent[0].body.properties.campaign,campaign);
+ assert.equal(e.sent[0].body.properties.source,campaign.includes('-ig-')?'instagram':'youtube');
+ assert.equal(new URL(e.anchors[0].href).searchParams.get('ct'),campaign);
+ assert.equal(new URL(e.anchors[1].href).searchParams.get('ds'),campaign);
+ assert.equal(new URL(e.anchors[2].href).search,'');
+ assert(!JSON.stringify(e.sent).includes('private-test-value'));
+}
+e=environment({search:'?ds=ds-ig-profile'});assert.equal(e.sent.length,0);assert.equal(new URL(e.anchors[0].href).searchParams.get('ct'),'ds-ig-profile');
+e=environment({allowed:true,search:'?ds=private-test-value'});assert.equal(e.sent[0].body.properties.campaign,'website');assert.equal(new URL(e.anchors[0].href).searchParams.get('ct'),'website');
 const languageCode=fs.readFileSync(path.join(root,'language.js'),'utf8');
 function language(url, saved) {
   const redirects=[], handlers={};
