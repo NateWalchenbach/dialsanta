@@ -20,7 +20,8 @@ python3 web/localization/build.py
 ```
 
 The build checks catalog completeness, HTML attributes, and placeholders; generates
-49 pages, seven runtime dictionaries, captions, canonical/hreflang links, and a sitemap.
+49 translated pages, four English guides, small runtime dictionaries, captions,
+canonical/hreflang links, and a 39-URL sitemap.
 Checkout and confirmation pages remain noindex. Do not enable purchases or change
 the app's launch status as part of a language edit.
 
@@ -28,6 +29,9 @@ The September 30 launch homepage also has a source assembler at
 `docs/website-redesign-2026-09-30/build-home.py` in the parent CallSanta workspace.
 It regenerates the homepage template and its English `launch_*` messages. Keep its
 copy in sync when editing that template, then run the localization build above.
+The SEO additions live in `enhance.py` and `guides.json`, so the original homepage
+assembler does not overwrite them. The enhancement adds guide links, the FaceTime
+FAQ, responsive image sources, Apple campaign attribution and analytics choices.
 The launch preview uses separate 20-second captions in `assets/launch/`; the original
 trailer and its caption tracks are preserved in `assets/trailer/`.
 
@@ -35,15 +39,30 @@ trailer and its caption tracks are preserved in `assets/trailer/`.
 
 1. An explicit supported `?lang=` parameter takes precedence.
 2. An explicit `/es/`, `/fr/`, `/de/`, `/it/`, `/pt/`, or `/ru/` URL is respected.
-3. On English/root URLs, use a saved manual selection, then the first supported
-   `navigator.languages` preference, then English.
+3. English/root URLs remain English. Browser preferences and saved choices never
+   redirect a requested page. Every translated page has visible edition links.
 
 Regional variants map to their base language. There is no country lookup or location
 permission. Only manual choices are saved to `dialsanta.website.language`. The URL
 also carries manual choices, including English, so navigation works when storage is
 blocked. Switching preserves the page, query parameters, and anchor. JavaScript is
-needed for automatic selection; static native content and language links remain
-readable without it.
+needed for the select menu; static native content and edition links work without it.
+English-only guides link to the localized homepages instead of nonexistent translations.
+
+## Website measurement (October 1, 2026)
+
+App Store links use Apple's verified `pt=128424654`, `ct=website`, `mt=8` campaign.
+The account belongs to the legal seller Natura AI LLC; the app ID is Dial Santa
+6808069158. Campaign totals require Apple's minimum reporting thresholds.
+
+`acquisition.js` sends only explicitly opted-in page/count events to the dedicated
+PostHog Dial Santa project 639766. It does not load the PostHog SDK. No capture on
+localhost, checkout or confirmation pages. There is no replay, autocapture, cookies,
+cross-page identity, form data, query strings or full referrer collection. DNT/GPC
+override opt-in. A page-local random ID links a page view to a button click only.
+IP capture is disabled in project settings, and the payload disables GeoIP.
+This measures consenting page activity, not total visitors, installs or purchases.
+Apple's campaign reports supply downstream acquisition data separately.
 
 ## Release verification (2026-09-23)
 

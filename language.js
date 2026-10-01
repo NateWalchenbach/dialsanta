@@ -8,10 +8,8 @@
   const prefix = url.pathname.split('/')[1];
   const routeLanguage = prefix !== 'en' && supported(prefix) ? prefix : 'en';
   const explicit = base(url.searchParams.get('lang'));
-  let saved;
-  try { saved = localStorage.getItem(storageKey); } catch { /* private browsing */ }
-  const preferred = (navigator.languages || [navigator.language]).map(base).find(supported);
-  const language = supported(explicit) ? explicit : routeLanguage !== 'en' ? routeLanguage : supported(saved) ? saved : preferred || 'en';
+  // Requested URLs are stable for readers and crawlers. Only an explicit URL choice redirects.
+  const language = supported(explicit) ? explicit : routeLanguage;
   const route = routeLanguage === 'en' ? url.pathname : url.pathname.slice(prefix.length + 1);
   function destination(lang, manual = true) {
     const next = new URL(location.href);
@@ -49,8 +47,10 @@
     });
     // Carry a manual English choice through links when storage is blocked.
     if (supported(explicit)) document.querySelectorAll('a[href]').forEach(link => {
+      if (link.hasAttribute('hreflang')) return; // An edition link is a new explicit choice.
       const next = new URL(link.href);
-      if (next.origin !== location.origin || !/\/(?:index|parents|support|privacy|terms|purchase|thanks)?(?:\.html)?$/.test(next.pathname)) return;
+      const targetRoute = next.pathname.replace(/^\/(?:es|fr|de|it|pt|ru)\//, '/');
+      if (next.origin !== location.origin || !/^\/(?:(?:index|parents|support|privacy|terms|purchase|thanks)\.html)?$/.test(targetRoute)) return;
       next.searchParams.set('lang', routeLanguage);
       link.href = next.href;
     });

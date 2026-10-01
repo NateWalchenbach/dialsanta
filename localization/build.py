@@ -7,6 +7,7 @@ from urllib.parse import urlsplit, urlunsplit
 from collections import Counter
 from bs4 import BeautifulSoup, NavigableString
 import json, re, sys
+from enhance import enhance, build_guides, GUIDES
 
 ROOT = Path(__file__).resolve().parent
 SITE = ROOT.parent
@@ -15,6 +16,9 @@ PAGES = ['index','parents','support','privacy','terms','purchase','thanks']
 english = json.loads((ROOT/'catalogs/en.json').read_text())
 keys = list(english)
 source_by_text = {text:key for key,text in english.items()}
+runtime_source = '\n'.join(path.read_text() for path in SITE.glob('*.js') if path.name not in ('language.js', 'acquisition.js'))
+# Static HTML already contains translations. Keep only strings referenced by runtime JS.
+runtime_keys = {key for key,text in english.items() if text in runtime_source or text.replace("'", "\\'") in runtime_source or text.replace('"', '\\"') in runtime_source}
 
 def markup(value):
     soup = BeautifulSoup(value, 'html.parser')
@@ -47,7 +51,8 @@ for lang, native_name in NAMES.items():
         assert markup(value) == markup(original), (lang,key,'markup')
     messages = {english[key]:text for key,text in catalog.items()}
     asset_dir = SITE/'i18n'; asset_dir.mkdir(exist_ok=True)
-    (asset_dir/f'{lang}.js').write_text('window.SiteMessages = ' + json.dumps(messages, ensure_ascii=False, separators=(',',':')) + ';\n')
+    runtime_messages = {} if lang == 'en' else {english[key]:catalog[key] for key in runtime_keys}
+    (asset_dir/f'{lang}.js').write_text('window.SiteMessages = ' + json.dumps(runtime_messages, ensure_ascii=False, separators=(',',':')) + ';\n')
     captions = (SITE/'assets/trailer/captions-en.vtt').read_text()
     for key in keys[320:327]: captions = captions.replace(english[key], catalog[key])
     (SITE/f'assets/trailer/captions-{lang}.vtt').write_text(captions)
@@ -83,12 +88,12 @@ for lang, native_name in NAMES.items():
         for meta in soup.select('meta[property="og:url"]'): meta['content'] = 'https://dialsanta.app'+route(lang,page)
         for meta in soup.select('meta[property="og:locale"]'): meta.decompose()
         soup.head.append(soup.new_tag('meta', property='og:locale', content={'en':'en_US','es':'es_ES','fr':'fr_FR','de':'de_DE','it':'it_IT','pt':'pt_BR','ru':'ru_RU'}[lang]))
-        # Detection runs before body rendering; static native content still works without JS.
-        bootstrap = soup.new_tag('script', src='/language.js?v=20260923')
+        # Ordered deferred scripts preserve translation availability without blocking HTML.
+        bootstrap = soup.new_tag('script', src='/language.js?v=20261001', defer='')
         charset = soup.head.find('meta', charset=True)
         charset.insert_after(bootstrap)
-        bootstrap.insert_after(soup.new_tag('script',src=f'/i18n/{lang}.js?v=20260930-hero2'))
-        soup.head.append(soup.new_tag('link', rel='stylesheet', href='/localization.css?v=20260923'))
+        bootstrap.insert_after(soup.new_tag('script',src=f'/i18n/{lang}.js?v=20261001',defer=''))
+        soup.head.append(soup.new_tag('link', rel='stylesheet', href='/localization.css?v=20261001'))
         picker = soup.new_tag('label', attrs={'class':'language-picker'})
         label = soup.new_tag('span',attrs={'class':'language-label'});label.string=messages['Language'];picker.append(label)
         select = soup.new_tag('select',attrs={'data-language-select':'','aria-label':messages['Language']})
@@ -102,11 +107,10 @@ for lang, native_name in NAMES.items():
         else:
             top=soup.new_tag('div',attrs={'class':'page-language'});top.append(picker)
             soup.body.insert(0,top)
-        fallback=soup.new_tag('noscript'); links=soup.new_tag('div',attrs={'class':'language-noscript'})
+        links=soup.new_tag('nav',attrs={'class':'language-links','aria-label':messages['Language']})
         for code,name in NAMES.items():
             link=soup.new_tag('a',href=route(code,page),lang=code,hreflang=code);link.string=name;links.append(link)
-        fallback.append(links)
-        (soup.select_one('footer, .footer, .foot') or soup.body).append(fallback)
+        (soup.select_one('footer, .footer, .foot') or soup.body).append(links)
         video=soup.select_one('#heroVideo')
         if video:
             for track in video.select('track'):track.decompose()
@@ -114,6 +118,7 @@ for lang, native_name in NAMES.items():
                 track=soup.new_tag('track',kind='captions',label=name,src=f"{video.get('data-caption-root', '/assets/trailer')}/captions-{code}.vtt",srclang=code)
                 if code == lang and lang != 'en':track['default']=''
                 video.append(track)
+        enhance(soup,lang,page,catalog)
         destination=SITE/(('' if lang=='en' else lang+'/')+page+'.html')
         destination.parent.mkdir(exist_ok=True)
         destination.write_text(str(soup).rstrip()+'\n')
@@ -121,4 +126,6 @@ for lang, native_name in NAMES.items():
 
 # Only index public informational pages, not checkout confirmation pages.
 urls = ['https://dialsanta.app'+route(lang,page) for lang in NAMES for page in PAGES[:5]]
+build_guides()
+urls += ['https://dialsanta.app/'+item['slug']+'/' for item in GUIDES]
 (SITE/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('<url><loc>'+url+'</loc></url>\n' for url in urls)+'</urlset>\n')

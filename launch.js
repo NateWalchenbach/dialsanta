@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   const t = text => window.SiteI18n?.t(text) ?? text;
-  const store = 'https://apps.apple.com/us/app/dial-santa/id6808069158';
+  const store = 'https://apps.apple.com/app/apple-store/id6808069158?pt=128424654&ct=website&mt=8';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const snow = document.querySelector('.hero-snow');
   const toggle = document.querySelector('.snow-toggle');
