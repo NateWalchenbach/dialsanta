@@ -64,6 +64,21 @@ IP capture is disabled in project settings, and the payload disables GeoIP.
 This measures consenting page activity, not total visitors, installs or purchases.
 Apple's campaign reports supply downstream acquisition data separately.
 
+## Meta Pixel (October 7, 2026)
+
+`meta-pixel.js` loads Meta Pixel `1399957468427149` (Events Manager dataset "Dial Santa
+Website", Dial Santa business portfolio) on the public pages and the four guides, never on
+checkout or confirmation pages, never with GPC/DNT, and never after the footer's Turn off
+(`localStorage` key `dialsanta.website.ads`). Visitors whose browser time zone is European
+(any `Europe/*` zone plus EEA islands and territories, Cyprus and French overseas zones)
+see the consent banner that `enhance.py` adds to every public page, and the Pixel stays off
+until Allow; elsewhere it runs by default with the footer control to turn it off. It sends
+`PageView` and a custom `AppStoreClick` event (placement, language, page); `autoConfig`
+is off, Limited Data Use is on, and the dataset's automatic advanced matching, automatic
+events and detailed page info are off in Events Manager. The disclosure is the privacy
+policy section `#website-ads`. `build.py` excludes `meta-pixel.js` from the runtime-string
+scan, so its comments never leak into `i18n/*.js`.
+
 ## Release verification (2026-09-23)
 
 Checked all 49 pages at 320, 390, and 1440 CSS pixels, assets and links, native HTML
