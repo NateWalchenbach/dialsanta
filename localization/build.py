@@ -16,7 +16,7 @@ PAGES = ['index','parents','support','privacy','terms','purchase','thanks']
 english = json.loads((ROOT/'catalogs/en.json').read_text())
 keys = list(english)
 source_by_text = {text:key for key,text in english.items()}
-runtime_source = '\n'.join(path.read_text() for path in SITE.glob('*.js') if path.name not in ('language.js', 'acquisition.js'))
+runtime_source = '\n'.join(path.read_text() for path in SITE.glob('*.js') if path.name not in ('language.js', 'acquisition.js', 'meta-pixel.js'))
 # Static HTML already contains translations. Keep only strings referenced by runtime JS.
 runtime_keys = {key for key,text in english.items() if text in runtime_source or text.replace("'", "\\'") in runtime_source or text.replace('"', '\\"') in runtime_source}
 
@@ -93,7 +93,7 @@ for lang, native_name in NAMES.items():
         charset = soup.head.find('meta', charset=True)
         charset.insert_after(bootstrap)
         bootstrap.insert_after(soup.new_tag('script',src=f'/i18n/{lang}.js?v=20261001',defer=''))
-        soup.head.append(soup.new_tag('link', rel='stylesheet', href='/localization.css?v=20261001'))
+        soup.head.append(soup.new_tag('link', rel='stylesheet', href='/localization.css?v=20261007'))
         picker = soup.new_tag('label', attrs={'class':'language-picker'})
         label = soup.new_tag('span',attrs={'class':'language-label'});label.string=messages['Language'];picker.append(label)
         select = soup.new_tag('select',attrs={'data-language-select':'','aria-label':messages['Language']})
