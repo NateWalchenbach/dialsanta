@@ -20,7 +20,7 @@ jobs:
         run: |
           cat > pixel-check.mjs <<'JS'
           import { chromium } from 'playwright';
-          const browser = await chromium.launch();
+          const browser = await chromium.launch({ args: ['--disable-blink-features=AutomationControlled'] }); // fbevents.js stays silent when navigator.webdriver is true
           async function visit(tz, allow) {
             const ctx = await browser.newContext({ timezoneId: tz, locale: 'en-US' });
             const page = await ctx.newPage();
@@ -28,7 +28,7 @@ jobs:
             page.on('request', r => { const u = r.url(); if (/facebook\.com\/tr|fbevents\.js/.test(u)) hits.push(u); });
             await page.goto('https://dialsanta.app/', { waitUntil: 'networkidle', timeout: 60000 });
             await page.waitForTimeout(2000);
-            const state = () => page.evaluate(() => ({ fbq: typeof window.fbq, bannerVisible: !document.querySelector('[data-ads-banner]').hidden, footer: document.querySelector('.ads-choice [data-ads-state]').textContent, stored: localStorage.getItem('dialsanta.website.ads') }));
+            const state = () => page.evaluate(() => ({ webdriver: navigator.webdriver, fbq: typeof window.fbq, bannerVisible: !document.querySelector('[data-ads-banner]').hidden, footer: document.querySelector('.ads-choice [data-ads-state]').textContent, stored: localStorage.getItem('dialsanta.website.ads') }));
             const before = await state();
             const afterLoadHits = hits.length;
             if (allow) { await page.click('[data-ads-banner] [data-ads-allow]'); await page.waitForTimeout(3000); }
