@@ -11,7 +11,7 @@ function env(script,options={}){
  function node(key){return nodes[key]??={dataset:{on:'On',off:'Off',template:'Try {language}'},hidden:true,disabled:false,value:'',textContent:'',innerHTML:'',setAttribute(){},focus(){},addEventListener:(event,fn)=>listen(key,event,fn)};}
  const anchors=options.anchors||[];const ctx={URL,URLSearchParams,Set,Map,TypeError,console,crypto:{randomUUID:()=> 'synthetic-page-test'},navigator:{languages:['en'],language:'en',...options.navigator},location,
  Intl:{...Intl,DateTimeFormat:()=>({resolvedOptions:()=>({timeZone:options.zone===undefined?'America/Los_Angeles':options.zone})}),NumberFormat:Intl.NumberFormat},
- document:{documentElement:{lang:options.lang||'en'},referrer:options.referrer||'',querySelectorAll:s=>s==='a[href]'?anchors:(/^\[data-(analytics|ads)-/.test(s)?[node(s)]:[]),querySelector:s=>s==='[data-ads-banner]'?node(s):null,getElementById:node,createElement:()=>({}),head:{appendChild:x=>scripts.push(x)},body:{classList:{add(){},remove(){}}},addEventListener:(event,fn)=>listen('document',event,fn)},
+ document:{documentElement:{lang:options.lang||'en'},referrer:options.referrer||'',querySelectorAll:s=>s==='a[href]'?anchors:(/^\[data-(analytics|ads)-/.test(s)?[node(s)]:[]),querySelector:s=>s==='[data-ads-banner]'?node(s):null,getElementById:node,createElement:()=>({dataset:{},setAttribute(k,v){if(k==='data-disable-auto-track')this.dataset.disableAutoTrack=v;}}),head:{appendChild:x=>scripts.push(x)},body:{classList:{add(){},remove(){}}},addEventListener:(event,fn)=>listen('document',event,fn)},
  localStorage:{getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)},sessionStorage:{getItem:()=>null,setItem(){},removeItem(){}},
  fetch:(url,request={})=>{sent.push({url,request,body:request.body?JSON.parse(request.body):undefined});if(options.offline)return Promise.reject(new TypeError('Failed to fetch'));return Promise.resolve({ok:true,status:200,json:async()=>options.reply?options.reply(url,request):{}})},setTimeout:()=>0,clearTimeout(){}};
  ctx.window=ctx;ctx.addEventListener=(event,fn)=>listen('window',event,fn);vm.createContext(ctx);if(!options.noRuntime){vm.runInContext(source['language-registry.js'],ctx);vm.runInContext(source['language.js'],ctx);}if(options.messages)ctx.SiteMessages=options.messages;vm.runInContext(source[script],ctx);
@@ -55,6 +55,18 @@ e=env('meta-pixel.js');eq(e.scripts.length,1);e=env('meta-pixel.js',{storage:{'d
 for(const suffix of ['?email=private@example.invalid','?session_id=private','?token=private','?code=123456','?client_secret=private','#access_token=private','#email=private%40example.invalid']){e=env('meta-pixel.js',{url:'https://dialsanta.app/ar/'+suffix,lang:'ar',storage:allow});eq(e.scripts.length,0,suffix);e=env('meta-pixel.js',{referrer:'https://dialsanta.app/ar/'+suffix,storage:allow});eq(e.scripts.length,0,'referrer '+suffix);}
 for(const referrer of ['https://dialsanta.app/ar/purchase.html','https://dialsanta.app/zh-Hant/thanks.html?session_id=private']){e=env('meta-pixel.js',{referrer,storage:allow});eq(e.scripts.length,0);}
 e=env('meta-pixel.js',{url:'https://dialsanta.app/ar/?lang=ar&ds=ds-ig-profile&utm_source=instagram&utm_campaign=christmas&fbclid=synthetic-click',lang:'ar',storage:allow});eq(e.scripts.length,1);e.click('private@example.invalid');eq(e.ctx.fbq.queue.at(-1)[2].placement,'other');eq(Object.keys(e.ctx.fbq.queue.at(-1)[2]).sort().join(),'language,page,placement');
+// Vercel uses the same choice, strips URLs, and fails closed on sensitive referrers.
+e=env('acquisition.js',{storage:allow,url:'https://dialsanta.app/ar/?email=private-marker@example.invalid#secret',lang:'ar'});
+eq(e.scripts.length,1);eq(e.scripts[0].src,'/_vercel/insights/script.js');eq(e.scripts[0].dataset.disableAutoTrack,'1');
+const beforeSend=e.ctx.vaq.find(x=>x[0]==='beforeSend')[1];
+eq(beforeSend({type:'pageview',url:'https://dialsanta.app/ar/?secret'}).url,'https://dialsanta.app/ar/');
+eq(e.ctx.vaq.filter(x=>x[0]==='pageview').length,1);e.click('hero');e.click('hero');
+eq(e.ctx.vaq.filter(x=>x[0]==='event').length,1);
+eq(Object.keys(e.ctx.vaq.find(x=>x[0]==='event')[1].data).sort().join(),'language,placement');
+e.fire('[data-analytics-deny]','click');eq(beforeSend({type:'pageview',url:'https://dialsanta.app/'}),null);
+for(const referrer of ['https://external.example/person/private','https://external.example/?email=private','https://dialsanta.app/thanks.html?session_id=private']){
+ const e=env('acquisition.js',{storage:allow,referrer});eq(e.scripts.length,0);eq(e.sent.length,1);
+}
 (async()=>{
  const offline=env('purchase.js',{url:'https://dialsanta.app/hi/purchase.html',lang:'hi',offline:true,messages:{'Could not check purchase availability.':'खरीदारी की उपलब्धता नहीं जाँची जा सकी।','Could not connect. Please try again.':'कनेक्ट नहीं हो सका। फिर कोशिश करें।'}});
  await new Promise(setImmediate);eq(offline.ctx.document.getElementById('purchase-status').textContent,'खरीदारी की उपलब्धता नहीं जाँची जा सकी।');eq(offline.ctx.document.getElementById('purchase-error').textContent,'कनेक्ट नहीं हो सका। फिर कोशिश करें।');eq(offline.ctx.document.getElementById('purchase-content').hidden,true);eq(offline.sent.length,1);eq(offline.sent[0].url.endsWith('/web/config'),true);

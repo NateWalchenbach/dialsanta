@@ -1,4 +1,4 @@
-/* Optional, anonymous website measurement. No SDK, cookies, replay or app identity. */
+/* Optional website measurement. Shared opt-in; no advertising cookies, replay or app identity. */
 (() => {
   'use strict';
   if (window.SiteI18n?.redirecting) return;
@@ -25,6 +25,37 @@
   let pageId;
   let viewed = false;
   const clicked = new Set();
+  let vercelLoaded = false;
+  // Vercel's SDK sends referrers separately from beforeSend. Fail closed when
+  // an external referrer includes a path or query that might contain personal data.
+  const safeReferrer = (() => {
+    if (!document.referrer) return true;
+    try {
+      const ref = new URL(document.referrer);
+      return ref.origin === location.origin
+        ? !!publicPage(ref.pathname) && !ref.search && !ref.hash
+        : ref.pathname === '/' && !ref.search && !ref.hash;
+    } catch { return false; }
+  })();
+  function vercelCapture(event, placement) {
+    if (!live || !page || !allowed || blocked() || !safeReferrer) return;
+    if (!vercelLoaded) {
+      vercelLoaded = true;
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      window.va('beforeSend', event => {
+        if (!allowed || blocked() || window.SiteI18n?.redirecting) return null;
+        // Only known public routes reach this script; strip every query and fragment.
+        return { ...event, url: location.origin + location.pathname };
+      });
+      const script = document.createElement('script');
+      script.src = '/_vercel/insights/script.js';
+      script.defer = true;
+      script.setAttribute('data-disable-auto-track', '1');
+      document.head.appendChild(script);
+    }
+    if (event === 'website_page_view') window.va('pageview', { path: location.pathname });
+    else window.va('event', { name: 'app_store_click', data: { language: lang, placement: placements.includes(placement) ? placement : 'other' } });
+  }
   const source = (() => {
     if (campaign.startsWith('ds-ig-')) return 'instagram';
     if (campaign.startsWith('ds-yt-')) return 'youtube';
@@ -39,6 +70,7 @@
     } catch { return 'direct-or-unknown'; }
   })();
   function capture(event, placement) {
+    vercelCapture(event, placement);
     if (!live || !page || !allowed || blocked() || !crypto.randomUUID) return;
     pageId ||= crypto.randomUUID(); // Memory only: discarded on navigation. Never an app/user ID.
     const properties = {page, language:lang, source, campaign, $process_person_profile:false, $geoip_disable:true, $ip:null};

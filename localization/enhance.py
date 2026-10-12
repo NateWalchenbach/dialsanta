@@ -48,7 +48,7 @@ def enhance(soup, lang, page, catalog):
         if page == 'index':
             link = soup.new_tag('a',href='/press/');link.string=catalog['seo.press'];foot.append(link)
         controls = soup.new_tag('details',attrs={'class':'analytics-choice'})
-        controls.append(fragment(soup, f'<summary>{catalog["seo.analytics.title"]} · <span data-analytics-state data-on="{catalog["seo.analytics.on"]}" data-off="{catalog["seo.analytics.off"]}">{catalog["seo.analytics.off"]}</span></summary><p>{catalog["seo.analytics.body"]}</p><div><button type="button" data-analytics-allow aria-pressed="false">{catalog["seo.analytics.allow"]}</button><button type="button" data-analytics-deny aria-pressed="true">{catalog["seo.analytics.deny"]}</button></div>'))
+        controls.append(fragment(soup, f'<summary>{catalog["seo.analytics.title"]} · <span data-analytics-state data-on="{catalog["seo.analytics.on"]}" data-off="{catalog["seo.analytics.off"]}">{catalog["seo.analytics.off"]}</span></summary><p>{catalog["seo.analytics.body"]}</p><div><a href="/privacy.html?lang=en#vercel-analytics" lang="en">Vercel Analytics</a> · <button type="button" data-analytics-allow aria-pressed="false">{catalog["seo.analytics.allow"]}</button><button type="button" data-analytics-deny aria-pressed="true">{catalog["seo.analytics.deny"]}</button></div>'))
         foot.append(controls)
         # Meta Pixel choice: a footer control everywhere, plus a consent banner that meta-pixel.js
         # shows only where prior consent is required. Every edition links to its policy.
