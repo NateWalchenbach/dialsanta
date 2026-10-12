@@ -3,16 +3,20 @@
   'use strict';
   const token = 'phc_CVCnDgFKwLpfCsyjyg8vA7d8URTnNW7jJwTpDarYyeVs'; // Public, write-only Dial Santa project 639766.
   const key = 'dialsanta.website.analytics';
-  const languages = ['en','es','fr','de','it','pt','ru'];
   const pages = ['home','parents','support','privacy','terms','facetime-santa','how-to-call-santa','questions-to-ask-santa','press'];
   // Fixed public campaign labels only; never store arbitrary query values or visitor IDs.
   const campaigns = new Set(['ig','yt'].flatMap(channel => ['profile','adultugc','livecall','santaskit','experiment'].map(format => `ds-${channel}-${format}`)));
   const requestedCampaign = new URLSearchParams(location.search).get('ds');
   const campaign = campaigns.has(requestedCampaign) ? requestedCampaign : 'website';
   const placements = ['navigation','hero','footer','sticky','pack-5','pack-12','pack-30','character-santa','character-mrsclaus','character-comet','character-pip','character-crumble','character-flurry','guide-top','guide-bottom','guide-step','parents','other'];
-  const lang = languages.includes(document.documentElement.lang) ? document.documentElement.lang : 'en';
-  const route = location.pathname.replace(/^\/(es|fr|de|it|pt|ru)\//, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
-  const page = route === '' || route === 'index' ? 'home' : pages.includes(route) ? route : null;
+  const lang = window.SiteI18n?.normalizeLanguage(document.documentElement.lang) || 'en';
+  function publicPage(pathname) {
+    const path = window.SiteI18n?.stripLocale(pathname);
+    if (typeof path !== 'string') return null; // Missing registry/runtime fails closed.
+    const route = path.replace(/\/index\.html$/, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
+    return route === '' || route === 'index' ? 'home' : pages.includes(route) ? route : null;
+  }
+  const page = publicPage(location.pathname);
   const blocked = () => navigator.globalPrivacyControl === true || navigator.doNotTrack === '1' || window.doNotTrack === '1';
   const live = location.protocol === 'https:' && location.hostname === 'dialsanta.app';
   let allowed = false;
@@ -65,8 +69,7 @@
         url.searchParams.set('pt', '128424654'); url.searchParams.set('ct', campaign); url.searchParams.set('mt', '8');
         link.href = url.href;
       } else if (url.origin === location.origin && !url.hash) {
-        const next = url.pathname.replace(/^\/(es|fr|de|it|pt|ru)\//, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
-        if (next === '' || next === 'index' || pages.includes(next)) {
+        if (publicPage(url.pathname)) {
           url.searchParams.set('ds', campaign); link.href = url.href;
         }
       }

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="pl">
+<head>
+<meta charset="utf-8"/><script defer="" src="/language-registry.js?v=20261011"></script><script defer="" src="/language.js?v=20261011"></script><script defer="" src="/i18n/pl.js?v=20261011"></script>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>Dziękujemy — Dial Santa</title>
+<meta content="noindex" name="robots"/>
+<meta content="#8F1B23" name="theme-color"/>
+<link href="/assets/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --red-lite:#E04A4F; --red:#C42B35; --red-deep:#8F1B23;
+    --green:#34C759; --green-deep:#1F7A4A; --gold:#FFE7B3;
+    --serif:"DM Serif Display", Georgia, "Times New Roman", serif;
+    --sans:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { min-height:100%; }
+  body {
+    font-family:var(--sans); color:#fff; text-align:center;
+    background:radial-gradient(120% 90% at 50% 0%, var(--red-lite) 0%, var(--red) 40%, var(--red-deep) 100%);
+    background-attachment:fixed;
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 24px calc(32px + env(safe-area-inset-bottom)); overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* snow */
+  .snow { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+  .flake { position:absolute; top:-12px; border-radius:50%; background:#fff; opacity:.7;
+           animation:fall linear infinite; }
+  @keyframes fall { to { transform:translateY(105dvh) translateX(var(--drift,14px)); } }
+
+  .card { position:relative; z-index:1; width:100%; max-width:440px; }
+
+  /* checkmark */
+  .badge { width:132px; height:132px; margin:0 auto 30px; position:relative; }
+  .badge .ring { position:absolute; inset:0; border-radius:50%; background:var(--green);
+                 box-shadow:0 18px 50px rgba(52,199,89,.45), 0 0 0 12px rgba(52,199,89,.16);
+                 animation:pop .55s cubic-bezier(.2,1.5,.4,1) both; }
+  .badge svg { position:absolute; inset:0; width:100%; height:100%; }
+  .badge path { fill:none; stroke:#fff; stroke-width:9; stroke-linecap:round; stroke-linejoin:round;
+                stroke-dasharray:60; stroke-dashoffset:60;
+                animation:draw .45s .4s cubic-bezier(.6,0,.4,1) forwards; }
+  @keyframes pop { 0% { transform:scale(.4); opacity:0 } 100% { transform:scale(1); opacity:1 } }
+  @keyframes draw { to { stroke-dashoffset:0 } }
+
+  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(38px,11vw,52px); line-height:1.04;
+       letter-spacing:-1px; text-shadow:0 6px 26px rgba(0,0,0,.22);
+       animation:rise .6s .2s both; }
+  h1 em { font-style:italic; color:var(--gold); }
+  .sub { margin-top:18px; font-size:17.5px; line-height:1.55; color:rgba(255,255,255,.93);
+         animation:rise .6s .32s both; }
+  @keyframes rise { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:none } }
+
+  .pill { display:inline-flex; align-items:center; gap:10px; margin-top:26px;
+          background:rgba(255,255,255,.15); border:1.5px solid rgba(255,255,255,.34);
+          backdrop-filter:blur(8px); padding:13px 22px; border-radius:999px;
+          font-size:16.5px; font-weight:700; letter-spacing:.3px;
+          animation:rise .6s .42s both; }
+  .pill .dot { width:9px; height:9px; border-radius:50%; background:var(--green);
+               box-shadow:0 0 0 4px rgba(52,199,89,.3); }
+
+  .cta { display:block; margin-top:34px; padding:19px 24px; border-radius:999px; border:0;
+         width:100%; font-family:var(--sans); font-size:18px; font-weight:800; letter-spacing:.2px;
+         color:#7A1620; background:linear-gradient(180deg,#FFF3D6,#FFD873);
+         box-shadow:0 14px 34px rgba(0,0,0,.28); cursor:pointer; text-decoration:none;
+         animation:rise .6s .5s both; transition:transform .12s ease, box-shadow .12s ease; }
+  .cta:active { transform:translateY(2px) scale(.99); box-shadow:0 8px 20px rgba(0,0,0,.26); }
+  .hint { margin-top:16px; font-size:13.5px; line-height:1.5; color:rgba(255,255,255,.72);
+          animation:rise .6s .58s both; }
+  .hint a { color:#fff; }
+  .foot { margin-top:34px; font-size:12.5px; color:rgba(255,255,255,.6); animation:rise .6s .66s both; }
+  .foot a { color:rgba(255,255,255,.78); text-decoration:none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .badge .ring, .badge path, h1, .sub, .pill, .cta, .hint, .foot { animation:none !important; }
+    .badge path { stroke-dashoffset:0; }
+    .flake { display:none; }
+  }
+</style>
+<link href="https://dialsanta.app/pl/thanks.html" rel="canonical"/><link href="https://dialsanta.app/thanks.html" hreflang="en" rel="alternate"/><link href="https://dialsanta.app/af/thanks.html" hreflang="af" rel="alternate"/><link href="https://dialsanta.app/ar/thanks.html" hreflang="ar" rel="alternate"/><link href="https://dialsanta.app/hy/thanks.html" hreflang="hy" rel="alternate"/><link href="https://dialsanta.app/as/thanks.html" hreflang="as" rel="alternate"/><link href="https://dialsanta.app/ast/thanks.html" hreflang="ast" rel="alternate"/><link href="https://dialsanta.app/az/thanks.html" hreflang="az" rel="alternate"/><link href="https://dialsanta.app/be/thanks.html" hreflang="be" rel="alternate"/><link href="https://dialsanta.app/bn/thanks.html" hreflang="bn" rel="alternate"/><link href="https://dialsanta.app/bs/thanks.html" hreflang="bs" rel="alternate"/><link href="https://dialsanta.app/bg/thanks.html" hreflang="bg" rel="alternate"/><link href="https://dialsanta.app/my/thanks.html" hreflang="my" rel="alternate"/><link href="https://dialsanta.app/yue/thanks.html" hreflang="yue" rel="alternate"/><link href="https://dialsanta.app/ca/thanks.html" hreflang="ca" rel="alternate"/><link href="https://dialsanta.app/zh-Hans/thanks.html" hreflang="zh-Hans" rel="alternate"/><link href="https://dialsanta.app/zh-Hant/thanks.html" hreflang="zh-Hant" rel="alternate"/><link href="https://dialsanta.app/hr/thanks.html" hreflang="hr" rel="alternate"/><link href="https://dialsanta.app/cs/thanks.html" hreflang="cs" rel="alternate"/><link href="https://dialsanta.app/da/thanks.html" hreflang="da" rel="alternate"/><link href="https://dialsanta.app/nl/thanks.html" hreflang="nl" rel="alternate"/><link href="https://dialsanta.app/et/thanks.html" hreflang="et" rel="alternate"/><link href="https://dialsanta.app/fil/thanks.html" hreflang="fil" rel="alternate"/><link href="https://dialsanta.app/fi/thanks.html" hreflang="fi" rel="alternate"/><link href="https://dialsanta.app/fr/thanks.html" hreflang="fr" rel="alternate"/><link href="https://dialsanta.app/gl/thanks.html" hreflang="gl" rel="alternate"/><link href="https://dialsanta.app/ka/thanks.html" hreflang="ka" rel="alternate"/><link href="https://dialsanta.app/de/thanks.html" hreflang="de" rel="alternate"/><link href="https://dialsanta.app/el/thanks.html" hreflang="el" rel="alternate"/><link href="https://dialsanta.app/gu/thanks.html" hreflang="gu" rel="alternate"/><link href="https://dialsanta.app/ha/thanks.html" hreflang="ha" rel="alternate"/><link href="https://dialsanta.app/he/thanks.html" hreflang="he" rel="alternate"/><link href="https://dialsanta.app/hi/thanks.html" hreflang="hi" rel="alternate"/><link href="https://dialsanta.app/hu/thanks.html" hreflang="hu" rel="alternate"/><link href="https://dialsanta.app/is/thanks.html" hreflang="is" rel="alternate"/><link href="https://dialsanta.app/id/thanks.html" hreflang="id" rel="alternate"/><link href="https://dialsanta.app/ga/thanks.html" hreflang="ga" rel="alternate"/><link href="https://dialsanta.app/it/thanks.html" hreflang="it" rel="alternate"/><link href="https://dialsanta.app/ja/thanks.html" hreflang="ja" rel="alternate"/><link href="https://dialsanta.app/jv/thanks.html" hreflang="jv" rel="alternate"/><link href="https://dialsanta.app/kn/thanks.html" hreflang="kn" rel="alternate"/><link href="https://dialsanta.app/kk/thanks.html" hreflang="kk" rel="alternate"/><link href="https://dialsanta.app/ky/thanks.html" hreflang="ky" rel="alternate"/><link href="https://dialsanta.app/ko/thanks.html" hreflang="ko" rel="alternate"/><link href="https://dialsanta.app/lv/thanks.html" hreflang="lv" rel="alternate"/><link href="https://dialsanta.app/lt/thanks.html" hreflang="lt" rel="alternate"/><link href="https://dialsanta.app/lb/thanks.html" hreflang="lb" rel="alternate"/><link href="https://dialsanta.app/mk/thanks.html" hreflang="mk" rel="alternate"/><link href="https://dialsanta.app/ms/thanks.html" hreflang="ms" rel="alternate"/><link href="https://dialsanta.app/ml/thanks.html" hreflang="ml" rel="alternate"/><link href="https://dialsanta.app/mt/thanks.html" hreflang="mt" rel="alternate"/><link href="https://dialsanta.app/mi/thanks.html" hreflang="mi" rel="alternate"/><link href="https://dialsanta.app/mr/thanks.html" hreflang="mr" rel="alternate"/><link href="https://dialsanta.app/mn/thanks.html" hreflang="mn" rel="alternate"/><link href="https://dialsanta.app/ne/thanks.html" hreflang="ne" rel="alternate"/><link href="https://dialsanta.app/nb/thanks.html" hreflang="nb" rel="alternate"/><link href="https://dialsanta.app/oc/thanks.html" hreflang="oc" rel="alternate"/><link href="https://dialsanta.app/or/thanks.html" hreflang="or" rel="alternate"/><link href="https://dialsanta.app/ps/thanks.html" hreflang="ps" rel="alternate"/><link href="https://dialsanta.app/fa/thanks.html" hreflang="fa" rel="alternate"/><link href="https://dialsanta.app/pl/thanks.html" hreflang="pl" rel="alternate"/><link href="https://dialsanta.app/pt/thanks.html" hreflang="pt" rel="alternate"/><link href="https://dialsanta.app/pa/thanks.html" hreflang="pa" rel="alternate"/><link href="https://dialsanta.app/ro/thanks.html" hreflang="ro" rel="alternate"/><link href="https://dialsanta.app/ru/thanks.html" hreflang="ru" rel="alternate"/><link href="https://dialsanta.app/sr/thanks.html" hreflang="sr" rel="alternate"/><link href="https://dialsanta.app/sd/thanks.html" hreflang="sd" rel="alternate"/><link href="https://dialsanta.app/sk/thanks.html" hreflang="sk" rel="alternate"/><link href="https://dialsanta.app/sl/thanks.html" hreflang="sl" rel="alternate"/><link href="https://dialsanta.app/so/thanks.html" hreflang="so" rel="alternate"/><link href="https://dialsanta.app/es/thanks.html" hreflang="es" rel="alternate"/><link href="https://dialsanta.app/sw/thanks.html" hreflang="sw" rel="alternate"/><link href="https://dialsanta.app/sv/thanks.html" hreflang="sv" rel="alternate"/><link href="https://dialsanta.app/tg/thanks.html" hreflang="tg" rel="alternate"/><link href="https://dialsanta.app/ta/thanks.html" hreflang="ta" rel="alternate"/><link href="https://dialsanta.app/te/thanks.html" hreflang="te" rel="alternate"/><link href="https://dialsanta.app/th/thanks.html" hreflang="th" rel="alternate"/><link href="https://dialsanta.app/tr/thanks.html" hreflang="tr" rel="alternate"/><link href="https://dialsanta.app/uk/thanks.html" hreflang="uk" rel="alternate"/><link href="https://dialsanta.app/ur/thanks.html" hreflang="ur" rel="alternate"/><link href="https://dialsanta.app/uz/thanks.html" hreflang="uz" rel="alternate"/><link href="https://dialsanta.app/vi/thanks.html" hreflang="vi" rel="alternate"/><link href="https://dialsanta.app/cy/thanks.html" hreflang="cy" rel="alternate"/><link href="https://dialsanta.app/yo/thanks.html" hreflang="yo" rel="alternate"/><link href="https://dialsanta.app/thanks.html" hreflang="x-default" rel="alternate"/><meta content="pl" property="og:locale"/><link href="/localization.css?v=20261011" rel="stylesheet"/></head>
+<body><div class="page-language"><label class="language-picker"><span class="language-label">Język</span><select aria-label="Język" data-language-select="" title="Polski"><option dir="ltr" lang="en" value="en">English</option><option dir="ltr" lang="af" value="af">Afrikaans</option><option dir="rtl" lang="ar" value="ar">العربية</option><option dir="ltr" lang="hy" value="hy">Հայերեն</option><option dir="ltr" lang="as" value="as">অসমীয়া</option><option dir="ltr" lang="ast" value="ast">Asturianu</option><option dir="ltr" lang="az" value="az">Azərbaycanca</option><option dir="ltr" lang="be" value="be">Беларуская</option><option dir="ltr" lang="bn" value="bn">বাংলা</option><option dir="ltr" lang="bs" value="bs">Bosanski</option><option dir="ltr" lang="bg" value="bg">Български</option><option dir="ltr" lang="my" value="my">မြန်မာ</option><option dir="ltr" lang="yue" value="yue">粵語</option><option dir="ltr" lang="ca" value="ca">Català</option><option dir="ltr" lang="zh-Hans" value="zh-Hans">简体中文</option><option dir="ltr" lang="zh-Hant" value="zh-Hant">繁體中文</option><option dir="ltr" lang="hr" value="hr">Hrvatski</option><option dir="ltr" lang="cs" value="cs">Čeština</option><option dir="ltr" lang="da" value="da">Dansk</option><option dir="ltr" lang="nl" value="nl">Nederlands</option><option dir="ltr" lang="et" value="et">Eesti</option><option dir="ltr" lang="fil" value="fil">Filipino</option><option dir="ltr" lang="fi" value="fi">Suomi</option><option dir="ltr" lang="fr" value="fr">Français</option><option dir="ltr" lang="gl" value="gl">Galego</option><option dir="ltr" lang="ka" value="ka">ქართული</option><option dir="ltr" lang="de" value="de">Deutsch</option><option dir="ltr" lang="el" value="el">Ελληνικά</option><option dir="ltr" lang="gu" value="gu">ગુજરાતી</option><option dir="ltr" lang="ha" value="ha">Hausa</option><option dir="rtl" lang="he" value="he">עברית</option><option dir="ltr" lang="hi" value="hi">हिन्दी</option><option dir="ltr" lang="hu" value="hu">Magyar</option><option dir="ltr" lang="is" value="is">Íslenska</option><option dir="ltr" lang="id" value="id">Bahasa Indonesia</option><option dir="ltr" lang="ga" value="ga">Gaeilge</option><option dir="ltr" lang="it" value="it">Italiano</option><option dir="ltr" lang="ja" value="ja">日本語</option><option dir="ltr" lang="jv" value="jv">Basa Jawa</option><option dir="ltr" lang="kn" value="kn">ಕನ್ನಡ</option><option dir="ltr" lang="kk" value="kk">Қазақша</option><option dir="ltr" lang="ky" value="ky">Кыргызча</option><option dir="ltr" lang="ko" value="ko">한국어</option><option dir="ltr" lang="lv" value="lv">Latviešu</option><option dir="ltr" lang="lt" value="lt">Lietuvių</option><option dir="ltr" lang="lb" value="lb">Lëtzebuergesch</option><option dir="ltr" lang="mk" value="mk">Македонски</option><option dir="ltr" lang="ms" value="ms">Bahasa Melayu</option><option dir="ltr" lang="ml" value="ml">മലയാളം</option><option dir="ltr" lang="mt" value="mt">Malti</option><option dir="ltr" lang="mi" value="mi">Māori</option><option dir="ltr" lang="mr" value="mr">मराठी</option><option dir="ltr" lang="mn" value="mn">Монгол</option><option dir="ltr" lang="ne" value="ne">नेपाली</option><option dir="ltr" lang="nb" value="nb">Norsk bokmål</option><option dir="ltr" lang="oc" value="oc">Occitan</option><option dir="ltr" lang="or" value="or">ଓଡ଼ିଆ</option><option dir="rtl" lang="ps" value="ps">پښتو</option><option dir="rtl" lang="fa" value="fa">فارسی</option><option dir="ltr" lang="pl" selected="" value="pl">Polski</option><option dir="ltr" lang="pt" value="pt">Português</option><option dir="ltr" lang="pa" value="pa">ਪੰਜਾਬੀ</option><option dir="ltr" lang="ro" value="ro">Română</option><option dir="ltr" lang="ru" value="ru">Русский</option><option dir="ltr" lang="sr" value="sr">Српски</option><option dir="rtl" lang="sd" value="sd">سنڌي</option><option dir="ltr" lang="sk" value="sk">Slovenčina</option><option dir="ltr" lang="sl" value="sl">Slovenščina</option><option dir="ltr" lang="so" value="so">Soomaali</option><option dir="ltr" lang="es" value="es">Español</option><option dir="ltr" lang="sw" value="sw">Kiswahili</option><option dir="ltr" lang="sv" value="sv">Svenska</option><option dir="ltr" lang="tg" value="tg">Тоҷикӣ</option><option dir="ltr" lang="ta" value="ta">தமிழ்</option><option dir="ltr" lang="te" value="te">తెలుగు</option><option dir="ltr" lang="th" value="th">ไทย</option><option dir="ltr" lang="tr" value="tr">Türkçe</option><option dir="ltr" lang="uk" value="uk">Українська</option><option dir="rtl" lang="ur" value="ur">اردو</option><option dir="ltr" lang="uz" value="uz">Oʻzbekcha</option><option dir="ltr" lang="vi" value="vi">Tiếng Việt</option><option dir="ltr" lang="cy" value="cy">Cymraeg</option><option dir="ltr" lang="yo" value="yo">Yorùbá</option></select></label></div>
+<div aria-hidden="true" class="snow" id="snow"></div>
+<main class="card">
+<div aria-label="Zakup zakończony" class="badge" role="img">
+<div class="ring"></div>
+<svg viewbox="0 0 100 100"><path d="M28 52 L43 67 L72 36"></path></svg>
+</div>
+<h1>Ho ho ho!<br/><em>Twoje minuty<br/>są gotowe.</em></h1>
+<p class="sub">Płatność zakończona. <strong id="added">Twoje minuty</strong> dodano do konta Dial Santa — nigdy nie tracą ważności.</p>
+<div class="pill"><span class="dot"></span> <span id="status">Płatność otrzymana</span></div>
+<a class="cta" href="/pl/" id="back">Wróć do strony</a>
+<p class="hint" id="hint">Z pytaniami o płatność skontaktuj się ze wsparciem przez poniższy link.</p>
+<p class="foot">Potwierdzenie wysłane e-mailem przez Stripe · <a href="/pl/support.html">Potrzebujesz pomocy?</a><details class="language-editions" id="website-languages"><summary>Dostępne języki</summary><input aria-label="Szukaj języków" autocomplete="off" data-language-search="" hidden="" placeholder="Szukaj języków" type="search"/><nav aria-label="Dostępne języki" class="language-links"><a dir="ltr" href="/thanks.html" hreflang="en" lang="en">English</a><a dir="ltr" href="/af/thanks.html" hreflang="af" lang="af">Afrikaans</a><a dir="rtl" href="/ar/thanks.html" hreflang="ar" lang="ar">العربية</a><a dir="ltr" href="/hy/thanks.html" hreflang="hy" lang="hy">Հայերեն</a><a dir="ltr" href="/as/thanks.html" hreflang="as" lang="as">অসমীয়া</a><a dir="ltr" href="/ast/thanks.html" hreflang="ast" lang="ast">Asturianu</a><a dir="ltr" href="/az/thanks.html" hreflang="az" lang="az">Azərbaycanca</a><a dir="ltr" href="/be/thanks.html" hreflang="be" lang="be">Беларуская</a><a dir="ltr" href="/bn/thanks.html" hreflang="bn" lang="bn">বাংলা</a><a dir="ltr" href="/bs/thanks.html" hreflang="bs" lang="bs">Bosanski</a><a dir="ltr" href="/bg/thanks.html" hreflang="bg" lang="bg">Български</a><a dir="ltr" href="/my/thanks.html" hreflang="my" lang="my">မြန်မာ</a><a dir="ltr" href="/yue/thanks.html" hreflang="yue" lang="yue">粵語</a><a dir="ltr" href="/ca/thanks.html" hreflang="ca" lang="ca">Català</a><a dir="ltr" href="/zh-Hans/thanks.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a dir="ltr" href="/zh-Hant/thanks.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a><a dir="ltr" href="/hr/thanks.html" hreflang="hr" lang="hr">Hrvatski</a><a dir="ltr" href="/cs/thanks.html" hreflang="cs" lang="cs">Čeština</a><a dir="ltr" href="/da/thanks.html" hreflang="da" lang="da">Dansk</a><a dir="ltr" href="/nl/thanks.html" hreflang="nl" lang="nl">Nederlands</a><a dir="ltr" href="/et/thanks.html" hreflang="et" lang="et">Eesti</a><a dir="ltr" href="/fil/thanks.html" hreflang="fil" lang="fil">Filipino</a><a dir="ltr" href="/fi/thanks.html" hreflang="fi" lang="fi">Suomi</a><a dir="ltr" href="/fr/thanks.html" hreflang="fr" lang="fr">Français</a><a dir="ltr" href="/gl/thanks.html" hreflang="gl" lang="gl">Galego</a><a dir="ltr" href="/ka/thanks.html" hreflang="ka" lang="ka">ქართული</a><a dir="ltr" href="/de/thanks.html" hreflang="de" lang="de">Deutsch</a><a dir="ltr" href="/el/thanks.html" hreflang="el" lang="el">Ελληνικά</a><a dir="ltr" href="/gu/thanks.html" hreflang="gu" lang="gu">ગુજરાતી</a><a dir="ltr" href="/ha/thanks.html" hreflang="ha" lang="ha">Hausa</a><a dir="rtl" href="/he/thanks.html" hreflang="he" lang="he">עברית</a><a dir="ltr" href="/hi/thanks.html" hreflang="hi" lang="hi">हिन्दी</a><a dir="ltr" href="/hu/thanks.html" hreflang="hu" lang="hu">Magyar</a><a dir="ltr" href="/is/thanks.html" hreflang="is" lang="is">Íslenska</a><a dir="ltr" href="/id/thanks.html" hreflang="id" lang="id">Bahasa Indonesia</a><a dir="ltr" href="/ga/thanks.html" hreflang="ga" lang="ga">Gaeilge</a><a dir="ltr" href="/it/thanks.html" hreflang="it" lang="it">Italiano</a><a dir="ltr" href="/ja/thanks.html" hreflang="ja" lang="ja">日本語</a><a dir="ltr" href="/jv/thanks.html" hreflang="jv" lang="jv">Basa Jawa</a><a dir="ltr" href="/kn/thanks.html" hreflang="kn" lang="kn">ಕನ್ನಡ</a><a dir="ltr" href="/kk/thanks.html" hreflang="kk" lang="kk">Қазақша</a><a dir="ltr" href="/ky/thanks.html" hreflang="ky" lang="ky">Кыргызча</a><a dir="ltr" href="/ko/thanks.html" hreflang="ko" lang="ko">한국어</a><a dir="ltr" href="/lv/thanks.html" hreflang="lv" lang="lv">Latviešu</a><a dir="ltr" href="/lt/thanks.html" hreflang="lt" lang="lt">Lietuvių</a><a dir="ltr" href="/lb/thanks.html" hreflang="lb" lang="lb">Lëtzebuergesch</a><a dir="ltr" href="/mk/thanks.html" hreflang="mk" lang="mk">Македонски</a><a dir="ltr" href="/ms/thanks.html" hreflang="ms" lang="ms">Bahasa Melayu</a><a dir="ltr" href="/ml/thanks.html" hreflang="ml" lang="ml">മലയാളം</a><a dir="ltr" href="/mt/thanks.html" hreflang="mt" lang="mt">Malti</a><a dir="ltr" href="/mi/thanks.html" hreflang="mi" lang="mi">Māori</a><a dir="ltr" href="/mr/thanks.html" hreflang="mr" lang="mr">मराठी</a><a dir="ltr" href="/mn/thanks.html" hreflang="mn" lang="mn">Монгол</a><a dir="ltr" href="/ne/thanks.html" hreflang="ne" lang="ne">नेपाली</a><a dir="ltr" href="/nb/thanks.html" hreflang="nb" lang="nb">Norsk bokmål</a><a dir="ltr" href="/oc/thanks.html" hreflang="oc" lang="oc">Occitan</a><a dir="ltr" href="/or/thanks.html" hreflang="or" lang="or">ଓଡ଼ିଆ</a><a dir="rtl" href="/ps/thanks.html" hreflang="ps" lang="ps">پښتو</a><a dir="rtl" href="/fa/thanks.html" hreflang="fa" lang="fa">فارسی</a><a aria-current="page" dir="ltr" href="/pl/thanks.html" hreflang="pl" lang="pl">Polski</a><a dir="ltr" href="/pt/thanks.html" hreflang="pt" lang="pt">Português</a><a dir="ltr" href="/pa/thanks.html" hreflang="pa" lang="pa">ਪੰਜਾਬੀ</a><a dir="ltr" href="/ro/thanks.html" hreflang="ro" lang="ro">Română</a><a dir="ltr" href="/ru/thanks.html" hreflang="ru" lang="ru">Русский</a><a dir="ltr" href="/sr/thanks.html" hreflang="sr" lang="sr">Српски</a><a dir="rtl" href="/sd/thanks.html" hreflang="sd" lang="sd">سنڌي</a><a dir="ltr" href="/sk/thanks.html" hreflang="sk" lang="sk">Slovenčina</a><a dir="ltr" href="/sl/thanks.html" hreflang="sl" lang="sl">Slovenščina</a><a dir="ltr" href="/so/thanks.html" hreflang="so" lang="so">Soomaali</a><a dir="ltr" href="/es/thanks.html" hreflang="es" lang="es">Español</a><a dir="ltr" href="/sw/thanks.html" hreflang="sw" lang="sw">Kiswahili</a><a dir="ltr" href="/sv/thanks.html" hreflang="sv" lang="sv">Svenska</a><a dir="ltr" href="/tg/thanks.html" hreflang="tg" lang="tg">Тоҷикӣ</a><a dir="ltr" href="/ta/thanks.html" hreflang="ta" lang="ta">தமிழ்</a><a dir="ltr" href="/te/thanks.html" hreflang="te" lang="te">తెలుగు</a><a dir="ltr" href="/th/thanks.html" hreflang="th" lang="th">ไทย</a><a dir="ltr" href="/tr/thanks.html" hreflang="tr" lang="tr">Türkçe</a><a dir="ltr" href="/uk/thanks.html" hreflang="uk" lang="uk">Українська</a><a dir="rtl" href="/ur/thanks.html" hreflang="ur" lang="ur">اردو</a><a dir="ltr" href="/uz/thanks.html" hreflang="uz" lang="uz">Oʻzbekcha</a><a dir="ltr" href="/vi/thanks.html" hreflang="vi" lang="vi">Tiếng Việt</a><a dir="ltr" href="/cy/thanks.html" hreflang="cy" lang="cy">Cymraeg</a><a dir="ltr" href="/yo/thanks.html" hreflang="yo" lang="yo">Yorùbá</a></nav></details></p>
+</main>
+<script>
+(function () {
+  // ---- snow
+  var snow = document.getElementById('snow');
+  if (snow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 34; i++) {
+      var f = document.createElement('div');
+      f.className = 'flake';
+      var size = 3 + Math.random() * 6;
+      f.style.width = size + 'px';
+      f.style.height = size + 'px';
+      f.style.left = (Math.random() * 100) + '%';
+      f.style.opacity = 0.35 + Math.random() * 0.5;
+      f.style.setProperty('--drift', (Math.random() * 70 - 35) + 'px');
+      f.style.animationDuration = (7 + Math.random() * 9) + 's';
+      f.style.animationDelay = (-Math.random() * 14) + 's';
+      frag.appendChild(f);
+    }
+    snow.appendChild(frag);
+  }
+
+  // ---- personalize from the pack in the URL
+  var params = new URLSearchParams(location.search);
+  var packMinutes = { pack_5: 5, pack_12: 12, pack_30: 30 };
+  var mins = packMinutes[params.get('pack')];
+  if (mins) {
+    document.getElementById('added').textContent = window.SiteI18n.t("{minutes} minutes", { minutes: mins });
+    document.title = window.SiteI18n.t("{minutes} minutes added — Dial Santa", { minutes: mins });
+  }
+
+})();
+</script>
+<aside aria-label="Język" class="language-suggestion" data-language-suggestion="" hidden=""><span data-language-suggestion-text="" data-template="Wyświetlić tę stronę w języku {language}?"></span><a>Zmień język</a><button type="button">Zachowaj ten język</button></aside></body>
+</html>

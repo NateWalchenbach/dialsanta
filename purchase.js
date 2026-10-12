@@ -10,6 +10,7 @@
   let busy = false, resendAfter = 0, pollTimer, checkGeneration = 0;
   try { auth = JSON.parse(sessionStorage.getItem(STORAGE) || 'null'); } catch { /* storage can be unavailable */ }
   const showError = message => { $('purchase-error').textContent = message; $('purchase-error').hidden = !message; };
+  const errorText = error => error instanceof TypeError ? t('Could not connect. Please try again.') : error.message || t('Could not connect. Please try again.');
   function remember(value) {
     auth = value;
     try { value ? sessionStorage.setItem(STORAGE, JSON.stringify(value)) : sessionStorage.removeItem(STORAGE); } catch { /* works in this tab without storage */ }
@@ -33,7 +34,7 @@
     try { await work(); }
     catch (error) {
       if (!auth && !$('verified-account').hidden) signIn();
-      showError(error instanceof TypeError ? t('Could not connect. Please try again.') : error.message || t('Could not connect. Please try again.'));
+      showError(errorText(error));
     }
     finally { busy = false; button.disabled = false; }
   }
@@ -64,7 +65,7 @@
     } else {
       $('purchase-status').textContent = result.status === 'expired' ? t('Checkout expired. No completed payment was confirmed.') : t('Waiting for payment confirmation. Your minutes are not confirmed yet.');
       $('check-again').hidden = false;
-      if (result.status === 'pending' && attempt < 9) pollTimer = setTimeout(() => checkPayment(attempt + 1, generation).catch(error => showError(error.message)), 3000);
+      if (result.status === 'pending' && attempt < 9) pollTimer = setTimeout(() => checkPayment(attempt + 1, generation).catch(error => showError(errorText(error))), 3000);
     }
   }
   async function signedIn() {
@@ -77,7 +78,11 @@
   async function sendCode() {
     const remaining = Math.ceil((resendAfter - Date.now()) / 1000);
     if (remaining > 0) throw new Error(t("Please wait {seconds} seconds before requesting another code.", { seconds: remaining }));
-    await api('/auth/request-code', { email: enteredEmail, language: window.SiteI18n.language });
+    await api('/auth/request-code', {
+      email: enteredEmail,
+      language: window.SiteI18n.callLanguage,
+      uiLanguage: window.SiteI18n.language,
+    });
     resendAfter = Date.now() + 30000;
     $('email-form').hidden = true; $('code-form').hidden = false;
     $('code-sent-to').textContent = t("Sent to {email}. Your code expires in 10 minutes.", { email: enteredEmail });
@@ -126,10 +131,10 @@
     }
     if (auth?.token) {
       try { await signedIn(); }
-      catch (error) { if (!auth) signIn(); showError(error.message); }
+      catch (error) { if (!auth) signIn(); showError(errorText(error)); }
     } else signIn();
     if (params.has('cancelled')) $('purchase-status').textContent = t('Checkout was cancelled. You can try again when you’re ready.');
   }
-  init().catch(error => { $('purchase-status').textContent = t('Could not check purchase availability.'); showError(error.message); });
+  init().catch(error => { $('purchase-status').textContent = t('Could not check purchase availability.'); showError(errorText(error)); });
   addEventListener('pagehide', () => { clearTimeout(pollTimer); checkGeneration++; });
 })();

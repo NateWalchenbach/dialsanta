@@ -5,8 +5,39 @@
   if (!PIXEL_ID) return;
   const key = 'dialsanta.website.ads';
   const live = location.protocol === 'https:' && location.hostname === 'dialsanta.app';
-  const route = location.pathname.replace(/^\/(es|fr|de|it|pt|ru)\//, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
-  const excluded = ['purchase', 'thanks'].includes(route);
+  const pages = new Set(['home','parents','support','privacy','terms','facetime-santa','how-to-call-santa','questions-to-ask-santa','press']);
+  const placements = new Set(['navigation','hero','footer','sticky','pack-5','pack-12','pack-30','character-santa','character-mrsclaus','character-comet','character-pip','character-crumble','character-flurry','guide-top','guide-bottom','guide-step','parents','other']);
+  const language = window.SiteI18n?.normalizeLanguage(document.documentElement.lang) || 'en';
+  function publicPage(pathname) {
+    const path = window.SiteI18n?.stripLocale(pathname);
+    if (typeof path !== 'string') return null; // No registry means no measurement.
+    const route = path.replace(/\/index\.html$/, '/').replace(/\.html$/, '').replace(/^\/|\/$/g, '');
+    const page = route === '' || route === 'index' ? 'home' : route;
+    return pages.has(page) ? page : null;
+  }
+  const page = publicPage(location.pathname);
+  // The SDK includes document/referrer URLs in its own event envelope. Keep known
+  // auth/checkout fields and email addresses out, including a return from checkout.
+  // Public campaign parameters (ds, lang, UTM labels, fbclid) keep their current behavior.
+  const privateParameter = /email|(?:^|[_-])(?:session(?:[_-]?id)?|token|code|password|secret|auth|authorization|client[_-]?secret)(?:$|[_-])/i;
+  function sensitiveURL(url) {
+    if (url.username || url.password) return true;
+    if (url.origin === location.origin) {
+      const path = window.SiteI18n?.stripLocale(url.pathname) || url.pathname;
+      if (/^\/(?:purchase|thanks)(?:\.html|\/|$)/.test(path)) return true;
+    }
+    for (const [key,value] of url.searchParams) {
+      if (privateParameter.test(key) || /[^\s@]+@[^\s@]+\.[^\s@]+/.test(value)) return true;
+    }
+    const hash = decodeURIComponent(url.hash.slice(1));
+    return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(hash) ||
+      [...new URLSearchParams(hash)].some(([key]) => privateParameter.test(key));
+  }
+  const privateContext = (() => {
+    try { return sensitiveURL(new URL(location.href)) || Boolean(document.referrer && sensitiveURL(new URL(document.referrer))); }
+    catch { return true; }
+  })();
+  const excluded = !page || privateContext;
   const blocked = () => navigator.globalPrivacyControl === true || navigator.doNotTrack === '1' || window.doNotTrack === '1';
   // Prior consent is required in the EEA, UK and Switzerland. The browser's time zone is the only
   // signal available on a static site; unknown zones ask too.
@@ -78,10 +109,10 @@
     if (!link || !active) return;
     let url; try { url = new URL(link.href); } catch { return; }
     if (url.hostname !== 'apps.apple.com' || !url.pathname.includes('id6808069158')) return;
-    const placement = link.dataset.download || 'other';
+    const placement = placements.has(link.dataset.download) ? link.dataset.download : 'other';
     if (clicked.has(placement)) return;
     clicked.add(placement);
-    window.fbq('trackCustom', 'AppStoreClick', {placement, language: document.documentElement.lang, page: route || 'home'});
+    window.fbq('trackCustom', 'AppStoreClick', {placement, language, page});
   }, true);
   if (banner && live && !excluded && !blocked() && consentRegion && choice === null) {
     banner.hidden = false; document.body.classList.add('has-ads-banner');

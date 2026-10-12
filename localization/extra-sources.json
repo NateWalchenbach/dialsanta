@@ -1,0 +1,143 @@
+{
+  "guides": {
+    "facetime-santa": {
+      "title": "guide.facetime-santa.title",
+      "description": "guide.facetime-santa.description",
+      "heading": "guide.facetime-santa.heading",
+      "intro": "guide.facetime-santa.intro",
+      "body": [
+        "guide.facetime-santa.body.0",
+        "guide.facetime-santa.body.1",
+        "guide.facetime-santa.body.2",
+        "guide.facetime-santa.body.3",
+        "guide.facetime-santa.body.4",
+        "guide.facetime-santa.body.5",
+        "guide.facetime-santa.body.6",
+        "guide.facetime-santa.body.7",
+        "guide.facetime-santa.body.8",
+        "guide.facetime-santa.body.9",
+        "guide.facetime-santa.body.10",
+        "guide.facetime-santa.body.11",
+        "guide.facetime-santa.body.12",
+        "guide.facetime-santa.body.13",
+        "guide.facetime-santa.body.14",
+        "guide.facetime-santa.body.15",
+        "guide.facetime-santa.body.16"
+      ]
+    },
+    "how-to-call-santa": {
+      "title": "guide.how-to-call-santa.title",
+      "description": "guide.how-to-call-santa.description",
+      "heading": "guide.how-to-call-santa.heading",
+      "intro": "guide.how-to-call-santa.intro",
+      "body": [
+        "guide.how-to-call-santa.body.0",
+        "guide.how-to-call-santa.body.1",
+        "guide.how-to-call-santa.body.2",
+        "guide.how-to-call-santa.body.3",
+        "guide.how-to-call-santa.body.4",
+        "guide.how-to-call-santa.body.5",
+        "guide.how-to-call-santa.body.6",
+        "guide.how-to-call-santa.body.7",
+        "guide.how-to-call-santa.body.8",
+        "guide.how-to-call-santa.body.9",
+        "guide.how-to-call-santa.body.10",
+        "guide.how-to-call-santa.body.11",
+        "guide.how-to-call-santa.body.12",
+        "guide.how-to-call-santa.body.13",
+        "guide.how-to-call-santa.body.14",
+        "guide.how-to-call-santa.body.15",
+        "guide.how-to-call-santa.body.16",
+        "guide.how-to-call-santa.body.17",
+        "guide.how-to-call-santa.body.18",
+        "guide.how-to-call-santa.body.19",
+        "guide.how-to-call-santa.body.20",
+        "guide.how-to-call-santa.body.21",
+        "guide.how-to-call-santa.body.22"
+      ]
+    },
+    "questions-to-ask-santa": {
+      "title": "guide.questions-to-ask-santa.title",
+      "description": "guide.questions-to-ask-santa.description",
+      "heading": "guide.questions-to-ask-santa.heading",
+      "intro": "guide.questions-to-ask-santa.intro",
+      "body": [
+        "guide.questions-to-ask-santa.body.0",
+        "guide.questions-to-ask-santa.body.1",
+        "guide.questions-to-ask-santa.body.2",
+        "guide.questions-to-ask-santa.body.3",
+        "guide.questions-to-ask-santa.body.4",
+        "guide.questions-to-ask-santa.body.5",
+        "guide.questions-to-ask-santa.body.6",
+        "guide.questions-to-ask-santa.body.7",
+        "guide.questions-to-ask-santa.body.8",
+        "guide.questions-to-ask-santa.body.9",
+        "guide.questions-to-ask-santa.body.10",
+        "guide.questions-to-ask-santa.body.11",
+        "guide.questions-to-ask-santa.body.12",
+        "guide.questions-to-ask-santa.body.13",
+        "guide.questions-to-ask-santa.body.14",
+        "guide.questions-to-ask-santa.body.15",
+        "guide.questions-to-ask-santa.body.16"
+      ]
+    },
+    "press": {
+      "title": "guide.press.title",
+      "description": "guide.press.description",
+      "heading": "guide.press.heading",
+      "intro": "guide.press.intro",
+      "body": [
+        "guide.press.body.0",
+        "guide.press.body.1",
+        "guide.press.body.2",
+        "guide.press.body.3",
+        "guide.press.body.4",
+        "guide.press.body.5",
+        "guide.press.body.6",
+        "guide.press.body.7",
+        "guide.press.body.8",
+        "guide.press.body.9",
+        "guide.press.body.10",
+        "guide.press.body.11"
+      ]
+    }
+  },
+  "chrome": {
+    "skip": "guide.chrome.skip",
+    "nav": "guide.chrome.nav",
+    "app": "guide.chrome.app",
+    "parents": "guide.chrome.parents",
+    "support": "guide.chrome.support",
+    "press": "guide.chrome.press",
+    "family": "guide.chrome.family",
+    "ctaTitle": "guide.chrome.ctaTitle",
+    "ctaPrice": "guide.chrome.ctaPrice",
+    "download": "guide.chrome.download",
+    "checked": "guide.chrome.checked",
+    "privacy": "guide.chrome.privacy",
+    "terms": "guide.chrome.terms"
+  },
+  "captions": {
+    "launch": {
+      "source": "assets/launch/captions-en.vtt",
+      "keys": [
+        "captions.launch.cue0",
+        "captions.launch.cue1",
+        "captions.launch.cue2",
+        "captions.launch.cue3"
+      ]
+    },
+    "trailer": {
+      "source": "assets/trailer/captions-en.vtt",
+      "keys": [
+        "captions.trailer.cue0",
+        "captions.trailer.cue1",
+        "captions.trailer.cue2",
+        "captions.trailer.cue3",
+        "captions.trailer.cue4",
+        "captions.trailer.cue5",
+        "captions.trailer.cue6"
+      ]
+    }
+  }
+}
