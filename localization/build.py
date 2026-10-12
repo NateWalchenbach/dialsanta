@@ -16,7 +16,7 @@ SITE = ROOT.parent
 ORIGIN = 'https://dialsanta.app'
 PAGES = ['index','parents','support','privacy','terms','purchase','thanks']
 GUIDE_SLUGS = {item['slug'] for item in GUIDES}
-VERSION = '20261011'
+VERSION = '20261011-phone-language'
 
 
 def shipping_languages():
@@ -114,6 +114,10 @@ def decorate(soup, lang, page, catalog, english):
     anchor=charset
     for asset in ('language-registry.js','language.js',f'i18n/{lang}.js'):
         script=soup.new_tag('script',src=f'/{asset}?v={VERSION}',defer='');anchor.insert_after(script);anchor=script
+    for script in soup.select('script[src]'):
+        asset=script['src'].split('?')[0]
+        if asset in ('/acquisition.js','/meta-pixel.js','/purchase.js'):
+            script['src']=f'{asset}?v={VERSION}'
     soup.head.append(soup.new_tag('link',rel='stylesheet',href=f'/localization.css?v={VERSION}'))
     add_language_chrome(soup,lang,page,catalog,english)
     if page in GUIDE_SLUGS:

@@ -1,4 +1,5 @@
 (() => {
+  if (window.SiteI18n?.redirecting) return;
   const t = window.SiteI18n.t;
   const API = 'https://api-production-b742.up.railway.app';
   const STORAGE = 'dialsanta.verified-web-account';

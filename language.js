@@ -1,4 +1,4 @@
-/* Stable static editions; no geolocation, country lookup, or automatic browser redirect. */
+/* Match browser language on unlocalized pages; explicit links and choices take priority. */
 (() => {
   const registry = window.SiteLanguageRegistry || [];
   const languages = new Map(registry.map(item => [item.code, item]));
@@ -26,18 +26,26 @@
   const routeLanguage = languages.has(prefix) && prefix !== 'en' ? prefix : 'en';
   const explicit = normalizeLanguage(url.searchParams.get('lang'));
   const storageKey = 'dialsanta.website.language';
-  function destination(language) {
+  function destination(language, explicitChoice = true) {
     const next = new URL(location.href);
     next.pathname = (language === 'en' ? '' : '/' + language) + stripLocale(url.pathname);
-    next.searchParams.set('lang', language);
+    if (explicitChoice) next.searchParams.set('lang', language);
+    else next.searchParams.delete('lang');
     return next;
   }
   function remember(language) { try { localStorage.setItem(storageKey, language); } catch { /* Optional preference. */ } }
-  if (explicit) remember(explicit);
-  if (explicit && explicit !== routeLanguage) location.replace(destination(explicit).href);
   const pageRoute = path => /^\/(?:(?:index|parents|support|privacy|terms|purchase|thanks)\.html)?$/.test(path)
-    || /^\/(?:facetime-santa|how-to-call-santa|questions-to-ask-santa|press)\/$/.test(path);
+    || /^\/(?:facetime-santa|how-to-call-santa|questions-to-ask-santa|press)\/(?:index\.html)?$/.test(path);
+  let saved;
+  try { saved = normalizeLanguage(localStorage.getItem(storageKey)); } catch { /* Optional preference. */ }
+  const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
+  const preferred = saved || browserLanguages.map(normalizeLanguage).find(Boolean) || 'en';
+  const localizedLink = languages.has(prefix) && prefix !== 'en';
+  const targetLanguage = explicit || (localizedLink ? routeLanguage : preferred);
+  const redirecting = pageRoute(stripLocale(url.pathname)) && targetLanguage !== routeLanguage;
+  if (explicit) remember(explicit);
   window.SiteI18n = {
+    redirecting,
     language: routeLanguage,
     callLanguage: languages.get(routeLanguage)?.callCode || routeLanguage,
     locale: routeLanguage === 'pt' ? 'pt-BR' : routeLanguage,
@@ -56,6 +64,12 @@
       return next.pathname + next.search + next.hash;
     }
   };
+  // Do not persist a detected browser preference as a manual selection. This also
+  // lets measurement and checkout skip initialization on the departing document.
+  if (redirecting) {
+    location.replace(destination(targetLanguage, Boolean(explicit)).href);
+    return;
+  }
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-language-select]').forEach(select => {
       select.value = routeLanguage;
@@ -81,10 +95,7 @@
         });
       });
     });
-    // A suggestion is dismissible and never changes the requested page or canonical URL.
-    let saved;
-    try { saved = normalizeLanguage(localStorage.getItem(storageKey)); } catch { /* Optional preference. */ }
-    const preferred = saved || (navigator.languages || [navigator.language]).map(normalizeLanguage).find(Boolean);
+    // Explicit locale links stay put; visitors may still choose their preferred edition.
     const suggestion = document.querySelector('[data-language-suggestion]');
     if (!explicit && preferred && preferred !== routeLanguage && suggestion) {
       const label = suggestion.querySelector('[data-language-suggestion-text]');

@@ -19,6 +19,15 @@ function env(script,options={}){
  return {ctx,sent,scripts,handlers,nodes,redirects,values,fire,click:(placement='hero')=>fire('document','click',{target:{closest:()=>({href:'https://apps.apple.com/app/id6808069158',dataset:{download:placement}})}})}
 }
 const allow={'dialsanta.website.analytics':'allow','dialsanta.website.ads':'allow'};
+// A departing English document must not initialize telemetry or checkout twice.
+for(const script of ['acquisition.js','meta-pixel.js','purchase.js']){
+ const route=script==='purchase.js'?'purchase.html?pack=minutes12':'?ds=ds-ig-profile';
+ for(const suffix of ['', '&lang=ar']){
+  const e=env(script,{url:'https://dialsanta.app/'+route+suffix,navigator:{languages:['fr-FR']},storage:allow});
+  e.fire('document','DOMContentLoaded');e.click();
+  eq(e.redirects.length,1);eq(e.ctx.SiteI18n.redirecting,true);eq(e.sent.length+e.scripts.length,0);
+ }
+}
 const publicRoutes=['','parents.html','support.html','privacy.html','terms.html','facetime-santa/','how-to-call-santa/','questions-to-ask-santa/','press/'];
 for(const lang of registry.map(x=>x.code)){
  const prefix=lang==='en'?'':lang+'/';for(const route of publicRoutes){const url='https://dialsanta.app/'+prefix+route;

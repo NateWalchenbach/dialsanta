@@ -46,8 +46,11 @@ trailer and its caption tracks are preserved in `assets/trailer/`.
 
 1. An explicit supported `?lang=` parameter takes precedence.
 2. An explicit supported locale URL, such as `/es/`, `/ar/` or `/zh-Hant/`, is respected.
-3. English/root URLs remain English. Browser preferences and saved choices never
-   redirect a requested page. A dismissible suggestion can offer a preferred edition.
+3. On an unlocalized page, a saved manual choice takes priority; otherwise the first
+   supported phone/browser language opens automatically. If none is supported, the
+   page stays in English. The browser's ordered preference list is used, not country.
+4. Automatic detection is not saved as a manual choice, so later visits can follow
+   changed browser settings. Explicit locale links may offer a dismissible suggestion.
    Every translated page has a language selector and static edition links.
 
 Supported regional variants map to their base language; Chinese script/region aliases
@@ -96,7 +99,7 @@ scan, so its comments never leak into `i18n/*.js`.
 
 The 2026-10-11 expansion evidence is in the parent CallSanta workspace under
 `docs/website-language-expansion-2026-10-11/`. Run `verify.py` and
-`verify-runtime.cjs` after building. Translation generation and its private provider
+`verify-runtime.cjs` and `verify-language.cjs` after building. Translation generation and its private provider
 credentials stay outside this public website repository. Do not upload media working
 files, raw provider responses, credentials or test accounts with the static release.
 

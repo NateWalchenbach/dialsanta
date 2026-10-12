@@ -1,6 +1,7 @@
 /* Optional, anonymous website measurement. No SDK, cookies, replay or app identity. */
 (() => {
   'use strict';
+  if (window.SiteI18n?.redirecting) return;
   const token = 'phc_CVCnDgFKwLpfCsyjyg8vA7d8URTnNW7jJwTpDarYyeVs'; // Public, write-only Dial Santa project 639766.
   const key = 'dialsanta.website.analytics';
   const pages = ['home','parents','support','privacy','terms','facetime-santa','how-to-call-santa','questions-to-ask-santa','press'];

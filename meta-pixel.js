@@ -1,6 +1,7 @@
 /* Meta Pixel for ad measurement: PageView plus App Store clicks. Off on checkout pages, with GPC/DNT, after "Turn off", and in the EU/UK/Switzerland until allowed. */
 (() => {
   'use strict';
+  if (window.SiteI18n?.redirecting) return;
   const PIXEL_ID = '1399957468427149'; // Events Manager dataset "Dial Santa Website".
   if (!PIXEL_ID) return;
   const key = 'dialsanta.website.ads';
