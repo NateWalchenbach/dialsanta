@@ -1,0 +1,9 @@
+.git
+.github
+public
+node_modules
+localization
+**/__pycache__
+**/*.pyc
+CNAME
+.nojekyll
