@@ -29,6 +29,7 @@
   const detailOK = () => basicOK() && detailed;
   const canonical = () => location.origin + location.pathname;
   function cleanURL(value) {
+    if (value === '$direct') return value;
     try {
       const u = new URL(value, location.origin);
       if (!['http:','https:'].includes(u.protocol)) return '';
@@ -46,7 +47,8 @@
         // rrweb's HTML doctype requires this structural name for replay reconstruction.
         if (k === 'name' && value.type === 1 && /^html$/i.test(v)) { out[k] = v; continue; }
         if (/^(?:\$ip|\$set|\$set_once|email|name|value|password|authorization|cookie|token|utm_.*|gclid|fbclid)$/i.test(k)) continue;
-        out[k] = scrub(v,k);
+        // Heatmap payloads can use a page URL as an object key.
+        out[/^https?:\/\//i.test(k) ? cleanURL(k) : k] = scrub(v,k);
       }
       return out;
     }
