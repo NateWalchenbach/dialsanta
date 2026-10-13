@@ -43,6 +43,8 @@
       const out = {};
       for (const [k,v] of Object.entries(value)) {
         if (k === 'token' && v === token) { out[k] = v; continue; }
+        // rrweb's HTML doctype requires this structural name for replay reconstruction.
+        if (k === 'name' && value.type === 1 && /^html$/i.test(v)) { out[k] = v; continue; }
         if (/^(?:\$ip|\$set|\$set_once|email|name|value|password|authorization|cookie|token|utm_.*|gclid|fbclid)$/i.test(k)) continue;
         out[k] = scrub(v,k);
       }

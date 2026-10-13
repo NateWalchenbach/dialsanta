@@ -32,6 +32,8 @@ test('shipped PostHog SDK produces sanitized events and honors withdrawal', asyn
   assert.equal(ph.config.capture_pageleave,true);
   assert.equal(ph.config.enable_heatmaps,true);
   assert.equal(ph.config.session_recording.maskAllInputs,true);
+  const snapshot=ph.config.before_send({event:'$snapshot',timestamp:new Date(),properties:{$snapshot_data:[{type:2,data:{node:{type:0,childNodes:[{type:1,name:'html',publicId:'',systemId:'',id:2}]}}}]}});
+  assert.equal(snapshot.properties.$snapshot_data[0].data.node.childNodes[0].name,'html');
   w.document.querySelector('button').click();
   assert.equal(ph.has_opted_out_capturing(),true);
   assert.equal(ph.capture('$pageview'),undefined);
