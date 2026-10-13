@@ -35,6 +35,9 @@ test('shipped PostHog SDK produces sanitized events and honors withdrawal', asyn
   assert.equal(ph.config.capture_pageleave,true);
   assert.equal(ph.config.enable_heatmaps,true);
   assert.equal(ph.config.session_recording.maskAllInputs,true);
+  assert.equal(ph.config.session_recording.maskAttributeFn('rel','stylesheet'),'stylesheet');
+  assert.equal(ph.config.session_recording.maskAttributeFn('dir','rtl'),'rtl');
+  assert.equal(ph.config.session_recording.maskAttributeFn('value','private entry'),'');
   const snapshot=ph.config.before_send({event:'$snapshot',timestamp:new Date(),properties:{$snapshot_data:[{type:2,data:{node:{type:0,childNodes:[{type:1,name:'html',publicId:'',systemId:'',id:2}]}}}]}});
   assert.equal(snapshot.properties.$snapshot_data[0].data.node.childNodes[0].name,'html');
   const heatmap=ph.config.before_send({event:'$heatmaps',properties:{$heatmap_data:{'https://dialsanta.app/?token=SECRET':[{x:1,y:2}]}}});

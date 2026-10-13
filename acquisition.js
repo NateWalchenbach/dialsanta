@@ -117,7 +117,7 @@
         maskAllInputs:true, maskTextSelector:'[contenteditable],[data-ph-sensitive],.ph-mask',
         maskAttributeFn:(name,value) => {
           if (['href','src'].includes(name)) return cleanURL(value);
-          if (['class','id','style','width','height','alt','aria-label'].includes(name) && !value.includes('@')) return value;
+          if (['class','id','style','width','height','alt','aria-label','role','rel','type','media','lang','dir','crossorigin','loading','decoding','_cssText'].includes(name) && (name === '_cssText' || !value.includes('@'))) return value;
           return '';
         },
         blockSelector:'form,input,textarea,select,[contenteditable],iframe,canvas,video,audio,[data-ph-sensitive],.ph-no-capture',
