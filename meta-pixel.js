@@ -1,4 +1,4 @@
-/* Meta Pixel for ad measurement: PageView plus App Store clicks. Off on checkout pages, with GPC/DNT, after "Turn off", and in the EU/UK/Switzerland until allowed. */
+/* Meta Pixel for ad measurement: only after explicit permission, on eligible public pages. */
 (() => {
   'use strict';
   if (window.SiteI18n?.redirecting) return;
@@ -40,21 +40,12 @@
   })();
   const excluded = !page || privateContext;
   const blocked = () => navigator.globalPrivacyControl === true || navigator.doNotTrack === '1' || window.doNotTrack === '1';
-  // Prior consent is required in the EEA, UK and Switzerland. The browser's time zone is the only
-  // signal available on a static site; unknown zones ask too.
-  const consentZones = ['Atlantic/Reykjavik','Atlantic/Faroe','Atlantic/Jan_Mayen','Atlantic/Canary','Atlantic/Madeira','Atlantic/Azores','Africa/Ceuta','Arctic/Longyearbyen','Asia/Nicosia','Asia/Famagusta','America/Miquelon','America/Cayenne','America/Martinique','America/Guadeloupe','America/Marigot','America/St_Barthelemy','Indian/Reunion','Indian/Mayotte'];
-  const consentRegion = (() => {
-    try {
-      const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-      return !zone || zone.startsWith('Europe/') || consentZones.includes(zone);
-    } catch { return true; }
-  })();
   let choice = null;
   try { choice = localStorage.getItem(key); } catch { /* Treated as no choice yet. */ }
   let loaded = false;
   let active = false;
   const clicked = new Set();
-  const permitted = () => live && !excluded && !blocked() && (choice === 'allow' || (choice !== 'deny' && !consentRegion));
+  const permitted = () => live && !excluded && !blocked() && choice === 'allow';
   function start() {
     if (!permitted()) return;
     if (loaded) {
@@ -78,6 +69,11 @@
   function stop() {
     if (loaded && active) window.fbq('consent', 'revoke');
     active = false; clicked.clear();
+    for (const name of ['_fbp','_fbc']) {
+      for (const domain of ['', '; Domain=dialsanta.app', '; Domain=.dialsanta.app']) {
+        document.cookie = `${name}=; Max-Age=0; Path=/${domain}; SameSite=Lax; Secure`;
+      }
+    }
   }
   function render() {
     const on = active;
@@ -99,6 +95,9 @@
   }
   document.querySelectorAll('[data-ads-allow]').forEach(button => button.addEventListener('click', () => choose('allow')));
   document.querySelectorAll('[data-ads-deny]').forEach(button => button.addEventListener('click', () => choose('deny')));
+  window.addEventListener('dialsanta:privacy-choice',event=>{
+    if (['allow','deny'].includes(event.detail?.ads)) choose(event.detail.ads);
+  });
   window.addEventListener('storage', event => {
     if (event.key !== key) return;
     choice = event.newValue; hideBanner();
@@ -115,8 +114,5 @@
     clicked.add(placement);
     window.fbq('trackCustom', 'AppStoreClick', {placement, language, page});
   }, true);
-  if (banner && live && !excluded && !blocked() && consentRegion && choice === null) {
-    banner.hidden = false; document.body.classList.add('has-ads-banner');
-  }
   start(); render();
 })();

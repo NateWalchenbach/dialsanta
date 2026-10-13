@@ -158,14 +158,15 @@
     document.querySelectorAll('[data-analytics-state]').forEach(n => {n.textContent = blocked() || choice==='deny' ? 'Off' : detailed ? 'Detailed' : 'Basic';});
     document.querySelectorAll('[data-analytics-allow]').forEach(n => { n.disabled = detailOK() || blocked(); n.setAttribute('aria-pressed',String(detailOK())); });
     document.querySelectorAll('[data-analytics-deny]').forEach(n => n.setAttribute('aria-pressed',String(!basicOK())));
-    const banner = document.getElementById('website-analytics-banner');
-    if (banner) banner.hidden = !eligible() || choice==='deny' || detailed;
   }
   function bindControls() {
     document.querySelectorAll('[data-analytics-allow]').forEach(n=>n.addEventListener('click',()=>choose('allow')));
     document.querySelectorAll('[data-analytics-deny]').forEach(n=>n.addEventListener('click',()=>choose('deny')));
   }
   function start() { vercelCapture('website_page_view'); initializePostHog(); }
+  window.addEventListener('dialsanta:privacy-choice',event=>{
+    if (['allow','deny'].includes(event.detail?.analytics)) choose(event.detail.analytics);
+  });
   window.addEventListener('storage',event=>{
     if (![key,detailKey].includes(event.key)) return;
     choice = read(key); detailed = read(detailKey)==='allow';
