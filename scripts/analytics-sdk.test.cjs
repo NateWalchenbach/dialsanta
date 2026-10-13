@@ -20,6 +20,7 @@ test('shipped PostHog SDK produces sanitized events and honors withdrawal', asyn
   const ph=w.DialSantaPostHog;
   const event=ph.capture('website_navigation_click', {destination:'parents',href:'https://dialsanta.app/parents.html?token=SECRET',email:'secret@example.com'});
   assert.equal(event.event,'website_navigation_click');
+  assert.match(JSON.stringify(event.timestamp), /2026|20\d\d-/);
   assert.equal(event.properties.$current_url,'https://dialsanta.app/');
   assert.equal(event.properties.analytics_qa,true);
   assert.equal(event.properties.$process_person_profile,false);

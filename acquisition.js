@@ -37,6 +37,7 @@
   }
   // All SDK properties, including uncompressed rrweb snapshots, are scrubbed before dispatch.
   function scrub(value, field = '') {
+    if (Object.prototype.toString.call(value) === '[object Date]') return value;
     if (Array.isArray(value)) return value.map(v => scrub(v, field));
     if (value && typeof value === 'object') {
       const out = {};
@@ -102,6 +103,7 @@
       api_host:'https://us.i.posthog.com', ui_host:'https://us.posthog.com',
       persistence:'localStorage', persistence_name:'dialsanta_public_website_v1', cross_subdomain_cookie:false,
       person_profiles:'never', capture_pageview:true, capture_pageleave:true,
+      request_batching:false, disable_surveys:true,
       autocapture:{dom_event_allowlist:['click'],element_attribute_ignorelist:['value','placeholder','title']},
       mask_all_text:true, mask_all_element_attributes:true,
       enable_heatmaps:true, capture_dead_clicks:true, rageclick:true,
