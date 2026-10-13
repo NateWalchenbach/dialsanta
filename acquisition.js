@@ -133,6 +133,8 @@
       },
       loaded: instance => {
         if (!detailOK()) { instance.stopSessionRecording(); instance.opt_out_capturing(); return; }
+        // A previous SDK withdrawal must also be cleared after fresh consent.
+        if (instance.has_opted_out_capturing()) instance.opt_in_capturing();
         instance.register({surface:'website',page,language:lang,source,campaign});
         if (isQA()) instance.register({is_internal:true,analytics_qa:true});
       }

@@ -16,8 +16,11 @@ test('shipped PostHog SDK produces sanitized events and honors withdrawal', asyn
   w.localStorage.setItem('dialsanta.website.analytics','allow');
   w.localStorage.setItem('dialsanta.website.detailed-analytics.v1','allow');
   w.eval(fs.readFileSync('assets/vendor/posthog-1.438.9.js','utf8'));
+  // Simulate the SDK opt-out left by a previous page, then fresh website consent.
+  w.localStorage.setItem('__ph_opt_in_out_phc_CVCnDgFKwLpfCsyjyg8vA7d8URTnNW7jJwTpDarYyeVs','0');
   w.eval(fs.readFileSync('acquisition.js','utf8'));
   const ph=w.DialSantaPostHog;
+  assert.equal(ph.has_opted_out_capturing(),false);
   const event=ph.capture('website_navigation_click', {destination:'parents',href:'https://dialsanta.app/parents.html?token=SECRET',email:'secret@example.com'});
   assert.equal(event.event,'website_navigation_click');
   assert.match(JSON.stringify(event.timestamp), /2026|20\d\d-/);
