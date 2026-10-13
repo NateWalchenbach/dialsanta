@@ -33,7 +33,7 @@
   banner.querySelector('[data-cookie-accept]').addEventListener('click', () => save(true,true));
   banner.querySelector('[data-cookie-reject]').addEventListener('click', () => save(false,false));
   banner.querySelector('[data-cookie-save]').addEventListener('click', () => save(analytics.checked,ads.checked));
-  manage.addEventListener('click', () => { show(panel.hidden); if (!panel.hidden) analytics.focus(); });
+  manage.addEventListener('click', event => { event.preventDefault(); show(panel.hidden); if (!panel.hidden) analytics.focus(); });
   document.querySelectorAll('[data-cookie-open]').forEach(button => button.addEventListener('click', () => {
     opener = button; show(true); (blocked() ? banner.querySelector('[data-cookie-save]') : analytics).focus();
   }));
