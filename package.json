@@ -1,0 +1,16 @@
+{
+  "name": "dialsanta-website",
+  "private": true,
+  "scripts": {
+    "build:analytics": "esbuild scripts/posthog-entry.js --bundle --minify --format=iife --target=es2020 --outfile=assets/vendor/posthog-1.438.9.js",
+    "build": "node scripts/build-vercel.mjs",
+    "test:analytics": "node --test --test-force-exit scripts/analytics*.test.cjs"
+  },
+  "dependencies": {
+    "posthog-js": "1.438.9"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "jsdom": "27.4.0"
+  }
+}

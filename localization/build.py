@@ -10,6 +10,7 @@ from xml.sax.saxutils import escape
 from bs4 import BeautifulSoup, NavigableString
 import argparse, json, re
 from enhance import enhance, guide_soup, GUIDES
+from analytics_markup import apply_analytics_markup
 
 ROOT = Path(__file__).resolve().parent
 SITE = ROOT.parent
@@ -193,7 +194,7 @@ def main():
             path=route(lang,page).lstrip('/')
             destination=SITE/(path+'index.html' if not path or path.endswith('/') else path)
             destination.parent.mkdir(parents=True,exist_ok=True)
-            destination.write_text(str(soup).rstrip()+'\n')
+            destination.write_text(apply_analytics_markup(str(soup).rstrip()+'\n', public=page not in ('purchase','thanks')))
         built.append(lang);print(f'{lang}: {len(catalog)} strings, 11 pages, both caption tracks',flush=True)
     # A partial developer build must not publish an incomplete replacement sitemap.
     if not args.locale and not args.partial:
