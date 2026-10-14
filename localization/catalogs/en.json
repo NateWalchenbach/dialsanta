@@ -569,7 +569,7 @@
   "guide.press.body.4": "<h2>What to describe accurately</h2>",
   "guide.press.body.5": "<p>The characters are AI performances, not human performers. They respond to voice and parent-provided personalization. The camera is a local self-view; it is not sent to the AI providers or our servers. Calls do not use Apple FaceTime. Parents should set up and supervise the experience. Please refer to the <a href=\"/privacy.html\">current privacy policy</a> for provider processing and retention, rather than describing calls as “zero retention.”</p>",
   "guide.press.body.6": "<h2>Approved artwork and preview</h2>",
-  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santa app icon (PNG)</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santa promotional artwork (PNG)</a></li><li><a href=\"/assets/launch/preview.mp4\">20-second app-experience preview (MP4)</a></li><li><a href=\"/assets/launch/captions-en.vtt\">English preview captions (WebVTT)</a></li></ul>",
+  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santa app icon (PNG)</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santa promotional artwork (PNG)</a></li></ul>",
   "guide.press.body.8": "<p>Use these assets when covering Dial Santa. Do not imply endorsement by Apple or depict the synthetic callers as real customers. Keep this disclosure with demo footage: <strong>AI-generated demo of the in-app experience — no real children shown.</strong></p>",
   "guide.press.body.9": "<h2>Contact</h2>",
   "guide.press.body.10": "<p>For product questions or press enquiries: <a href=\"mailto:hohoho@dialsanta.app\">hohoho@dialsanta.app</a>. We have not supplied customer testimonials or usage claims for this page.</p>",

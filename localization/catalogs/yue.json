@@ -570,7 +570,7 @@
   "guide.press.body.4": "<h2>請準確描述</h2>",
   "guide.press.body.5": "<p>角色係 AI 演出，唔係真人表演者。佢哋回應聲音同家長提供嘅個人化資料。相機係本機自拍預覽，唔傳畀 AI 供應商或我哋伺服器。通話唔使用 Apple FaceTime。家長應該設定同監督體驗。供應商處理同保留資料請參考<a href=\"/privacy.html\">現行私隱政策</a>，唔好將通話描述成「零保留」。</p>",
   "guide.press.body.6": "<h2>核准圖片同預覽</h2>",
-  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santa 應用程式圖示（PNG）</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santa 宣傳圖片（PNG）</a></li><li><a href=\"/assets/launch/preview.mp4\">20 秒應用程式體驗預覽（MP4）</a></li><li><a href=\"/assets/launch/captions-en.vtt\">英文預覽字幕（WebVTT）</a></li></ul>",
+  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santa 應用程式圖示（PNG）</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santa 宣傳圖片（PNG）</a></li></ul>",
   "guide.press.body.8": "<p>介紹 Dial Santa 時可用呢啲素材。唔好暗示 Apple 認可，亦唔好將合成來電者當成真實顧客。示範片段請保留呢句說明：<strong>AI 生成嘅應用程式體驗示範，冇真實兒童出現。</strong></p>",
   "guide.press.body.9": "<h2>聯絡</h2>",
   "guide.press.body.10": "<p>產品問題或傳媒查詢：<a href=\"mailto:hohoho@dialsanta.app\">hohoho@dialsanta.app</a>。呢頁冇提供顧客推薦或使用量聲稱。</p>",

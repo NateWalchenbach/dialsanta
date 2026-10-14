@@ -54,10 +54,10 @@
     demo.setAttribute('aria-label', t('Demo {number} of {total}').replace('{number}', demoIndex).replace('{total}', demo.dataset.demoCount));
   };
   const demoSource = () => {
-    const src = `/assets/launch/hero-demo-${demoIndex}.mp4`;
+    const src = `/assets/launch/hero-call-${demoIndex}.mp4`;
     if (demo.getAttribute('src') !== src) {
       demoGeneration++;
-      demo.poster = `/assets/launch/hero-demo-${demoIndex}.jpg`;
+      demo.poster = `/assets/launch/hero-call-${demoIndex}.jpg`;
       demo.src = src;
       demo.load();
     }
@@ -129,30 +129,6 @@
     addEventListener('pageshow', syncDemo);
     demoStatus();
   }
-  const filmDialog = document.getElementById('film-dialog');
-  const video = document.getElementById('heroVideo');
-  let filmOpener;
-  document.querySelectorAll('[data-watch]').forEach(button => button.addEventListener('click', async () => {
-    filmOpener = button;
-    demo?.pause();
-    if (!filmDialog?.showModal) {
-      location.assign('/assets/launch/preview.mp4');
-      return;
-    }
-    filmDialog.showModal();
-    filmDialog.querySelector('.film-error').hidden = true;
-    filmDialog.querySelector('[data-close]').focus();
-    video.muted = false;
-    if (video.ended) video.currentTime = 0;
-    try { await video.play(); }
-    catch { if (video.error) filmDialog.querySelector('.film-error').hidden = false; }
-  }));
-  video?.addEventListener('error', () => { filmDialog.querySelector('.film-error').hidden = false; });
-  filmDialog?.addEventListener('cancel', () => video.pause());
-  filmDialog?.addEventListener('close', () => { video.pause(); filmOpener?.focus({ preventScroll: true }); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) video?.pause(); });
-  addEventListener('pagehide', () => video?.pause());
-
   const characters = {
     santa: ['Santa', 'He knows their name, hears their wishes, and answers their wonderfully important questions.', 'Santa is included. Live calls use purchased minutes.'],
     mrsclaus: ['Mrs. Claus', 'A warm hello from the North Pole kitchen. A little kindness, a little laughter, and plenty to talk about.', 'Available with a US$0.99 in-app unlock. Calls also use purchased minutes.'],

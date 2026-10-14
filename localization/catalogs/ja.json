@@ -571,7 +571,7 @@
   "guide.press.body.4": "<h2>正確にお伝えいただきたいこと</h2>",
   "guide.press.body.5": "<p>キャラクターは人間の演者ではなく、AIによる演出です。声と保護者が入力した個別情報に応答します。カメラは端末内で自分の映像を見るためのもので、AI提供者や当社サーバーには送られません。通話にApple FaceTimeは使用しません。保護者が設定し、見守ってください。通話を「保持期間ゼロ」と表現せず、提供者による処理と保存期間については<a href=\"/privacy.html\">現在のプライバシーポリシー</a>をご参照ください。</p>",
   "guide.press.body.6": "<h2>承認済み画像とプレビュー</h2>",
-  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santaアプリアイコン（PNG）</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santaプロモーション画像（PNG）</a></li><li><a href=\"/assets/launch/preview.mp4\">20秒のアプリ体験プレビュー（MP4）</a></li><li><a href=\"/assets/launch/captions-en.vtt\">英語のプレビュー字幕（WebVTT）</a></li></ul>",
+  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santaアプリアイコン（PNG）</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santaプロモーション画像（PNG）</a></li></ul>",
   "guide.press.body.8": "<p>Dial Santaを紹介する際は、これらの素材をご利用ください。Appleによる推奨を示唆したり、生成された通話相手を実際の顧客として紹介したりしないでください。デモ映像には次の説明を添えてください：<strong>アプリ内体験をAIで生成したデモです。実際の子どもは映っていません。</strong></p>",
   "guide.press.body.9": "<h2>お問い合わせ</h2>",
   "guide.press.body.10": "<p>製品に関するご質問や取材のお問い合わせ：<a href=\"mailto:hohoho@dialsanta.app\">hohoho@dialsanta.app</a>。このページ用の顧客の声や利用実績の主張は提供していません。</p>",

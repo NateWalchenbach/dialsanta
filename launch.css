@@ -26,12 +26,10 @@ html[lang=ru] .launch-site .hero-copy h1{font-size:clamp(47px,5.6vw,81px)}
 html[lang=de] .phone-name{font-size:20px}
 @media(max-width:760px){html[lang=de] .launch-site h2{font-size:clamp(31px,8vw,42px)}}
 
-/* Moving call examples keep Santa and the fictional caller in one synchronized clip. */
+/* Approved Fastlane demos include their own phone frame and branding. */
 .hero-visual{grid-template-rows:1fr auto;row-gap:22px}
-.phone.phone-demo{width:268px;height:564px;grid-row:1}
-.hero-demo-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#20110d}
-.phone-demo .phone-camera{pointer-events:none}
-.phone-demo .home-indicator{pointer-events:none;bottom:9px}
+.call-demo-card{position:relative;width:300px;max-width:100%;aspect-ratio:9/16;grid-row:1;border-radius:20px;overflow:hidden;background:var(--cream);box-shadow:0 18px 45px #29081040}
+.hero-demo-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--cream)}
 .hero-demo-panel{grid-row:2;position:relative;z-index:4;width:100%;max-width:365px;text-align:center}
 .hero-demo-controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;color:var(--cream)}
 .demo-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
@@ -44,10 +42,10 @@ html[lang=de] .phone-name{font-size:20px}
 .hero-demo-disclosure{color:#ffe9d3;font-size:11px;line-height:1.65;margin:10px auto 0;max-width:340px}
 .hero-demo-error{color:#ffe9d3;font-size:12px;line-height:1.5;margin:9px 0}
 .hero-visual .note-live{bottom:178px}
-@media(max-width:1200px){.phone.phone-demo{width:248px;height:522px}}
-@media(max-width:1000px){.phone.phone-demo{width:234px;height:490px}.hero-demo-controls{gap:5px}.demo-label{width:100%}.hero-demo-panel{max-width:300px}.hero-visual .note-live{bottom:206px}}
-@media(max-width:760px){.hero-visual{row-gap:24px;padding-bottom:9px}.phone.phone-demo{width:242px;height:508px}.hero-demo-controls{gap:8px}.demo-label{width:auto}.hero-demo-panel{max-width:345px}.hero-visual .note-live{bottom:170px}.hero-demo-disclosure{font-size:11px;padding:0 7px}}
-@media(max-width:390px){.phone.phone-demo{width:231px;height:484px}.hero-demo-panel{max-width:295px}.demo-label{font-size:10px}.demo-toggle,.demo-next{font-size:11px;padding:0 9px}.hero-demo-controls{gap:6px}.hero-visual .note-live{bottom:164px;max-width:205px}}
+@media(max-width:1200px){.call-demo-card{width:280px}}
+@media(max-width:1000px){.call-demo-card{width:260px}.hero-demo-controls{gap:5px}.demo-label{width:100%}.hero-demo-panel{max-width:300px}.hero-visual .note-live{bottom:206px}}
+@media(max-width:760px){.hero-visual{row-gap:24px;padding-bottom:9px}.call-demo-card{width:280px}.hero-demo-controls{gap:8px}.demo-label{width:auto}.hero-demo-panel{max-width:345px}.hero-visual .note-live{bottom:170px}.hero-demo-disclosure{font-size:11px;padding:0 7px}}
+@media(max-width:390px){.call-demo-card{width:260px}.hero-demo-panel{max-width:295px}.demo-label{font-size:10px}.demo-toggle,.demo-next{font-size:11px;padding:0 9px}.hero-demo-controls{gap:6px}.hero-visual .note-live{bottom:164px;max-width:205px}}
 
 .hero-demo-controls [hidden]{display:none}
 .hero-visual .note-live{bottom:auto;top:45%}

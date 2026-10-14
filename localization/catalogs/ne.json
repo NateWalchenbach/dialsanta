@@ -570,7 +570,7 @@
   "guide.press.body.4": "<h2>कुन कुरा सही रूपमा वर्णन गर्ने</h2>",
   "guide.press.body.5": "<p>पात्रहरू AI प्रस्तुति हुन्, मानव कलाकार होइनन्। तिनीहरूले आवाज र अभिभावकले दिएका व्यक्तिगत विवरणमा प्रतिक्रिया दिन्छन्। क्यामेरा स्थानीय आफ्नै दृश्य हो; यो AI प्रदायक वा हाम्रा सर्भरमा पठाइँदैन। कलले Apple FaceTime प्रयोग गर्दैनन्। अभिभावकले अनुभव सेटअप र निगरानी गर्नुपर्छ। कललाई “डाटा नराखिने” भन्नुभन्दा प्रदायकको प्रशोधन र भण्डारणबारे <a href=\"/privacy.html\">हालको गोपनीयता नीति</a> हेर्नुहोस्।</p>",
   "guide.press.body.6": "<h2>स्वीकृत चित्र सामग्री र पूर्वावलोकन</h2>",
-  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santa एप आइकन (PNG)</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santa प्रचारात्मक चित्र (PNG)</a></li><li><a href=\"/assets/launch/preview.mp4\">एप अनुभवको 20 सेकेन्डको पूर्वावलोकन (MP4)</a></li><li><a href=\"/assets/launch/captions-en.vtt\">पूर्वावलोकनका अङ्ग्रेजी उपशीर्षक (WebVTT)</a></li></ul>",
+  "guide.press.body.7": "<ul><li><a href=\"/assets/apple-touch-icon.png\">Dial Santa एप आइकन (PNG)</a></li><li><a href=\"/assets/og-santa-call-v2.png\">Dial Santa प्रचारात्मक चित्र (PNG)</a></li></ul>",
   "guide.press.body.8": "<p>Dial Santa बारे सामग्री बनाउँदा यी सामग्री प्रयोग गर्नुहोस्। Apple को समर्थन भएको अर्थ नदिनुहोस् वा कृत्रिम कलकर्तालाई वास्तविक ग्राहकका रूपमा नदेखाउनुहोस्। प्रदर्शन भिडियोसँग यो खुलासा राख्नुहोस्: <strong>एपभित्रको अनुभवको AI बाट सिर्जित प्रदर्शन — वास्तविक बच्चाहरू देखाइएका छैनन्।</strong></p>",
   "guide.press.body.9": "<h2>सम्पर्क</h2>",
   "guide.press.body.10": "<p>उत्पादनका प्रश्न वा प्रेस सोधपुछका लागि: <a href=\"mailto:hohoho@dialsanta.app\">hohoho@dialsanta.app</a>। हामीले यस पृष्ठका लागि ग्राहक प्रशंसापत्र वा प्रयोगसम्बन्धी दाबी दिएका छैनौँ।</p>",
