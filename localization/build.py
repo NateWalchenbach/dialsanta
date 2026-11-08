@@ -114,7 +114,8 @@ def decorate(soup, lang, page, catalog, english):
     charset=soup.head.find('meta',charset=True)
     anchor=charset
     for asset in ('language-registry.js','language.js',f'i18n/{lang}.js'):
-        script=soup.new_tag('script',src=f'/{asset}?v={VERSION}',defer='');anchor.insert_after(script);anchor=script
+        asset_version = '20261107-language-preference' if asset == 'language.js' else VERSION
+        script=soup.new_tag('script',src=f'/{asset}?v={asset_version}',defer='');anchor.insert_after(script);anchor=script
     for script in soup.select('script[src]'):
         asset=script['src'].split('?')[0]
         if asset in ('/acquisition.js','/meta-pixel.js','/purchase.js'):

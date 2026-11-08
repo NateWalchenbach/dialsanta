@@ -1,4 +1,4 @@
-/* Match browser language on unlocalized pages; explicit links and choices take priority. */
+/* Home follows the visitor's language; only language controls save a preference. */
 (() => {
   const registry = window.SiteLanguageRegistry || [];
   const languages = new Map(registry.map(item => [item.code, item]));
@@ -25,7 +25,9 @@
   const prefix = url.pathname.split('/')[1];
   const routeLanguage = languages.has(prefix) && prefix !== 'en' ? prefix : 'en';
   const explicit = normalizeLanguage(url.searchParams.get('lang'));
-  const storageKey = 'dialsanta.website.language';
+  // The legacy key also saved incoming ?lang= links, so it cannot establish a
+  // deliberate choice. Leave it untouched and start with manual-only preferences.
+  const storageKey = 'dialsanta.website.language.manual.v2';
   function destination(language, explicitChoice = true) {
     const next = new URL(location.href);
     next.pathname = (language === 'en' ? '' : '/' + language) + stripLocale(url.pathname);
@@ -41,9 +43,12 @@
   const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
   const preferred = saved || browserLanguages.map(normalizeLanguage).find(Boolean) || 'en';
   const localizedLink = languages.has(prefix) && prefix !== 'en';
-  const targetLanguage = explicit || (localizedLink ? routeLanguage : preferred);
+  const homeRoute = /^\/(?:index\.html)?$/.test(stripLocale(url.pathname))
+    || (localizedLink && url.pathname === '/' + prefix);
+  // Search/shared locale home URLs are entry points, not language-picker actions.
+  // Keep directly linked translated articles and policies in their linked language.
+  const targetLanguage = explicit || (localizedLink && !homeRoute ? routeLanguage : preferred);
   const redirecting = pageRoute(stripLocale(url.pathname)) && targetLanguage !== routeLanguage;
-  if (explicit) remember(explicit);
   window.SiteI18n = {
     redirecting,
     language: routeLanguage,
@@ -95,7 +100,7 @@
         });
       });
     });
-    // Explicit locale links stay put; visitors may still choose their preferred edition.
+    // Translated deep links stay put; visitors may choose their preferred edition.
     const suggestion = document.querySelector('[data-language-suggestion]');
     if (!explicit && preferred && preferred !== routeLanguage && suggestion) {
       const label = suggestion.querySelector('[data-language-suggestion-text]');

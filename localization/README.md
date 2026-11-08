@@ -45,19 +45,24 @@ trailer and its caption tracks are preserved in `assets/trailer/`.
 ## Language selection
 
 1. An explicit supported `?lang=` parameter takes precedence.
-2. An explicit supported locale URL, such as `/es/`, `/ar/` or `/zh-Hant/`, is respected.
-3. On an unlocalized page, a saved manual choice takes priority; otherwise the first
+2. Homepages, including shared locale URLs such as `/de/`, use the visitor's saved
+   manual choice or browser language. Direct links to translated articles and policies
+   keep their linked language, with a suggestion to switch when appropriate.
+3. On a homepage or unlocalized page, a saved manual choice takes priority; otherwise the first
    supported phone/browser language opens automatically. If none is supported, the
    page stays in English. The browser's ordered preference list is used, not country.
-4. Automatic detection is not saved as a manual choice, so later visits can follow
-   changed browser settings. Explicit locale links may offer a dismissible suggestion.
+4. Only actions on the language controls save a manual choice. Opening a `?lang=` link
+   changes that visit's language without changing a lasting preference. Automatic
+   detection is not saved, so later visits can follow changed browser settings.
    Every translated page has a language selector and static edition links.
 
 Supported regional variants map to their base language; Chinese script/region aliases
 select the matching script edition, and Norwegian `no` maps to UI locale `nb`. Explicit
 unsupported script variants are not silently mapped to another script. There is no
-country lookup or location permission. Manual or explicitly linked choices are saved
-to `dialsanta.website.language`. The URL
+country lookup or location permission. Manual choices are saved
+to `dialsanta.website.language.manual.v2`. The old `dialsanta.website.language` key
+is left untouched but no longer used because it also stored incoming language links;
+returning visitors therefore follow their browser until they choose a language again. The URL
 also carries manual choices, including English, so navigation works when storage is
 blocked. Switching preserves the page, query parameters, and anchor. JavaScript is
 needed for the select menu; static native content and edition links work without it.

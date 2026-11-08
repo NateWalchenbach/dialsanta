@@ -2,14 +2,15 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
 const site=path.resolve(__dirname,'..');
 const registry=fs.readFileSync(path.join(site,'language-registry.js'),'utf8');
-const runtime=fs.readFileSync(path.join(site,'language.js'),'utf8');
+const runtime=fs.readFileSync(process.env.LANGUAGE_RUNTIME || path.join(site,'language.js'),'utf8');
 let assertions=0;
 function env(href,saved=null,browser=['en'],options={}) {
-  const redirects=[],events={},writes=[];
+  const redirects=[],events={},writes=[],controlEvents={};
+  const select={value:'',addEventListener:(e,f)=>controlEvents[e]=f};
   const location=new URL(href);location.replace=u=>redirects.push(u);location.assign=u=>redirects.push(u);
-  const context={URL,console,location,window:{},navigator:{languages:browser,language:options.language??browser?.[0]},localStorage:{getItem:()=>{if(options.storageBlocked)throw Error('blocked');return saved},setItem:(k,v)=>{if(options.storageBlocked)throw Error('blocked');writes.push([k,v])}},document:{addEventListener:(e,f)=>events[e]=f,querySelectorAll:()=>[],querySelector:()=>null}};
+  const context={URL,console,location,window:{},navigator:{languages:browser,language:options.language??browser?.[0]},localStorage:{getItem:k=>{if(options.storageBlocked)throw Error('blocked');return k==='dialsanta.website.language.manual.v2'?saved:options.legacySaved??null},setItem:(k,v)=>{if(options.storageBlocked)throw Error('blocked');writes.push([k,v])}},document:{addEventListener:(e,f)=>events[e]=f,querySelectorAll:s=>options.controls&&s==='[data-language-select]'?[select]:[],querySelector:()=>null}};
   vm.runInNewContext(registry,context);vm.runInNewContext(runtime,context);
-  events.DOMContentLoaded?.();return {api:context.window.SiteI18n,redirects,writes};
+  events.DOMContentLoaded?.();return {api:context.window.SiteI18n,redirects,writes,choose:code=>{select.value=code;controlEvents.change?.();}};
 }
 const eq=(a,b)=>{assert.deepEqual(a,b);assertions++};
 const basic=env('https://dialsanta.app/');
@@ -47,9 +48,9 @@ for(const [browser,expected] of [
 eq(env('https://dialsanta.app/','en',['fr-FR']).redirects,[]);
 eq(env('https://dialsanta.app/','ja',['fr-FR']).redirects,['https://dialsanta.app/ja/']);
 eq(env('https://dialsanta.app/','unknown',['fr-FR']).redirects,['https://dialsanta.app/fr/']);
-eq(env('https://dialsanta.app/fr/','ja',['es-MX']).redirects,[]);
+eq(env('https://dialsanta.app/fr/','ja',['es-MX']).redirects,['https://dialsanta.app/ja/']);
 eq(env('https://dialsanta.app/?lang=en','ja',['fr-FR']).redirects,[]);
-eq(env('https://dialsanta.app/?lang=en',null,['fr']).writes,[['dialsanta.website.language','en']]);
+eq(env('https://dialsanta.app/?lang=en',null,['fr']).writes,[]);
 eq(env('https://dialsanta.app/?lang=ar','ja',['fr-FR']).redirects,['https://dialsanta.app/ar/?lang=ar']);
 eq(env('https://dialsanta.app/?lang=unknown',null,['fr']).redirects,['https://dialsanta.app/fr/']);
 eq(env('https://dialsanta.app/',null,[],{language:'fr-CA'}).redirects,['https://dialsanta.app/fr/']);
@@ -63,4 +64,27 @@ for(const route of ['assets/launch/captions-en.vtt','publisher/','missing.html',
 eq(env('https://dialsanta.app/',null,['fr'],{storageBlocked:true}).redirects,['https://dialsanta.app/fr/']);
 eq(env('https://dialsanta.app/?lang=en',null,['fr'],{storageBlocked:true}).redirects,[]);
 eq(env('https://dialsanta.app/',null,['fr']).writes,[]);
-console.log(JSON.stringify({passed:true,assertions,languages:83,scope:'83 automatic preferences; manual and explicit-link priority; ordered/unsupported/script fallback; blocked storage; preserved page/query/hash; canonical call codes; no redirect loops'},null,2));
+// Regression: incoming links used to overwrite preferences and stick on later visits.
+for(const {code} of languages){
+ const prefix=code==='en'?'':'/'+code;
+ eq(env('https://dialsanta.app'+prefix+'/',null,['en-US']).redirects,code==='en'?[]:['https://dialsanta.app/']);
+ eq(env('https://dialsanta.app'+prefix+'/index.html',null,['en-US']).redirects,code==='en'?[]:['https://dialsanta.app/index.html']);
+ const linked=env('https://dialsanta.app/?lang='+code,'fr',['en-US']);
+ eq(linked.writes,[]);
+ const chosen=env('https://dialsanta.app/',null,['en-US'],{controls:true});chosen.choose(code);
+ eq(chosen.writes,[['dialsanta.website.language.manual.v2',code]]);
+ eq(env('https://dialsanta.app/',code,['en-US']).redirects,code==='en'?[]:['https://dialsanta.app/'+code+'/']);
+}
+eq(env('https://dialsanta.app/',null,['en-US'],{legacySaved:'de'}).redirects,[]);
+eq(env('https://dialsanta.app/de/',null,['en-US'],{legacySaved:'de'}).redirects,['https://dialsanta.app/']);
+eq(env('https://dialsanta.app/de',null,['en-US']).redirects,['https://dialsanta.app/']);
+eq(env('https://dialsanta.app/de/?ds=ds-ig-profile#faq',null,['es-MX']).redirects,['https://dialsanta.app/es/?ds=ds-ig-profile#faq']);
+eq(env('https://dialsanta.app/de/',null,['de-DE']).redirects,[]);
+eq(env('https://dialsanta.app/de/',null,['en-US'],{storageBlocked:true}).redirects,['https://dialsanta.app/']);
+eq(env('https://dialsanta.app/de/parents.html',null,['en-US']).redirects,[]);
+eq(env('https://dialsanta.app/de/?lang=de','en',['en-US']).redirects,[]);
+eq(env('https://dialsanta.app/de/?lang=de','en',['en-US']).writes,[]);
+const english=env('https://dialsanta.app/de/?lang=de',null,['en-US'],{controls:true});english.choose('en');
+eq(english.redirects,['https://dialsanta.app/?lang=en']);
+eq(english.writes,[['dialsanta.website.language.manual.v2','en']]);
+console.log(JSON.stringify({passed:true,assertions,languages:83,scope:'83 automatic and manual preferences; shared localized home recovery; link preferences never persisted; legacy link-written preference recovery; explicit query and deep-link support; blocked storage; preserved page/query/hash; no redirect loops'},null,2));
